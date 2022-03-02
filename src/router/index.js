@@ -20,6 +20,20 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/dictionaries",
+    name: "DictionaryHome",
+    component: () => import("../views/dictionary/DictionaryHome.vue"),
+    props: true,
+    children: [
+      {
+        path: "/dictionary/:id/:name",
+        name: "Dictionary",
+        component: () => import("../views/dictionary/Dictionary.vue"),
+        props: true,
+      },
+    ],
+  },
 ];
 
 const router = createRouter({

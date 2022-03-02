@@ -1,7 +1,8 @@
 <template>
   <div class="navbar">
     <router-link to="/login">Login</router-link> |
-    <router-link to="/register">Register</router-link>
+    <router-link to="/register">Register</router-link> |
+    <router-link to="/dictionaries">Dictionary</router-link>
   </div>
 </template>
 
@@ -13,7 +14,7 @@
   color: cyan;
   background: rgb(7, 41, 68);
   margin: 10px;
-   text-align: center;
+  text-align: center;
 }
 a {
   color: cyan;
