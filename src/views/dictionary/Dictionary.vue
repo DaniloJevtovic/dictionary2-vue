@@ -1,0 +1,87 @@
+<template>
+  <div>
+    <h3>{{ dictionary.name }}</h3>
+
+    <div class="demo">
+      <button
+        v-for="(_, tab) in tabs"
+        :key="tab"
+        :class="['tab-button', { active: currentTab === tab }]"
+        @click="currentTab = tab"
+      >
+        {{ tab }}
+      </button>
+
+      <!-- DA TI SVAKI PUT NE MONTIRA KOMPONENTU -->
+      <KeepAlive>
+        <component
+          :is="tabs[currentTab]"
+          :dicId="dictionary.id"
+          class="tab"
+        ></component>
+      </KeepAlive>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+
+import Words from "../../views/words/Words.vue";
+import Sentences from "../../views/sentences/Sentences.vue";
+import Groups from "../../views/groups/Groups.vue";
+import gRecenica from "../../views/groups/Groups.vue";
+import Grammars from "../../views/grammars/Grammars.vue";
+
+const currentTab = ref("Words");
+
+const tabs = {
+  Words,
+  Sentences,
+  Groups,
+  Grammars,
+  gRecenica,
+};
+
+const route = useRoute();
+
+const dictionary = ref({ name: route.params.name, id: route.params.id });
+</script>
+
+<style scoped>
+.demo {
+  font-family: sans-serif;
+  border: 1px solid #eee;
+  border-radius: 2px;
+  padding: 20px 30px;
+  margin-top: 1em;
+  margin-bottom: 40px;
+  user-select: none;
+  overflow-x: auto;
+  text-align: left;
+}
+
+.tab-button {
+  padding: 6px 10px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background: #f0f0f0;
+  margin-bottom: -1px;
+  margin-right: -1px;
+}
+.tab-button:hover {
+  background: #e0e0e0;
+}
+.tab-button.active {
+  background: #032135;
+  color: #ccc;
+}
+.tab {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 300px;
+}
+</style>
