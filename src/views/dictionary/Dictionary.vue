@@ -14,11 +14,8 @@
 
       <!-- DA TI SVAKI PUT NE MONTIRA KOMPONENTU -->
       <KeepAlive>
-        <component
-          :is="tabs[currentTab]"
-          :dicId="dictionary.id"
-          class="tab"
-        ></component>
+        <component :is="tabs[currentTab]" :dicId="dictionary.id" class="tab">
+        </component>
       </KeepAlive>
     </div>
   </div>
@@ -31,7 +28,6 @@ import { useRoute } from "vue-router";
 import Words from "../../views/words/Words.vue";
 import Sentences from "../../views/sentences/Sentences.vue";
 import Groups from "../../views/groups/Groups.vue";
-import gRecenica from "../../views/groups/Groups.vue";
 import Grammars from "../../views/grammars/Grammars.vue";
 
 const currentTab = ref("Words");
@@ -41,7 +37,6 @@ const tabs = {
   Sentences,
   Groups,
   Grammars,
-  gRecenica,
 };
 
 const route = useRoute();
@@ -63,7 +58,7 @@ const dictionary = ref({ name: route.params.name, id: route.params.id });
 }
 
 .tab-button {
-  padding: 6px 10px;
+  padding: 3px 15px;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   border: 1px solid #ccc;
@@ -82,6 +77,6 @@ const dictionary = ref({ name: route.params.name, id: route.params.id });
 .tab {
   border: 1px solid #ccc;
   padding: 10px;
-  min-height: 300px;
+  min-height: 400px;
 }
 </style>
