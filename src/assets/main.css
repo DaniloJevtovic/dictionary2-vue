@@ -21,7 +21,11 @@ select {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  margin: 5px auto;
+  margin: 8px auto;
+}
+
+textarea {
+  border: 1px solid darkblue;
 }
 
 select {
