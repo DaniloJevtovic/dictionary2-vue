@@ -2,14 +2,18 @@ import { defineStore } from "pinia";
 
 // grupe rjeci za rjecnik
 
-export const useGroupStore = defineStore("groups", {
+export const useWGroupStore = defineStore("wgroups", {
   state: () => {
-    return { groups: [] };
+    return { wgroups: [] };
   },
 
   actions: {
-    addToGroup(item) {
-      this.groups.push(item);
+    addToWGroups(item) {
+      this.wgroups.push(item);
+    },
+
+    removeWGroup(idx) {
+      this.wgroups.splice(idx, 1);
     },
   },
 });

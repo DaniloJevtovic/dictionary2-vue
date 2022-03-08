@@ -8,11 +8,19 @@ export const useGroupStore = defineStore("groups", {
   },
 
   actions: {
-    addGroup(item, type) {
-      if (type == "wgroup") {
+    addGroup(item) {
+      if (item.type == "WGROUP") {
         this.wgroups.push(item);
       } else {
         this.sgroups.push(item);
+      }
+    },
+
+    updateGroup(item, idx) {
+      if (item.type == "WGROUP") {
+        this.wgroups[idx] = item;
+      } else {
+        this.sgroups[idx] = item;
       }
     },
 
