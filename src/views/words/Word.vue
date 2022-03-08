@@ -1,19 +1,21 @@
 <template>
   <div>
-    <div class="word" @click="showModal = true">
-      {{ wword.word }} - {{ wword.translate }}
+    <div class="word">
+      <div @click="showModal = true">
+        {{ wword.word }} - {{ wword.translate }}
+        <p style="margin: 0px">
+          <small>{{ wword.description }}</small>
+        </p>
+      </div>
       <button @click.prevent="deleteWord" class="del-btn">x</button>
-
-      <p style="margin: 0px">
-        <small>{{ wword.description }}</small>
-      </p>
     </div>
 
     <!-- modal -->
-    <UpdateWordModal
+    <AddEditWordModal
       v-if="showModal"
       :word="wword"
       :show="showModal"
+      :mode="'update'"
       @update="updateWord"
       @close="showModal = false"
     />
@@ -23,6 +25,10 @@
 <script setup>
 import { reactive, ref } from "vue";
 import useCrud from "../../composables/useCRUD.js";
+
+//pinia - rjeci
+import { useWordsStore } from "../../stores/words/words.js";
+const wordsStore = useWordsStore();
 
 const { deleteFun } = useCrud();
 
@@ -38,7 +44,7 @@ const wword = reactive({ ...props.word });
 //brisanje na bekendu
 async function deleteWord() {
   await deleteFun("words", props.word.id);
-  emit("deleteFromList", props.idx); // poziv brisanja iz liste
+  wordsStore.removeWord(props.idx);
 }
 
 function updateWord(updatedWord) {
@@ -50,7 +56,7 @@ function updateWord(updatedWord) {
   }
 }
 
-import UpdateWordModal from "./AddEditWordModal.vue";
+import AddEditWordModal from "./AddEditWordModal.vue";
 const showModal = ref(false);
 </script>
 
@@ -61,14 +67,14 @@ const showModal = ref(false);
   margin: 4px;
   padding: 2px;
   text-align: center;
+  display: flex;
 }
 
 .del-btn {
-  /* margin: -13px -8px; */
-  padding: 3px;
+  margin-left: 15px;
+  margin-right: 0px;
   background: red;
-  color: white;
+  border-radius: 2px;
   border: none;
-  /* float: right; */
 }
 </style>

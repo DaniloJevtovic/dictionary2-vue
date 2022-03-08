@@ -25,12 +25,16 @@
             rows="5"
           ></textarea>
 
-          <GroupsSelect
-            :dicId="word.dicId"
-            :gtype="'WGROUP'"
-            :setSelect="word.wgId"
-            @selected="updatedWg"
-          />
+          <select class="wgs" v-model="updateWord.wgId" required>
+            <option value="all" disabled>odaberi</option>
+            <option
+              v-for="group in groupStore.wgroups"
+              :key="group.id"
+              :value="group.id"
+            >
+              {{ group.name }}
+            </option>
+          </select>
 
           <br />
         </div>
@@ -49,6 +53,10 @@
 <script setup>
 import { reactive } from "vue";
 import useCrud from "../../composables/useCRUD.js";
+
+//pinia - grupe
+import { useGroupStore } from "../../stores/groups.js";
+const groupStore = useGroupStore();
 
 const { createFun } = useCrud();
 
@@ -76,13 +84,6 @@ async function save() {
 
 function closeModal() {
   emit("close");
-}
-
-import GroupsSelect from "../groups/GroupsSelect.vue";
-
-function updatedWg(id) {
-  console.log(id);
-  updateWord.wgId = id;
 }
 </script>
 
