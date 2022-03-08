@@ -1,0 +1,28 @@
+button {
+  background: white;
+  border-radius: 2px;
+  border: 1px solid darkblue;
+  padding: 2px 15px;
+  font-weight: 300;
+  cursor: pointer;
+  display: inline-block;
+  outline: none;
+  margin-right: 5px;
+}
+
+button:hover {
+  background: springgreen;
+  color: indigo;
+}
+
+.new-btn {
+  color: white;
+  width: 100%;
+  margin: 4px 0px;
+  background: rebeccapurple;
+}
+
+.del-btn {
+  background: red;
+  margin: 0px 0px 0px auto;
+}

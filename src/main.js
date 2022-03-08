@@ -5,5 +5,6 @@ import { createPinia } from "pinia";
 import "./assets/main.css";
 import "./assets/modal.css";
 import "./assets/tabs.css";
+import "./assets/buttons.css";
 
 createApp(App).use(router).use(createPinia()).mount("#app");
