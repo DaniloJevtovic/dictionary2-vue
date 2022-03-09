@@ -24,8 +24,8 @@ export const useGroupStore = defineStore("groups", {
       }
     },
 
-    removeGroup(idx) {
-      if (type == "wgroup") {
+    removeGroup(idx, type) {
+      if (type == "WGROUP") {
         this.wgroups.splice(idx, 1);
       } else {
         this.sgroups.splice(idx, 1);
