@@ -32,3 +32,23 @@ select {
   background: white;
   border: 1px solid darkblue;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: cyan;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rebeccapurple;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(11, 79, 204);
+}

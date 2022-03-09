@@ -16,13 +16,18 @@ button:hover {
 }
 
 .new-btn {
-  color: white;
+  color: cyan;
   width: 100%;
   margin: 4px 0px;
   background: rebeccapurple;
+  border: 1px solid cyan;
 }
 
 .del-btn {
   background: red;
   margin: 0px 0px 0px auto;
+}
+
+.details {
+  width: 100%;
 }
