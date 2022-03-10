@@ -28,6 +28,17 @@ button:hover {
   margin: 0px 0px 0px auto;
 }
 
+.disable-btn {
+  background: gray;
+  margin: 0px 0px 0px auto;
+  cursor: not-allowed;
+}
+
+.disable-btn:hover {
+  background: gray;
+  color: white;
+}
+
 .details {
   width: 100%;
 }

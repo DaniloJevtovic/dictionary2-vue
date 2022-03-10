@@ -18,10 +18,10 @@ import DictionariesList from "./DictionariesList.vue";
 <style scoped>
 .home {
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 5fr;
   border: 1px solid indigo;
   padding: 4px;
-  min-height: 500px;
+  min-height: 600px;
 }
 
 .left {

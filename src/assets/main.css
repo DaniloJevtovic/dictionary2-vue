@@ -33,6 +33,10 @@ select {
   border: 1px solid darkblue;
 }
 
+input::color {
+  border: none;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
