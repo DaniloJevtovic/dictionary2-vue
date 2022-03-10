@@ -10,7 +10,6 @@ const readFun = async (items) => {
       },
     });
     return res;
-    
   } catch (error) {
     return error;
   }
@@ -65,8 +64,21 @@ const deleteFun = async (items, id) => {
   }
 };
 
+const patchFun = async (items) => {
+  try {
+    const res = await axios.patch(BASE_URL + items, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
 const useCRUD = () => {
-  return { readFun, createFun, updateFun, deleteFun };
+  return { readFun, createFun, updateFun, deleteFun, patchFun };
 };
 
 export default useCRUD;
