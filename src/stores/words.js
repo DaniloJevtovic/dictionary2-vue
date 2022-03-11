@@ -1,13 +1,17 @@
 import { defineStore } from "pinia";
 
-export const useWordsStore = defineStore("words", {
+export const useWordStore = defineStore("words", {
   state: () => {
     return { words: [] };
   },
 
   actions: {
-    addToWords(item) {
-      this.words.push(item);
+    addWord(word) {
+      this.words.push(word);
+    },
+
+    updateWord(word, idx) {
+      this.words[idx] = word;
     },
 
     removeWord(idx) {
