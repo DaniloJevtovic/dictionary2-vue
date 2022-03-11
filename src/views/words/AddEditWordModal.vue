@@ -25,14 +25,25 @@
             rows="5"
           ></textarea>
 
-          <select class="wgs" v-model="updateWord.wgId" required>
+          <select
+            class="wgs"
+            v-model="updateWord.wgId"
+            :style="{
+              background:
+                updateWord.wgId != 'all'
+                  ? groupStore.getWGroupById(updateWord.wgId).color
+                  : 'white',
+            }"
+            required
+          >
             <option value="all" disabled>odaberi</option>
             <option
               v-for="group in groupStore.wgroups"
               :key="group.id"
               :value="group.id"
+              :style="{ background: group.color }"
             >
-              {{ group.name }}
+              Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
             </option>
           </select>
 
@@ -53,12 +64,8 @@
 <script setup>
 import { reactive } from "vue";
 import useCrud from "../../composables/useCRUD.js";
-
-//pinia - grupe
+import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
-const groupStore = useGroupStore();
-
-const { createFun } = useCrud();
 
 const props = defineProps({
   word: Object,
@@ -66,17 +73,31 @@ const props = defineProps({
   mode: String,
 });
 
-const emit = defineEmits(["close", "save", "update"]);
+const emit = defineEmits(["close", "changeGroup"]);
 
+const wordStore = useWordStore();
+const groupStore = useGroupStore();
+
+const { createFun } = useCrud();
 const updateWord = reactive({ ...props.word });
 
 async function save() {
   let res = await createFun("words", updateWord);
 
   if (props.mode === "new") {
-    emit("save", updateWord);
+    wordStore.addWord(res.data);
+    // ako je bilo dodavanje nove recenice - update broja recenica u grupi
+    groupStore.updateNumOfItems(res.data.wgId, "increase", "WGROUP");
   } else {
-    emit("update", updateWord);
+    wordStore.updateWord(res.data, props.idx);
+  }
+
+  // ako je bilo promjene grupe u odnosu na slektovanu grupu
+  if (props.word.wgId !== res.data.wgId) {
+    //update grupe - u jednoj grupi smanjujes br. recenica a drugoj povecavas
+    emit("changeGroup", res.data.wgId);
+    groupStore.updateNumOfItems(props.word.wgId, "decrease", "WGROUP");
+    groupStore.updateNumOfItems(res.data.wgId, "increase", "WGROUP");
   }
 
   closeModal();

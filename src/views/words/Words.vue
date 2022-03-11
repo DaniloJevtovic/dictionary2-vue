@@ -1,27 +1,36 @@
 <template>
   <div>
-    <div class="header">
-      <input class="search" type="text" placeholder="sarch" />
+    <input class="search" type="text" placeholder="sarch" />
+    <!-- <Search :url="searchUrl" ref="pretraga" @searched="updateWords" /> -->
 
-      <!-- <Search :url="searchUrl" ref="pretraga" @searched="updateWords" /> -->
+    <!-- selekcija grupe -->
+    <select
+      class="wgs"
+      @change="changeWg($event)"
+      v-model="selectedGroup"
+      :style="{
+        background:
+          selectedGroup != 'all'
+            ? groupStore.getWGroupById(selectedGroup).color
+            : 'white',
+      }"
+    >
+      <option value="all">sve</option>
+      <option
+        v-for="group in groupStore.wgroups"
+        :key="group.id"
+        :value="group.id"
+        :style="{ background: group.color }"
+      >
+        Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
+      </option>
+    </select>
 
-      <!-- selekcija grupe -->
-      <select class="wgs" @change="changeWg($event)" v-model="selectedGroup">
-        <option value="all">sve</option>
-        <option
-          v-for="group in groupStore.wgroups"
-          :key="group.id"
-          :value="group.id"
-        >
-          {{ group.name }}
-        </option>
-      </select>
-    </div>
+    <button @click="showModal = true" class="new-btn">new word</button>
 
     <!-- lista rjeci -->
     <div class="words">
-      <button @click="showModal = true" class="new-btn">new word</button>
-      <div v-for="(word, index) in wordsStore.words" :key="word.id">
+      <div v-for="(word, index) in wordStore.words" :key="word.id">
         <Word :word="word" :idx="index" @changeGroup="promjeniGrupu" />
       </div>
     </div>
@@ -32,7 +41,7 @@
       :word="newWord"
       :show="showModal"
       :mode="'new'"
-      @save="addWord"
+      @changeGroup="promjeniGrupu"
       @close="showModal = false"
     />
   </div>
@@ -41,31 +50,25 @@
 <script setup>
 import { onMounted, ref, reactive } from "vue";
 import useCrud from "../../composables/useCRUD.js";
-
-//pinia - grupe
-import { useGroupStore } from "../../stores/groups.js";
-const groupStore = useGroupStore();
-
-//pinia - rjeci
-import { useWordsStore } from "../../stores/words/words.js";
-const wordsStore = useWordsStore();
-
 import Word from "./Word.vue";
-
-const { readFun } = useCrud();
+import AddEditWordModal from "./AddEditWordModal.vue";
+import { useWordStore } from "../../stores/words.js";
+import { useGroupStore } from "../../stores/groups.js";
 
 const props = defineProps({
   dicId: String,
 });
 
+const wordStore = useWordStore();
+const groupStore = useGroupStore();
+
 const dicUrl = "words/dic/" + props.dicId; //adresa do rjecnika
+const { readFun } = useCrud();
 
 //f-ja za dobavljanje rjeci iz rjecnika ili grupe
-const words = ref([]);
 async function getWords(url) {
   let res = await readFun(url);
-  words.value = res.data.content;
-  wordsStore.words = res.data.content;
+  wordStore.words = res.data.content;
 }
 
 // grupe rjeci za rjecnik
@@ -93,19 +96,17 @@ function promjeniGrupu(id) {
     getWords("words/wg/" + id);
     searchUrl.value = "words/wg/" + selectedGroup.value + "/search/";
   }
-  selectedGroup.value = id;
-  console.log(selectedGroup.value);
+  selectedGroup.value = newWord.wgId = id;
 }
 
 import Search from "../../components/Search.vue";
 const searchUrl = ref("words/dic/" + props.dicId + "/search/");
 function updateWords(rjeci) {
-  //words.value = rjeci;
-  wordsStore.words = rjeci;
+  wordStore.words = rjeci;
 }
 
-//modal
-import AddEditWordModal from "./AddEditWordModal.vue";
+const showModal = ref(false);
+
 // rjec koja se prosljedjuje modalu - ako se kreira nova rjec
 const newWord = reactive({
   word: "",
@@ -114,39 +115,16 @@ const newWord = reactive({
   dicId: props.dicId,
   wgId: selectedGroup.value,
 });
-const showModal = ref(false);
-function addWord(word) {
-  wordsStore.addToWords(word);
-
-  if (word.wgId !== selectedGroup.value) {
-    promjeniGrupu(word.wgId);
-  }
-}
 </script>
 
 <style scoped>
-.header {
-  margin: 5px;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 2px;
-  border: 1px solid rgb(76, 110, 173);
-}
-
-.search {
-  width: auto;
-}
-
-.wgs {
-  width: auto;
-}
-
 .words {
   overflow-y: auto;
-  border: 1px solid rgb(0, 119, 255);
-  padding: 5px;
   display: flex;
+  flex-grow: 4;
   flex-wrap: wrap;
-  margin: 5px;
+  max-height: 320px;
+  flex-direction: row;
+  align-items: stretch;
 }
 </style>

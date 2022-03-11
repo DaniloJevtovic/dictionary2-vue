@@ -2,9 +2,9 @@
   <div>
     <div class="word">
       <div @click="showModal = true">
-        {{ wword.word }} - {{ wword.translate }}
+        {{ word.word }} - {{ wword.translate }}
         <p style="margin: 0px">
-          <small>{{ wword.description }}</small>
+          <small>{{ word.description }}</small>
         </p>
       </div>
       <button @click.prevent="deleteWord" class="del-btn">x</button>
@@ -13,10 +13,10 @@
     <!-- modal -->
     <AddEditWordModal
       v-if="showModal"
-      :word="wword"
+      :word="word"
       :show="showModal"
       :mode="'update'"
-      @update="updateWord"
+      @changeGroup="promjeniGrupu"
       @close="showModal = false"
     />
   </div>
@@ -25,38 +25,35 @@
 <script setup>
 import { reactive, ref } from "vue";
 import useCrud from "../../composables/useCRUD.js";
-
-//pinia - rjeci
-import { useWordsStore } from "../../stores/words/words.js";
-const wordsStore = useWordsStore();
-
-const { deleteFun } = useCrud();
+import AddEditWordModal from "./AddEditWordModal.vue";
+import { useWordStore } from "../../stores/words.js";
+import { useGroupStore } from "../../stores/groups.js";
 
 const props = defineProps({
   word: Object,
   idx: Number,
+  wgId: Number, //ako iz grupe pristupas rjecima -> preusmjeri
 });
 
 const emit = defineEmits(["deleteFromList", "changeGroup"]);
 
+const wordStore = useWordStore();
+const groupStore = useGroupStore();
+
+const { deleteFun } = useCrud();
 const wword = reactive({ ...props.word });
 
-//brisanje na bekendu
 async function deleteWord() {
   await deleteFun("words", props.word.id);
-  wordsStore.removeWord(props.idx);
+  wordStore.removeWord(props.idx);
+  //smanjivanje broja recenica u grupi
+  groupStore.updateNumOfItems(props.word.wgId, "decrease", "WGROUP");
 }
 
-function updateWord(updatedWord) {
-  Object.assign(wword, updatedWord);
-
-  // ako je doslo do promjene grupe rjeci - promjeni grupu
-  if (props.word.wgId !== updatedWord.wgId) {
-    emit("changeGroup", wword.wgId); // poziv promjene grupe
-  }
+function promjeniGrupu(id) {
+  emit("changeGroup", id);
 }
 
-import AddEditWordModal from "./AddEditWordModal.vue";
 const showModal = ref(false);
 </script>
 
@@ -71,7 +68,7 @@ const showModal = ref(false);
 }
 
 .del-btn {
-  margin-left: 15px;
+  margin-left: 5px;
   margin-right: 0px;
   background: red;
   border-radius: 2px;
