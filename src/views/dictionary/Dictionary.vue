@@ -27,7 +27,7 @@ import { useRoute } from "vue-router";
 
 import Words from "../../views/words/Words.vue";
 import Sentences from "../../views/sentences/Sentences.vue";
-import Groups from "../../views/groups/Groups.vue";
+import AllGroups from "../groups/AllGroups.vue";
 import Grammars from "../../views/grammars/Grammars.vue";
 
 const currentTab = ref("Words");
@@ -35,13 +35,16 @@ const currentTab = ref("Words");
 const tabs = {
   Words,
   Sentences,
-  Groups,
+  AllGroups,
   Grammars,
 };
 
 const route = useRoute();
 
 const dictionary = ref({ name: route.params.name, id: route.params.id });
+
+import { useTabStore } from "../../stores/tabs.js";
+const tabStore = useTabStore();
 </script>
 
 <style scoped>
@@ -66,13 +69,17 @@ const dictionary = ref({ name: route.params.name, id: route.params.id });
   background: #f0f0f0;
   margin-bottom: -1px;
   margin-right: -1px;
+  width: 25%;
 }
 .tab-button:hover {
   background: #e0e0e0;
 }
 .tab-button.active {
-  background: #032135;
-  color: #ccc;
+  /* background: #032135;
+  color: #ccc; */
+
+  background: darkslateblue;
+  color: cyan;
 }
 .tab {
   border: 1px solid #ccc;
