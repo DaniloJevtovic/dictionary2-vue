@@ -45,6 +45,7 @@
             >
               Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
             </option>
+            <option value="create">kreiraj novu grupu</option>
           </select>
 
           <br />
@@ -63,41 +64,28 @@
 
 <script setup>
 import { reactive } from "vue";
-import useCrud from "../../composables/useCRUD.js";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 
 const props = defineProps({
   word: Object,
+  idx: Number,
   show: Boolean,
   mode: String,
 });
 
-const emit = defineEmits(["close", "changeGroup"]);
+const emit = defineEmits(["close"]);
 
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
 
-const { createFun } = useCrud();
 const updateWord = reactive({ ...props.word });
 
 async function save() {
-  let res = await createFun("words", updateWord);
-
   if (props.mode === "new") {
-    wordStore.addWord(res.data);
-    // ako je bilo dodavanje nove recenice - update broja recenica u grupi
-    groupStore.updateNumOfItems(res.data.wgId, "increase", "WGROUP");
+    await wordStore.addWord(updateWord);
   } else {
-    wordStore.updateWord(res.data, props.idx);
-  }
-
-  // ako je bilo promjene grupe u odnosu na slektovanu grupu
-  if (props.word.wgId !== res.data.wgId) {
-    //update grupe - u jednoj grupi smanjujes br. recenica a drugoj povecavas
-    emit("changeGroup", res.data.wgId);
-    groupStore.updateNumOfItems(props.word.wgId, "decrease", "WGROUP");
-    groupStore.updateNumOfItems(res.data.wgId, "increase", "WGROUP");
+    await wordStore.updateWord(updateWord, props.idx);
   }
 
   closeModal();

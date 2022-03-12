@@ -1,17 +1,16 @@
 <template>
   <div>
-    <input class="search" type="text" placeholder="sarch" />
-    <!-- <Search :url="searchUrl" ref="pretraga" @searched="updateWords" /> -->
+    <input class="search" type="text" placeholder="search" />
 
     <!-- selekcija grupe -->
     <select
       class="wgs"
       @change="changeWg($event)"
-      v-model="selectedGroup"
+      v-model="groupStore.activeWgId"
       :style="{
         background:
-          selectedGroup != 'all'
-            ? groupStore.getWGroupById(selectedGroup).color
+          groupStore.activeWgId != 'all'
+            ? groupStore.getWGroupById(groupStore.activeWgId).color
             : 'white',
       }"
     >
@@ -31,7 +30,7 @@
     <!-- lista rjeci -->
     <div class="words">
       <div v-for="(word, index) in wordStore.words" :key="word.id">
-        <Word :word="word" :idx="index" @changeGroup="promjeniGrupu" />
+        <Word :word="word" :idx="index" />
       </div>
     </div>
 
@@ -41,15 +40,13 @@
       :word="newWord"
       :show="showModal"
       :mode="'new'"
-      @changeGroup="promjeniGrupu"
       @close="showModal = false"
     />
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, reactive } from "vue";
-import useCrud from "../../composables/useCRUD.js";
+import { onMounted, ref, reactive, watch } from "vue";
 import Word from "./Word.vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
 import { useWordStore } from "../../stores/words.js";
@@ -62,47 +59,21 @@ const props = defineProps({
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
 
-const dicUrl = "words/dic/" + props.dicId; //adresa do rjecnika
-const { readFun } = useCrud();
-
-//f-ja za dobavljanje rjeci iz rjecnika ili grupe
-async function getWords(url) {
-  let res = await readFun(url);
-  wordStore.words = res.data.content;
-}
-
-// grupe rjeci za rjecnik
-async function getGroups() {
-  let res = await readFun("groups/dic/" + props.dicId + "/group/WGROUP");
-  groupStore.wgroups = res.data;
-}
-
 onMounted(() => {
-  getWords(dicUrl);
-  getGroups();
+  wordStore.getWordsForDictionary(props.dicId);
+  groupStore.getWGroupsForDictionary(props.dicId);
 });
 
-const selectedGroup = ref("all");
 function changeWg(event) {
   let id = event.target.value;
-  promjeniGrupu(id);
-}
 
-function promjeniGrupu(id) {
-  if (id == "all") {
-    getWords(dicUrl);
-    searchUrl.value = "words/dic/" + props.dicId + "/search/";
+  if (id === "all") {
+    wordStore.getWordsForDictionary(props.dicId);
   } else {
-    getWords("words/wg/" + id);
-    searchUrl.value = "words/wg/" + selectedGroup.value + "/search/";
+    wordStore.getWordsForWgroup(id);
   }
-  selectedGroup.value = newWord.wgId = id;
-}
 
-import Search from "../../components/Search.vue";
-const searchUrl = ref("words/dic/" + props.dicId + "/search/");
-function updateWords(rjeci) {
-  wordStore.words = rjeci;
+  groupStore.activeWgId = newWord.wgId = id;
 }
 
 const showModal = ref(false);
@@ -113,7 +84,7 @@ const newWord = reactive({
   translate: "",
   description: "",
   dicId: props.dicId,
-  wgId: selectedGroup.value,
+  wgId: "all",
 });
 </script>
 

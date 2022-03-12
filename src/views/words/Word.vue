@@ -2,7 +2,7 @@
   <div>
     <div class="word">
       <div @click="showModal = true">
-        {{ word.word }} - {{ wword.translate }}
+        {{ word.word }} - {{ word.translate }}
         <p style="margin: 0px">
           <small>{{ word.description }}</small>
         </p>
@@ -14,9 +14,9 @@
     <AddEditWordModal
       v-if="showModal"
       :word="word"
+      :idx="idx"
       :show="showModal"
       :mode="'update'"
-      @changeGroup="promjeniGrupu"
       @close="showModal = false"
     />
   </div>
@@ -24,7 +24,6 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import useCrud from "../../composables/useCRUD.js";
 import AddEditWordModal from "./AddEditWordModal.vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
@@ -32,26 +31,15 @@ import { useGroupStore } from "../../stores/groups.js";
 const props = defineProps({
   word: Object,
   idx: Number,
-  wgId: Number, //ako iz grupe pristupas rjecima -> preusmjeri
 });
-
-const emit = defineEmits(["deleteFromList", "changeGroup"]);
 
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
 
-const { deleteFun } = useCrud();
 const wword = reactive({ ...props.word });
 
-async function deleteWord() {
-  await deleteFun("words", props.word.id);
-  wordStore.removeWord(props.idx);
-  //smanjivanje broja recenica u grupi
-  groupStore.updateNumOfItems(props.word.wgId, "decrease", "WGROUP");
-}
-
-function promjeniGrupu(id) {
-  emit("changeGroup", id);
+function deleteWord() {
+  wordStore.removeWord(props.idx, props.word.id);
 }
 
 const showModal = ref(false);
