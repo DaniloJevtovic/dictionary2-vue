@@ -1,58 +1,51 @@
 import { defineStore } from "pinia";
-import useCRUD from "../composables/useCRUD";
-
-const { patchFun } = useCRUD();
 
 // grupe rjeci i recenica za rjecnik
 
 export const useGroupStore = defineStore("groups", {
   state: () => {
-    return { wgroups: [], sgroups: [] };
+    return { wgroups: [], activeWgId: "all", sgroups: [], activeSgId: "all" };
   },
 
   actions: {
-    addGroup(item) {
-      if (item.type == "WGROUP") {
-        this.wgroups.push(item);
+    addGroup(group) {
+      if (group.type == "WGROUP") {
+        this.wgroups.push(group);
       } else {
-        this.sgroups.push(item);
+        this.sgroups.push(group);
       }
     },
 
-    updateGroup(item, idx) {
-      if (item.type == "WGROUP") {
-        this.wgroups[idx] = item;
+    updateGroup(group, idx) {
+      if (group.type == "WGROUP") {
+        this.wgroups[idx] = group;
       } else {
-        this.sgroups[idx] = item;
+        this.group[idx] = group;
       }
     },
 
-    removeGroup(idx, type) {
-      if (type == "WGROUP") {
+    removeGroup(group, idx) {
+      if (group.type == "WGROUP") {
         this.wgroups.splice(idx, 1);
       } else {
         this.sgroups.splice(idx, 1);
       }
     },
 
-    // id - id grupe kojoj se azurira broj stavki
-    //mode - da li eje uvecenje ili umanjenje
-    //type - da li e grupa rjeci ili grupa recenica
-    async updateNumOfItems(id, mode, type) {
-      let res;
+    // ako se promjeni rjecnik da se id grupa postave na 'all'
+    resetActiveGroups() {
+      this.activeWgId = this.activeSgId = "all";
+    },
 
-      if (type == "WGROUP") {
-        res = this.getWGroupById(id);
-        res.numOfItems =
-          mode == "increase" ? res.numOfItems + 1 : res.numOfItems - 1;
-      } else {
-        res = this.getSGroupById(id);
-        res.numOfItems =
-          mode === "increase" ? res.numOfItems + 1 : res.numOfItems - 1;
-      }
+    //bekend
+    async getWGroupsForDictionary(id) {
+      let res = await readFun("groups/dic/" + id + "/group/WGROUP");
+      this.wgroups = res.data;
+    },
 
-      //poziv na bekendu
-      await patchFun("groups/" + id + "/num/" + res.numOfItems);
+    async getSGroupsForDictionary(id) {
+      let res = await readFun("groups/dic/" + id + "/group/SGROUP");
+      this.sgroups = res.data;
     },
   },
 
@@ -63,6 +56,14 @@ export const useGroupStore = defineStore("groups", {
 
     getSGroupById: (state) => {
       return (groupId) => state.sgroups.find((group) => group.id === groupId);
+    },
+
+    getActiveWg() {
+      this.getWGroupById(state.activeWgId);
+    },
+
+    getActiveSg() {
+      this.getSGroupById(state.activeWgId);
     },
   },
 });
