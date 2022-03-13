@@ -14,7 +14,7 @@
             : 'white',
       }"
     >
-      <option value="all">sve</option>
+      <option value="all">sve rjeci</option>
       <option
         v-for="group in groupStore.wgroups"
         :key="group.id"
@@ -46,7 +46,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive, watch } from "vue";
+import { onMounted, ref, reactive } from "vue";
+import useCrud from "../../composables/useCRUD.js";
 import Word from "./Word.vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
 import { useWordStore } from "../../stores/words.js";
@@ -56,21 +57,34 @@ const props = defineProps({
   dicId: String,
 });
 
+const { readFun } = useCrud();
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
 
+// dobavljanje rjeci za rjecnik ili grupu
+async function getWords(url) {
+  let res = await readFun(url);
+  wordStore.words = res.data.content;
+}
+
+// dobavljanje grupe rjeci za rjecnik
+async function getWGroups() {
+  let res = await readFun("groups/dic/" + props.dicId + "/group/WGROUP");
+  groupStore.wgroups = res.data;
+}
+
 onMounted(() => {
-  wordStore.getWordsForDictionary(props.dicId);
-  groupStore.getWGroupsForDictionary(props.dicId);
+  getWords("words/dic/" + props.dicId);
+  getWGroups();
 });
 
 function changeWg(event) {
   let id = event.target.value;
 
   if (id === "all") {
-    wordStore.getWordsForDictionary(props.dicId);
+    getWords("words/dic/" + props.dicId);
   } else {
-    wordStore.getWordsForWgroup(id);
+    getWords("words/wg/" + id);
   }
 
   groupStore.activeWgId = newWord.wgId = id;

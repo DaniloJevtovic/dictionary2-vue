@@ -25,6 +25,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
+import useCrud from "../../composables/useCRUD.js";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 
@@ -33,13 +34,21 @@ const props = defineProps({
   idx: Number,
 });
 
+const { deleteFun, patchFun } = useCrud();
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
 
-const wword = reactive({ ...props.word });
+async function deleteWord() {
+  await deleteFun("words", props.word.id);
+  wordStore.removeWord(props.idx);
+  // u grupi smanji broj rjeci za 1
+  let group = groupStore.getWGroupById(props.word.wgId);
+  group.numOfItems = group.numOfItems - 1;
+  await updateNumOfWords(props.word.wgId, group.numOfItems);
+}
 
-function deleteWord() {
-  wordStore.removeWord(props.idx, props.word.id);
+async function updateNumOfWords(wgId, numOfItems) {
+  await patchFun("groups/" + wgId + "/num/" + numOfItems);
 }
 
 const showModal = ref(false);

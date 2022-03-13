@@ -64,6 +64,7 @@
 
 <script setup>
 import { reactive } from "vue";
+import useCrud from "../../composables/useCRUD.js";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 
@@ -76,16 +77,43 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
+const { createFun, readFun, patchFun } = useCrud();
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
 
 const updateWord = reactive({ ...props.word });
 
 async function save() {
+  let res = await createFun("words", updateWord);
+
   if (props.mode === "new") {
-    await wordStore.addWord(updateWord);
+    wordStore.addWord(updateWord);
+
+    let group = groupStore.getWGroupById(updateWord.wgId);
+    group.numOfItems = group.numOfItems + 1;
+    await updateNumOfWords(updateWord.wgId, group.numOfItems);
   } else {
-    await wordStore.updateWord(updateWord, props.idx);
+    wordStore.updateWord(updateWord, props.idx);
+
+    //provjeri ako se ne poklapaju grupe - u jednoj oduzimas u drugoj dodaje
+    if (props.word.wgId !== updateWord.wgId) {
+      let oldGroup = groupStore.getWGroupById(props.word.wgId);
+      oldGroup.numOfItems = oldGroup.numOfItems - 1;
+
+      let newGroup = groupStore.getWGroupById(updateWord.wgId);
+      newGroup.numOfItems = newGroup.numOfItems + 1;
+
+      await updateNumOfWords(updateWord.wgId, oldGroup.numOfItems);
+      await updateNumOfWords(updateWord.wgId, newGroup.numOfItems);
+    }
+  }
+
+  // provjera da li je bilo promjene grupe u odnosnu na selektovanu
+  // ako jeste - dobavi rjeci za tu grupu
+  if (updateWord.wgId !== groupStore.activeWgId) {
+    groupStore.activeWgId = updateWord.wgId;
+    let res = await readFun("words/wg/" + updateWord.wgId);
+    wordStore.words = res.data.content;
   }
 
   closeModal();
@@ -93,6 +121,10 @@ async function save() {
 
 function closeModal() {
   emit("close");
+}
+
+async function updateNumOfWords(wgId, numOfItems) {
+  await patchFun("groups/" + wgId + "/num/" + numOfItems);
 }
 </script>
 
