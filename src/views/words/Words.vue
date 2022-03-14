@@ -106,7 +106,7 @@ const newWord = reactive({
 .words {
   overflow-y: auto;
   display: flex;
-  flex-grow: 4;
+  flex-grow: 3;
   flex-wrap: wrap;
   max-height: 320px;
   flex-direction: row;

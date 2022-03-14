@@ -87,7 +87,7 @@ async function save() {
   let res = await createFun("words", updateWord);
 
   if (props.mode === "new") {
-    wordStore.addWord(updateWord);
+    wordStore.addWord(res.data);
 
     let group = groupStore.getWGroupById(updateWord.wgId);
     group.numOfItems = group.numOfItems + 1;
