@@ -1,6 +1,11 @@
 <template>
   <div>
-    <input class="search" type="text" placeholder="search" />
+    <input
+      class="search"
+      v-model="searchInput"
+      type="text"
+      placeholder="search"
+    />
 
     <!-- selekcija grupe -->
     <select
@@ -25,10 +30,18 @@
       </option>
     </select>
 
-    <button @click="showModal = true" class="new-btn">new word</button>
+    <button
+      @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
+      class="new-btn"
+    >
+      new word
+    </button>
 
     <!-- lista rjeci -->
     <div class="words">
+      <button v-if="searchInput" @click="newSearchWord">
+        +{{ searchInput }}
+      </button>
       <div v-for="(word, index) in wordStore.words" :key="word.id">
         <Word :word="word" :idx="index" />
       </div>
@@ -46,7 +59,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, watch } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import Word from "./Word.vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
@@ -62,8 +75,10 @@ const wordStore = useWordStore();
 const groupStore = useGroupStore();
 
 // dobavljanje rjeci za rjecnik ili grupu
+const words = ref([]);
 async function getWords(url) {
   let res = await readFun(url);
+  words.value = res.data.content;
   wordStore.words = res.data.content;
 }
 
@@ -100,6 +115,32 @@ const newWord = reactive({
   dicId: props.dicId,
   wgId: "all",
 });
+
+const searchInput = ref("");
+watch(searchInput, () => {
+  if (searchInput.value) {
+    console.log(searchInput.value);
+
+    if (groupStore.activeWgId !== "all") {
+      search("/wg/" + groupStore.activeWgId + "/search/" + searchInput.value);
+    } else {
+      search("/dic/" + props.dicId + "/search/" + searchInput.value);
+    }
+  } else {
+    wordStore.words = words.value;
+  }
+});
+
+function newSearchWord() {
+  newWord.word = searchInput.value;
+  newWord.wgId = groupStore.activeWgId;
+  showModal.value = true;
+}
+
+async function search(url) {
+  let res = await readFun("words" + url);
+  wordStore.words = res.data;
+}
 </script>
 
 <style scoped>
