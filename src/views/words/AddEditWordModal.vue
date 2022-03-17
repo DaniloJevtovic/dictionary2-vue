@@ -103,7 +103,7 @@ async function save() {
       let newGroup = groupStore.getWGroupById(updateWord.wgId);
       newGroup.numOfItems = newGroup.numOfItems + 1;
 
-      await updateNumOfWords(updateWord.wgId, oldGroup.numOfItems);
+      await updateNumOfWords(props.word.wgId, oldGroup.numOfItems);
       await updateNumOfWords(updateWord.wgId, newGroup.numOfItems);
     }
   }

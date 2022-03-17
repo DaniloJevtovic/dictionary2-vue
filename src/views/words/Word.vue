@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
 import useCrud from "../../composables/useCRUD.js";
 import { useWordStore } from "../../stores/words.js";
