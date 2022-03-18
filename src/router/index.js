@@ -25,11 +25,25 @@ const routes = [
     name: "DictionaryHome",
     component: () => import("../views/dictionary/DictionaryHome.vue"),
     props: true,
+    redirect: { name: "AllDictionaries" },
     children: [
+      {
+        path: "/allDictionaries",
+        name: "AllDictionaries",
+        component: () => import("../views/dictionary/AllDictionaries.vue"),
+        props: true,
+      },
       {
         path: "/dictionary/:id/:name",
         name: "Dictionary",
         component: () => import("../views/dictionary/Dictionary.vue"),
+        props: true,
+      },
+
+      {
+        path: "/userSettings",
+        name: "User",
+        component: () => import("../views/auth/User.vue"),
         props: true,
       },
     ],
