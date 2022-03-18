@@ -47,6 +47,7 @@ import { useGroupStore } from "../../stores/groups.js";
 import { useTabStore } from "../../stores/tabs.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 import AddEditDictionaryModal from "./AddEditDictionaryModal.vue";
+import DictionariesList from "./DictionariesList.vue";
 
 import Words from "../../views/words/Words.vue";
 import Sentences from "../../views/sentences/Sentences.vue";
@@ -60,7 +61,7 @@ const dictionaryStore = useDictionaryStore();
 const tabs = {
   Words,
   Sentences,
-  AllGroups,
+  // AllGroups,
   Grammars,
 };
 
@@ -69,7 +70,7 @@ const groupStore = useGroupStore();
 
 onMounted(() => {
   groupStore.resetActiveGroups();
-  //tabStore.currentTab = "Words";
+  tabStore.currentTab = "Words";
 });
 
 const route = useRoute();
@@ -89,22 +90,22 @@ const showModal = ref(false);
   margin-bottom: 40px;
   user-select: none;
   overflow-x: auto;
-  text-align: left;
+  text-align: center;
 }
 
 .tab-button {
   padding: 3px 15px;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  border: 1px solid #ccc;
+  border: 1px solid cyan;
   cursor: pointer;
-  background: #f0f0f0;
+  background: white;
   margin-bottom: -1px;
   margin-right: -1px;
-  width: 25%;
+  width: 33.33%;
 }
 .tab-button:hover {
-  background: #e0e0e0;
+  background: rgb(19, 243, 243);
 }
 .tab-button.active {
   /* background: #032135;
@@ -114,7 +115,7 @@ const showModal = ref(false);
   color: cyan;
 }
 .tab {
-  border: 1px solid #ccc;
+  border: 1px solid cyan;
   padding: 10px;
   min-height: 400px;
 }
