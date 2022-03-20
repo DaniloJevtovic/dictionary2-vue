@@ -1,29 +1,47 @@
 <template>
   <div>
-    <input type="text" placeholder="search" />
+    <div class="search-sg">
+      <input type="text" placeholder="search" />
 
-    <!-- grupe -->
-    <select class="sgs" @change="changeSg($event)" v-model="selectedGroup">
-      <option value="all">sve</option>
-      <option
-        v-for="group in groupStore.sgroups"
-        :key="group.id"
-        :value="group.id"
+      <!-- grupe -->
+      <select
+        class="sgs"
+        @change="changeSg($event)"
+        v-model="groupStore.activeSgId"
+        :style="{
+          background:
+            groupStore.activeSgId != 'all'
+              ? groupStore.getSGroupById(groupStore.activeSgId).color
+              : 'white',
+        }"
       >
-        {{ group.name }}
-      </option>
-    </select>
+        <option value="all">sve recenice</option>
+        <option
+          v-for="group in groupStore.sgroups"
+          :key="group.id"
+          :value="group.id"
+          :style="{ background: group.color }"
+        >
+          Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
+        </option>
+      </select>
+    </div>
 
     <button @click="showModal = true" class="new-btn">new sentence</button>
 
+    <button @click="showGroups = !showGroups" class="new-btn">groups</button>
+
+    <div v-if="showGroups">
+      <SGroup :dicId="dicId" :gType="'SGROUP'" />
+    </div>
+
     <!-- recenice -->
     <div class="senetences">
-      <div v-for="(sentence, index) in sentences" :key="sentence.id">
-        <Sentence
-          :sentence="sentence"
-          :idx="index"
-          @changeGroup="promjeniGrupu"
-        />
+      <div
+        v-for="(sentence, index) in sentenceStore.sentences"
+        :key="sentence.id"
+      >
+        <Sentence :sentence="sentence" :idx="index" />
       </div>
     </div>
 
@@ -32,7 +50,6 @@
       :show="showModal"
       :sentence="newSentence"
       :mode="'new'"
-      @changeGroup="promjeniGrupu"
       @close="showModal = false"
     />
   </div>
@@ -42,25 +59,22 @@
 import { onMounted, ref, reactive } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import Sentence from "./Sentence.vue";
+import SGroup from "../groups/SGroup.vue";
 import AddEditSentenceModal from "./AddEditSentenceModal.vue";
-import { useSentencesStore } from "../../stores/sentences.js";
+import { useSentenceStore } from "../../stores/sentences.js";
 import { useGroupStore } from "../../stores/groups.js";
-
-const sentenceStore = useSentencesStore();
-const groupStore = useGroupStore();
 
 const props = defineProps({
   dicId: String,
 });
 
-const dicUrl = "sentences/dic/" + props.dicId; //adresa do rjecnika
-
 const { readFun } = useCrud();
-const sentences = ref([]);
+const sentenceStore = useSentenceStore();
+const groupStore = useGroupStore();
+
 const getSentences = async (url) => {
   let res = await readFun(url);
   sentenceStore.sentences = res.data.content;
-  sentences.value = sentenceStore.sentences;
 };
 
 // grupe recenica za rjecnik
@@ -70,32 +84,20 @@ async function getGroups() {
 }
 
 onMounted(() => {
-  getSentences(dicUrl);
+  getSentences("sentences/dic/" + props.dicId);
   getGroups();
 });
 
-const selectedGroup = ref("all");
 function changeSg(event) {
   let id = event.target.value;
-  promjeniGrupu(id);
-}
 
-function promjeniGrupu(id) {
   if (id == "all") {
-    getSentences(dicUrl);
-    searchUrl.value = "sentences/dic/" + props.dicId + "/search/";
+    getSentences("sentences/dic/" + props.dicId);
   } else {
     getSentences("sentences/sg/" + id);
-    searchUrl.value = "sentences/sg/" + selectedGroup.value + "/search/";
   }
-  selectedGroup.value = newSentence.sgId = id;
-}
 
-import Search from "../../components/Search.vue";
-const searchUrl = ref("sentences/dic/" + props.dicId + "/search/");
-function updateWords(recenice) {
-  //words.value = rjeci;
-  sentenceStore.sentences = recenice;
+  groupStore.activeSgId = newSentence.sgId = id;
 }
 
 const showModal = ref(false);
@@ -105,13 +107,18 @@ const newSentence = reactive({
   translate: "",
   description: "",
   dicId: props.dicId,
-  sgId: selectedGroup.value,
+  sgId: "all",
 });
+
+const showGroups = ref(false);
 </script>
 
 <style scoped>
 .senetences {
   overflow-y: auto;
-  max-height: 320px;
+}
+
+.search-sg {
+  display: flex;
 }
 </style>
