@@ -1,34 +1,36 @@
 <template>
   <div>
-    <input
-      class="search"
-      v-model="searchInput"
-      type="text"
-      placeholder="search"
-    />
+    <div class="search-wg">
+      <input
+        class="search"
+        v-model="searchInput"
+        type="text"
+        placeholder="search words"
+      />
 
-    <!-- selekcija grupe -->
-    <select
-      class="wgs"
-      @change="changeWg($event)"
-      v-model="groupStore.activeWgId"
-      :style="{
-        background:
-          groupStore.activeWgId != 'all'
-            ? groupStore.getWGroupById(groupStore.activeWgId).color
-            : 'white',
-      }"
-    >
-      <option value="all">sve rjeci</option>
-      <option
-        v-for="group in groupStore.wgroups"
-        :key="group.id"
-        :value="group.id"
-        :style="{ background: group.color }"
+      <!-- selekcija grupe -->
+      <select
+        class="wgs"
+        @change="changeWg($event)"
+        v-model="groupStore.activeWgId"
+        :style="{
+          background:
+            groupStore.activeWgId != 'all'
+              ? groupStore.getWGroupById(groupStore.activeWgId).color
+              : 'white',
+        }"
       >
-        Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
-      </option>
-    </select>
+        <option value="all">sve rjeci</option>
+        <option
+          v-for="group in groupStore.wgroups"
+          :key="group.id"
+          :value="group.id"
+          :style="{ background: group.color }"
+        >
+          Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
+        </option>
+      </select>
+    </div>
 
     <button
       @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
@@ -36,6 +38,12 @@
     >
       new word
     </button>
+
+    <button @click="showGroups = !showGroups" class="new-btn">groups</button>
+
+    <div v-if="showGroups">
+      <WGroup :dicId="dicId" :gType="'WGROUP'" />
+    </div>
 
     <!-- lista rjeci -->
     <div class="words">
@@ -62,6 +70,7 @@
 import { onMounted, ref, reactive, watch } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import Word from "./Word.vue";
+import WGroup from "../groups/WGroup.vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
@@ -141,16 +150,17 @@ async function search(url) {
   let res = await readFun("words" + url);
   wordStore.words = res.data;
 }
+
+const showGroups = ref(false);
 </script>
 
 <style scoped>
 .words {
   overflow-y: auto;
+  border: 1px solid darkblue;
+}
+
+.search-wg {
   display: flex;
-  flex-grow: 3;
-  flex-wrap: wrap;
-  max-height: 320px;
-  flex-direction: row;
-  align-items: stretch;
 }
 </style>
