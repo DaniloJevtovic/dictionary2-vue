@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="word">
-      <div @click="showModal = true">
+      <div @click="showModal = true" class="details">
         {{ word.word }} - {{ word.translate }}
         <p style="margin: 0px">
           <small>{{ word.description }}</small>
@@ -62,9 +62,14 @@ const showModal = ref(false);
   padding: 2px;
   text-align: center;
   display: flex;
+  /* align-items: center; */
 }
 
-.del-btn {
+.word:hover {
+  background: cyan;
+}
+
+.del-btns {
   margin-left: 5px;
   margin-right: 0px;
   background: red;
