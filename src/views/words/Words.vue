@@ -1,5 +1,32 @@
 <template>
   <div>
+    <div class="btns">
+      <button
+        @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
+        class="new-btn"
+        style="width: 50%"
+      >
+        new
+      </button>
+
+      <button
+        @click="showGroups = !showGroups"
+        class="new-btn"
+        style="width: 50%"
+      >
+        groups
+      </button>
+
+      <!-- <select style="width: 25%">
+        <option value="">[a-z]</option>
+        <option value="">[a-z]</option>
+      </select> -->
+    </div>
+    <!-- prikaz svih grupa -->
+    <div v-if="showGroups">
+      <WGroup :dicId="dicId" :gType="'WGROUP'" />
+    </div>
+
     <div class="search-wg">
       <input
         class="search"
@@ -18,6 +45,7 @@
             groupStore.activeWgId != 'all'
               ? groupStore.getWGroupById(groupStore.activeWgId).color
               : 'white',
+          textAlign: 'center',
         }"
       >
         <option value="all">sve rjeci</option>
@@ -27,27 +55,27 @@
           :value="group.id"
           :style="{ background: group.color }"
         >
-          Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
+          group: {{ group.name }} -- [{{ group.numOfItems }}w]
         </option>
       </select>
-    </div>
 
-    <button
-      @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
-      class="new-btn"
-    >
-      new word
-    </button>
-
-    <button @click="showGroups = !showGroups" class="new-btn">groups</button>
-
-    <div v-if="showGroups">
-      <WGroup :dicId="dicId" :gType="'WGROUP'" />
+      <!-- filtriranje -->
+      <!-- <select :style="{ width: 'auto', textAlign: 'center' }">
+        <option value="">newest</option>
+        <option value="">oldest</option>
+        <option value="">[a-z]</option>
+        <option value="">[z-a]</option>
+      </select> -->
     </div>
 
     <!-- lista rjeci -->
     <div class="words">
-      <button v-if="searchInput" @click="newSearchWord">
+      <!-- <div class="words" v-else> -->
+      <button
+        v-if="searchInput"
+        @click="newSearchWord"
+        style="background: cyan"
+      >
         +{{ searchInput }}
       </button>
       <div v-for="(word, index) in wordStore.words" :key="word.id">
@@ -98,8 +126,8 @@ async function getWGroups() {
 }
 
 onMounted(() => {
-  getWords("words/dic/" + props.dicId);
   getWGroups();
+  getWords("words/dic/" + props.dicId);
 });
 
 function changeWg(event) {
@@ -158,6 +186,10 @@ const showGroups = ref(false);
 .words {
   overflow-y: auto;
   border: 1px solid darkblue;
+}
+
+.btns {
+  display: flex;
 }
 
 .search-wg {
