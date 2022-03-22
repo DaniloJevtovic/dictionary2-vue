@@ -1,5 +1,14 @@
 <template>
   <div>
+    <div class="btns">
+      <button @click="showModal = true" class="new-btn">new</button>
+
+      <button @click="showGroups = !showGroups" class="new-btn">groups</button>
+    </div>
+    <div v-if="showGroups">
+      <SGroup :dicId="dicId" :gType="'SGROUP'" />
+    </div>
+
     <div class="search-sg">
       <input type="text" placeholder="search" />
 
@@ -13,6 +22,7 @@
             groupStore.activeSgId != 'all'
               ? groupStore.getSGroupById(groupStore.activeSgId).color
               : 'white',
+          textAlign: 'center',
         }"
       >
         <option value="all">sve recenice</option>
@@ -22,17 +32,9 @@
           :value="group.id"
           :style="{ background: group.color }"
         >
-          Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
+          Grupa: {{ group.name }} -- [{{ group.numOfItems }}s]
         </option>
       </select>
-    </div>
-
-    <button @click="showModal = true" class="new-btn">new sentence</button>
-
-    <button @click="showGroups = !showGroups" class="new-btn">groups</button>
-
-    <div v-if="showGroups">
-      <SGroup :dicId="dicId" :gType="'SGROUP'" />
     </div>
 
     <!-- recenice -->
@@ -120,5 +122,11 @@ const showGroups = ref(false);
 
 .search-sg {
   display: flex;
+}
+
+@media only screen and (max-width: 600px) {
+  .search-sg {
+    display: block;
+  }
 }
 </style>

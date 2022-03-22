@@ -2,7 +2,7 @@
   <div>
     <div class="sentence">
       <div @click="showModal = true" class="details">
-        {{ sentence.sentence }} - {{ sentence.translate }}
+        {{ sentence.sentence }} -{{ sentence.translate }}
         <p style="margin: 0px">
           <small> {{ sentence.description }}</small>
         </p>
@@ -16,38 +16,38 @@
       :sentence="sentence"
       :idx="idx"
       :mode="'update'"
-      @changeGroup="promjeniGrupu"
       @close="showModal = false"
     />
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import AddEditSentenceModal from "./AddEditSentenceModal.vue";
-
-import { useSentencesStore } from "../../stores/sentences.js";
-const sentenceStore = useSentencesStore();
-
-const { deleteFun } = useCrud();
+import { useSentenceStore } from "../../stores/sentences.js";
+import { useGroupStore } from "../../stores/groups.js";
 
 const props = defineProps({
   sentence: Object,
   idx: Number,
 });
 
-const emit = defineEmits(["changeGroup"]);
-
-const ssentence = reactive({ ...props.sentence });
+const { deleteFun, patchFun } = useCrud();
+const sentenceStore = useSentenceStore();
+const groupStore = useGroupStore();
 
 async function deleteSentence() {
   await deleteFun("sentences", props.sentence.id);
   sentenceStore.removeSentence(props.idx);
+
+  let group = groupStore.getSGroupById(props.sentence.sgId);
+  group.numOfItems = group.numOfItems - 1;
+  await updateNumOfSentences(props.sentence.sgId, group.numOfItems);
 }
 
-function promjeniGrupu(id) {
-  emit("changeGroup", id);
+async function updateNumOfSentences(sgId, numOfItems) {
+  await patchFun("groups/" + sgId + "/num/" + numOfItems);
 }
 
 const showModal = ref(false);
@@ -59,5 +59,6 @@ const showModal = ref(false);
   padding: 3px;
   border: 1px solid blue;
   display: flex;
+  /* flex-wrap: wrap; */
 }
 </style>
