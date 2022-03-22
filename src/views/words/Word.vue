@@ -1,6 +1,8 @@
 <template>
   <div>
     <div class="word">
+      <!-- :style="{ background: groupStore.getWGroupById(word.wgId).color }" -->
+
       <div @click="showModal = true" class="details">
         {{ word.word }} - {{ word.translate }}
         <p style="margin: 0px">
@@ -67,6 +69,7 @@ const showModal = ref(false);
 
 .word:hover {
   background: cyan;
+  /* background: v-bind('groupStore.getWGroupById(props.word.wgId).color') */
 }
 
 .del-btns {

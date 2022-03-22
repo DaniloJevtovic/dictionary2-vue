@@ -22,6 +22,7 @@
         <option value="">[a-z]</option>
       </select> -->
     </div>
+
     <!-- prikaz svih grupa -->
     <div v-if="showGroups">
       <WGroup :dicId="dicId" :gType="'WGROUP'" />
@@ -194,5 +195,11 @@ const showGroups = ref(false);
 
 .search-wg {
   display: flex;
+}
+
+@media only screen and (max-width: 600px) {
+  .search-wg {
+    display: block;
+  }
 }
 </style>
