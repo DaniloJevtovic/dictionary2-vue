@@ -20,7 +20,7 @@ export const useGroupStore = defineStore("groups", {
       if (group.type == "WGROUP") {
         this.wgroups[idx] = group;
       } else {
-        this.group[idx] = group;
+        this.sgroups[idx] = group;
       }
     },
 
@@ -66,4 +66,5 @@ export const useGroupStore = defineStore("groups", {
       this.getSGroupById(state.activeWgId);
     },
   },
+  persist: true
 });

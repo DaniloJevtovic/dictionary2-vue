@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useDictionaryStore = defineStore("dictionaries", {
   state: () => {
-    return { dictionary: "", dictionaries: [] };
+    return { dictionary: "", dictionaries: [], sidebar: false };
   },
 
   actions: {
@@ -11,6 +11,7 @@ export const useDictionaryStore = defineStore("dictionaries", {
     },
 
     updateDictionary(dictionary) {
+      // let dic = this.getDictionaryById(dictionary.id)
       this.dictionary = dictionary;
     },
 
@@ -18,4 +19,11 @@ export const useDictionaryStore = defineStore("dictionaries", {
       this.dictionaries.splice(idx, 1);
     },
   },
+  getters: {
+    getDictionaryById: (state) => {
+      return (dicId) =>
+        state.dictionaries.find((dictionary) => dictionary.id === dicId);
+    },
+  },
+  persist: true,
 });

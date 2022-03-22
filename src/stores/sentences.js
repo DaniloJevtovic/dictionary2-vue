@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const useSentencesStore = defineStore("sentences", {
+export const useSentenceStore = defineStore("sentences", {
   state: () => {
     return { sentences: [] };
   },
@@ -18,4 +18,5 @@ export const useSentencesStore = defineStore("sentences", {
       this.sentences.splice(idx, 1);
     },
   },
+  persist: true,
 });

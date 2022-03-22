@@ -14,8 +14,9 @@ export const useWordStore = defineStore("words", {
       this.words[idx] = word;
     },
 
-    async removeWord(idx) {
+    removeWord(idx) {
       this.words.splice(idx, 1);
     },
   },
+  persist: true
 });

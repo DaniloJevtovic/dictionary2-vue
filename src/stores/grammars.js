@@ -18,4 +18,5 @@ export const useGrammarStore = defineStore("grammars", {
       this.grammars.splice(idx, 1);
     },
   },
+  persist: true,
 });
