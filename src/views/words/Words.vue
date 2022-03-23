@@ -1,86 +1,65 @@
 <template>
   <div>
-    <div class="btns">
-      <button
-        @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
-        class="new-btn"
-        style="width: 50%"
-      >
-        new
-      </button>
+    <div class="words-wgs">
+      <!-- lista rjeci -->
+      <div class="words">
+        <div class="search-wg" style="margin: 4px">
+          <input
+            class="search"
+            v-model="searchInput"
+            type="text"
+            placeholder="search words"
+          />
 
-      <button
-        @click="showGroups = !showGroups"
-        class="new-btn"
-        style="width: 50%"
-      >
-        groups
-      </button>
+          <!-- selekcija grupe -->
+          <select
+            class="wgs"
+            @change="changeWg($event)"
+            v-model="groupStore.activeWgId"
+            :style="{
+              background:
+                groupStore.activeWgId != 'all'
+                  ? groupStore.getWGroupById(groupStore.activeWgId).color
+                  : 'white',
+              textAlign: 'center',
+            }"
+          >
+            <option value="all">sve rjeci</option>
+            <option
+              v-for="group in groupStore.wgroups"
+              :key="group.id"
+              :value="group.id"
+              :style="{ background: group.color }"
+            >
+              group: {{ group.name }} -- [{{ group.numOfItems }}w]
+            </option>
+          </select>
+        </div>
 
-      <!-- <select style="width: 25%">
-        <option value="">[a-z]</option>
-        <option value="">[a-z]</option>
-      </select> -->
-    </div>
-
-    <!-- prikaz svih grupa -->
-    <div v-if="showGroups">
-      <WGroup :dicId="dicId" :gType="'WGROUP'" />
-    </div>
-
-    <div class="search-wg">
-      <input
-        class="search"
-        v-model="searchInput"
-        type="text"
-        placeholder="search words"
-      />
-
-      <!-- selekcija grupe -->
-      <select
-        class="wgs"
-        @change="changeWg($event)"
-        v-model="groupStore.activeWgId"
-        :style="{
-          background:
-            groupStore.activeWgId != 'all'
-              ? groupStore.getWGroupById(groupStore.activeWgId).color
-              : 'white',
-          textAlign: 'center',
-        }"
-      >
-        <option value="all">sve rjeci</option>
-        <option
-          v-for="group in groupStore.wgroups"
-          :key="group.id"
-          :value="group.id"
-          :style="{ background: group.color }"
+        <button
+          @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
+          class="new-btn"
+          style="width: 100%"
         >
-          group: {{ group.name }} -- [{{ group.numOfItems }}w]
-        </option>
-      </select>
+          new word
+        </button>
 
-      <!-- filtriranje -->
-      <!-- <select :style="{ width: 'auto', textAlign: 'center' }">
-        <option value="">newest</option>
-        <option value="">oldest</option>
-        <option value="">[a-z]</option>
-        <option value="">[z-a]</option>
-      </select> -->
-    </div>
+        <button
+          v-if="searchInput"
+          @click="newSearchWord"
+          style="background: cyan"
+        >
+          +{{ searchInput }}
+        </button>
 
-    <!-- lista rjeci -->
-    <div class="words">
-      <!-- <div class="words" v-else> -->
-      <button
-        v-if="searchInput"
-        @click="newSearchWord"
-        style="background: cyan"
-      >
-        +{{ searchInput }}
-      </button>
-      <div v-for="(word, index) in wordStore.words" :key="word.id">
-        <Word :word="word" :idx="index" />
+        <div v-for="(word, index) in wordStore.words" :key="word.id">
+          <Word :word="word" :idx="index" />
+        </div>
+      </div>
+
+      <!-- prikaz grupa -->
+      <div class="wgroups">
+        <WGroup :dicId="dicId" :gType="'WGROUP'" />
       </div>
     </div>
 
@@ -179,8 +158,6 @@ async function search(url) {
   let res = await readFun("words" + url);
   wordStore.words = res.data;
 }
-
-const showGroups = ref(false);
 </script>
 
 <style scoped>
@@ -197,9 +174,23 @@ const showGroups = ref(false);
   display: flex;
 }
 
+.words-wgs {
+  display: grid;
+  grid-template-columns: 65% 35%;
+  column-gap: 5px;
+}
+
 @media only screen and (max-width: 600px) {
   .search-wg {
     display: block;
   }
+
+  .words-wgs {
+    display: block;
+  }
+
+  /* .wgroups {
+    display: none;
+  } */
 }
 </style>
