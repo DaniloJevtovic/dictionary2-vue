@@ -4,7 +4,7 @@
       <!-- :style="{ background: groupStore.getWGroupById(word.wgId).color }" -->
 
       <div @click="showModal = true" class="details">
-        {{ word.word }} - {{ word.translate }}
+        {{ word.word }} - {{ word.translate }}  
         <p style="margin: 0px">
           <small>{{ word.description }}</small>
         </p>

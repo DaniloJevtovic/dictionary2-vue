@@ -34,6 +34,13 @@
               group: {{ group.name }} -- [{{ group.numOfItems }}w]
             </option>
           </select>
+
+          <select class="filter">
+            <option value="newest">newest</option>
+            <option value="oldest">oldest</option>
+            <option value="newest">[a-z]</option>
+            <option value="newest">[z-a]</option>
+          </select>
         </div>
 
         <button
@@ -176,8 +183,15 @@ async function search(url) {
 
 .words-wgs {
   display: grid;
-  grid-template-columns: 65% 35%;
+  grid-template-columns: 60% 40%;
   column-gap: 5px;
+}
+
+.filter {
+  width: auto;
+  text-align: center;
+  background: hotpink;
+  color: rgb(34, 11, 61);
 }
 
 @media only screen and (max-width: 600px) {
@@ -187,6 +201,10 @@ async function search(url) {
 
   .words-wgs {
     display: block;
+  }
+
+  .filter {
+    width: 100%;
   }
 
   /* .wgroups {
