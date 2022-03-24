@@ -1,52 +1,59 @@
 <template>
   <div>
-    <div class="btns">
-      <button @click="showModal = true" class="new-btn">new</button>
+    <div class="sentences-sgs">
+      <div class="sentences">
+        <div class="search-sg" style="margin: 4px">
+          <!-- pretraga -->
+          <input type="text" placeholder="search" />
 
-      <button @click="showGroups = !showGroups" class="new-btn">groups</button>
-    </div>
-    <div v-if="showGroups">
-      <SGroup :dicId="dicId" :gType="'SGROUP'" />
-    </div>
+          <!-- selekcija grupe -->
+          <select
+            class="sgs"
+            @change="changeSg($event)"
+            v-model="groupStore.activeSgId"
+            :style="{
+              background:
+                groupStore.activeSgId != 'all'
+                  ? groupStore.getSGroupById(groupStore.activeSgId).color
+                  : 'white',
+              textAlign: 'center',
+            }"
+          >
+            <option value="all">sve recenice</option>
+            <option
+              v-for="group in groupStore.sgroups"
+              :key="group.id"
+              :value="group.id"
+              :style="{ background: group.color }"
+            >
+              Grupa: {{ group.name }} -- [{{ group.numOfItems }}s]
+            </option>
+          </select>
+        </div>
 
-    <div class="search-sg">
-      <input type="text" placeholder="search" />
-
-      <!-- grupe -->
-      <select
-        class="sgs"
-        @change="changeSg($event)"
-        v-model="groupStore.activeSgId"
-        :style="{
-          background:
-            groupStore.activeSgId != 'all'
-              ? groupStore.getSGroupById(groupStore.activeSgId).color
-              : 'white',
-          textAlign: 'center',
-        }"
-      >
-        <option value="all">sve recenice</option>
-        <option
-          v-for="group in groupStore.sgroups"
-          :key="group.id"
-          :value="group.id"
-          :style="{ background: group.color }"
+        <button
+          @click="(showModal = true), (newSentence.sgId = groupStore.activeSgId)"
+          class="new-btn"
+          style="width: 100%"
         >
-          Grupa: {{ group.name }} -- [{{ group.numOfItems }}s]
-        </option>
-      </select>
-    </div>
+          new sentence
+        </button>
 
-    <!-- recenice -->
-    <div class="senetences">
-      <div
-        v-for="(sentence, index) in sentenceStore.sentences"
-        :key="sentence.id"
-      >
-        <Sentence :sentence="sentence" :idx="index" />
+        <!-- recenice -->
+        <div
+          v-for="(sentence, index) in sentenceStore.sentences"
+          :key="sentence.id"
+        >
+          <Sentence :sentence="sentence" :idx="index" />
+        </div>
+      </div>
+
+      <div class="sgroups">
+        <SGroup :dicId="dicId" :gType="'SGROUP'" />
       </div>
     </div>
 
+    <!-- modal -->
     <AddEditSentenceModal
       v-if="showModal"
       :show="showModal"
@@ -116,16 +123,27 @@ const showGroups = ref(false);
 </script>
 
 <style scoped>
-.senetences {
+.sentences {
   overflow-y: auto;
+  border: 1px solid darkblue;
 }
 
 .search-sg {
   display: flex;
 }
 
+.sentences-sgs {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  column-gap: 5px;
+}
+
 @media only screen and (max-width: 600px) {
   .search-sg {
+    display: block;
+  }
+
+  .sentences-sgs {
     display: block;
   }
 }
