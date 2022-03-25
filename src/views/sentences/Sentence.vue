@@ -7,6 +7,14 @@
           <small> {{ sentence.description }}</small>
         </p>
       </div>
+      <button
+        @click.prevent="updateFav"
+        :style="{
+          background: sentence.favorite === true ? 'yellow' : 'white',
+        }"
+      >
+        &#x2665;
+      </button>
       <button @click.prevent="deleteSentence" class="del-btn">x</button>
     </div>
 
@@ -46,6 +54,13 @@ async function deleteSentence() {
   await updateNumOfSentences(props.sentence.sgId, group.numOfItems);
 }
 
+async function updateFav() {
+  props.sentence.favorite = !props.sentence.favorite;
+  await patchFun(
+    "sentences/" + props.sentence.id + "/favorite/" + props.sentence.favorite
+  );
+}
+
 async function updateNumOfSentences(sgId, numOfItems) {
   await patchFun("groups/" + sgId + "/num/" + numOfItems);
 }
@@ -55,7 +70,7 @@ const showModal = ref(false);
 
 <style scoped>
 .sentence {
-  margin: 3px 0px;
+  margin: 4px;
   padding: 3px;
   border: 1px solid blue;
   display: flex;

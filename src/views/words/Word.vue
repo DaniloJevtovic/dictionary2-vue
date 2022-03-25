@@ -4,11 +4,19 @@
       <!-- :style="{ background: groupStore.getWGroupById(word.wgId).color }" -->
 
       <div @click="showModal = true" class="details">
-        {{ word.word }} - {{ word.translate }}  
+        {{ word.word }} - {{ word.translate }}
         <p style="margin: 0px">
           <small>{{ word.description }}</small>
         </p>
       </div>
+      <button
+        @click.prevent="updateFav"
+        :style="{
+          background: word.favorite === true ? 'yellow' : 'white',
+        }"
+      >
+        &#x2665;
+      </button>
       <button @click.prevent="deleteWord" class="del-btn">x</button>
     </div>
 
@@ -49,6 +57,11 @@ async function deleteWord() {
   await updateNumOfWords(props.word.wgId, group.numOfItems);
 }
 
+async function updateFav() {
+  props.word.favorite = !props.word.favorite;
+  await patchFun("words/" + props.word.id + "/favorite/" + props.word.favorite);
+}
+
 async function updateNumOfWords(wgId, numOfItems) {
   await patchFun("groups/" + wgId + "/num/" + numOfItems);
 }
@@ -70,13 +83,5 @@ const showModal = ref(false);
 .word:hover {
   background: cyan;
   /* background: v-bind('groupStore.getWGroupById(props.word.wgId).color') */
-}
-
-.del-btns {
-  margin-left: 5px;
-  margin-right: 0px;
-  background: red;
-  border-radius: 2px;
-  border: none;
 }
 </style>
