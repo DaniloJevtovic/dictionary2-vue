@@ -26,14 +26,25 @@
             rows="5"
           ></textarea>
 
-          <select class="sgs" v-model="updateSentence.sgId" required>
+          <select
+            class="sgs"
+            v-model="updateSentence.sgId"
+            :style="{
+              background:
+                updateSentence.sgId != 'all'
+                  ? groupStore.getSGroupById(updateSentence.sgId).color
+                  : 'white',
+            }"
+            required
+          >
             <option value="all" disabled>odaberi</option>
             <option
               v-for="group in groupStore.sgroups"
               :key="group.id"
               :value="group.id"
+              :style="{ background: group.color }"
             >
-              {{ group.name }}
+              Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
             </option>
           </select>
 
@@ -54,24 +65,21 @@
 <script setup>
 import { reactive } from "vue";
 import useCrud from "../../composables/useCRUD.js";
-
-//pinia - recenice
-import { useSentencesStore } from "../../stores/sentences.js";
-const sentenceStore = useSentencesStore();
-
+import { useSentenceStore } from "../../stores/sentences.js";
 import { useGroupStore } from "../../stores/groups.js";
-const groupStore = useGroupStore();
-
-const { createFun } = useCrud();
 
 const props = defineProps({
   sentence: Object,
+  idx: Number,
   show: Boolean,
   mode: String,
-  idx: Number,
 });
 
-const emit = defineEmits(["close", "changeGroup"]);
+const emit = defineEmits(["close"]);
+
+const { createFun, readFun, patchFun } = useCrud();
+const sentenceStore = useSentenceStore();
+const groupStore = useGroupStore();
 
 const updateSentence = reactive({ ...props.sentence });
 
@@ -80,13 +88,30 @@ async function save() {
 
   if (props.mode === "new") {
     sentenceStore.addSentence(res.data);
+
+    let group = groupStore.getSGroupById(updateSentence.sgId);
+    group.numOfItems = group.numOfItems + 1;
+    await updateNumOfSentences(updateSentence.sgId, group.numOfItems);
   } else {
-    sentenceStore.updateSentence(res.data, props.idx);
+    sentenceStore.updateSentence(updateSentence, props.idx);
+
+    //provjeri ako se ne poklapaju grupe - u jednoj oduzimas u drugoj dodaje
+    if (props.sentence.sgId !== updateSentence.sgId) {
+      let oldGroup = groupStore.getSGroupById(props.sentence.sgId);
+      oldGroup.numOfItems = oldGroup.numOfItems - 1;
+
+      let newGroup = groupStore.getSGroupById(updateSentence.sgId);
+      newGroup.numOfItems = newGroup.numOfItems + 1;
+
+      await updateNumOfSentences(props.sentence.sgId, oldGroup.numOfItems);
+      await updateNumOfSentences(updateSentence.sgId, newGroup.numOfItems);
+    }
   }
 
-  // ako je bilo promjene grupe u odnosu na slektovanu grupu
-  if (props.sentence.sgId !== res.data.sgId) {
-    emit("changeGroup", res.data.sgId);
+  if (updateSentence.sgId !== groupStore.activeSgId) {
+    groupStore.activeSgId = updateSentence.sgId;
+    let res = await readFun("sentences/sg/" + updateSentence.sgId);
+    sentenceStore.sentences = res.data.content;
   }
 
   closeModal();
@@ -95,10 +120,14 @@ async function save() {
 function closeModal() {
   emit("close");
 }
+
+async function updateNumOfSentences(sgId, numOfItems) {
+  await patchFun("groups/" + sgId + "/num/" + numOfItems);
+}
 </script>
 
 <style scoped>
 .modal-container {
-  width: 500px;
+  width: 300px;
 }
 </style>
