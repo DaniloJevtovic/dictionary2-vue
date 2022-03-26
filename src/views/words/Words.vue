@@ -35,11 +35,17 @@
             </option>
           </select>
 
-          <select class="filter">
+          <!-- filter rjeci -->
+          <select
+            v-model="filterSelect"
+            @change="changeFilter($event)"
+            class="filter"
+          >
             <option value="newest">newest</option>
             <option value="oldest">oldest</option>
-            <option value="newest">[a-z]</option>
-            <option value="newest">[z-a]</option>
+            <option value="favorite">favorite</option>
+            <option value="a-z">[a-z]</option>
+            <option value="z-a">[z-a]</option>
           </select>
         </div>
 
@@ -126,6 +132,7 @@ function changeWg(event) {
     getWords("words/wg/" + id);
   }
 
+  filterSelect.value = "newest";
   groupStore.activeWgId = newWord.wgId = id;
 }
 
@@ -165,6 +172,40 @@ async function search(url) {
   let res = await readFun("words" + url);
   wordStore.words = res.data;
 }
+
+//filter
+const filterSelect = ref("newest");
+
+function changeFilter(event) {
+  let filter = event.target.value;
+  let sortFilter;
+
+  switch (filter) {
+    case "newest":
+      sortFilter = "/?sort=id,desc";
+      break;
+    case "oldest":
+      sortFilter = "/?sort=id,asc";
+      break;
+    case "favorite":
+      sortFilter = "/?sort=favorite,desc";
+      break;
+    case "a-z":
+      sortFilter = "/?sort=word,asc";
+      break;
+    case "z-a":
+      sortFilter = "/?sort=word,desc";
+      break;
+  }
+
+  if (groupStore.activeWgId === "all") {
+    let dicUrl = "words/dic/" + props.dicId + sortFilter;
+    getWords(dicUrl);
+  } else {
+    let wgUrl = "words/wg/" + groupStore.activeWgId + sortFilter;
+    getWords(wgUrl);
+  }
+}
 </script>
 
 <style scoped>
@@ -179,6 +220,7 @@ async function search(url) {
 
 .search-wg {
   display: flex;
+  gap: 5px;
 }
 
 .words-wgs {

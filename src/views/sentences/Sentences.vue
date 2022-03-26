@@ -29,10 +29,25 @@
               Grupa: {{ group.name }} -- [{{ group.numOfItems }}s]
             </option>
           </select>
+
+          <!-- filter recenica -->
+          <select
+            v-model="filterSelect"
+            @change="changeFilter($event)"
+            class="filter"
+          >
+            <option value="newest">newest</option>
+            <option value="oldest">oldest</option>
+            <option value="favorite">favorite</option>
+            <option value="a-z">[a-z]</option>
+            <option value="z-a">[z-a]</option>
+          </select>
         </div>
 
         <button
-          @click="(showModal = true), (newSentence.sgId = groupStore.activeSgId)"
+          @click="
+            (showModal = true), (newSentence.sgId = groupStore.activeSgId)
+          "
           class="new-btn"
           style="width: 100%"
         >
@@ -106,6 +121,7 @@ function changeSg(event) {
     getSentences("sentences/sg/" + id);
   }
 
+  filterSelect.value = "newest";
   groupStore.activeSgId = newSentence.sgId = id;
 }
 
@@ -120,6 +136,40 @@ const newSentence = reactive({
 });
 
 const showGroups = ref(false);
+
+//filter
+const filterSelect = ref("newest");
+
+function changeFilter(event) {
+  let filter = event.target.value;
+  let sortFilter;
+
+  switch (filter) {
+    case "newest":
+      sortFilter = "/?sort=id,desc";
+      break;
+    case "oldest":
+      sortFilter = "/?sort=id,asc";
+      break;
+    case "favorite":
+      sortFilter = "/?sort=favorite,desc";
+      break;
+    case "a-z":
+      sortFilter = "/?sort=sentence,asc";
+      break;
+    case "z-a":
+      sortFilter = "/?sort=sentence,desc";
+      break;
+  }
+
+  if (groupStore.activeWgId === "all") {
+    let dicUrl = "sentences/dic/" + props.dicId + sortFilter;
+    getSentences(dicUrl);
+  } else {
+    let sgUrl = "sentences/sg/" + groupStore.activeSgId + sortFilter;
+    getSentences(sgUrl);
+  }
+}
 </script>
 
 <style scoped>
@@ -130,12 +180,20 @@ const showGroups = ref(false);
 
 .search-sg {
   display: flex;
+  gap: 5px;
 }
 
 .sentences-sgs {
   display: grid;
   grid-template-columns: 60% 40%;
   column-gap: 5px;
+}
+
+.filter {
+  width: auto;
+  text-align: center;
+  background: hotpink;
+  color: rgb(34, 11, 61);
 }
 
 @media only screen and (max-width: 600px) {
@@ -145,6 +203,10 @@ const showGroups = ref(false);
 
   .sentences-sgs {
     display: block;
+  }
+
+  .filter {
+    width: 100%;
   }
 }
 </style>
