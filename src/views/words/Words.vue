@@ -68,6 +68,16 @@
         <div v-for="(word, index) in wordStore.words" :key="word.id">
           <Word :word="word" :idx="index" />
         </div>
+
+        <!-- ucitavanje jos rjeci -->
+        <button
+          v-if="currentPage + 1 < totalPages"
+          @click="loadMoreWords"
+          class="new-btn"
+          style="width: 100%"
+        >
+          load more words [{{ currentPage + 1 }} / {{ totalPages }}]
+        </button>
       </div>
 
       <!-- prikaz grupa -->
@@ -104,10 +114,13 @@ const { readFun } = useCrud();
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
 
+const totalPages = ref("");
+const currentPage = ref(0);
 // dobavljanje rjeci za rjecnik ili grupu
 const words = ref([]);
 async function getWords(url) {
   let res = await readFun(url);
+  totalPages.value = res.data.totalPages;
   words.value = res.data.content;
   wordStore.words = res.data.content;
 }
@@ -132,6 +145,7 @@ function changeWg(event) {
     getWords("words/wg/" + id);
   }
 
+  currentPage.value = 0;
   filterSelect.value = "newest";
   groupStore.activeWgId = newWord.wgId = id;
 }
@@ -205,6 +219,38 @@ function changeFilter(event) {
     let wgUrl = "words/wg/" + groupStore.activeWgId + sortFilter;
     getWords(wgUrl);
   }
+
+  currentPage.value = 0;
+}
+
+//ucitavanje jos rjeci sa bekenda (paginacija)
+async function loadMoreWords() {
+  currentPage.value++;
+
+  if (groupStore.activeWgId === "all") {
+    let res = await readFun(
+      "words/dic/" + props.dicId + "/?page=" + currentPage.value
+    );
+
+    //konkatenacija ne radi iz nekog razloga pa mora ovako :/ - popraviti!
+    //words.value.concat(res.data.content);
+    res.data.content.forEach((word) => {
+      words.value.push(word);
+    });
+
+    wordStore.words = words.value;
+  } else {
+    let res = await readFun(
+      "words/wg/" + groupStore.activeWgId + "/?page=" + currentPage.value
+    );
+
+    //konkatenacija ne radi iz nekog razloga pa mora ovako :/ - popraviti
+    res.data.content.forEach((word) => {
+      words.value.push(word);
+    });
+
+    wordStore.words.concat(res.data.content);
+  }
 }
 </script>
 
@@ -232,11 +278,11 @@ function changeFilter(event) {
 .filter {
   width: auto;
   text-align: center;
-  background: hotpink;
-  color: rgb(34, 11, 61);
+  color: springgreen;
+  background: rgb(19, 51, 20);
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
   .search-wg {
     display: block;
   }
