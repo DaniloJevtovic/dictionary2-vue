@@ -1,12 +1,6 @@
 <template>
   <div>
     <div class="sentence">
-      <div @click="showModal = true" class="details">
-        {{ sentence.sentence }} -{{ sentence.translate }}
-        <p style="margin: 0px">
-          <small> {{ sentence.description }}</small>
-        </p>
-      </div>
       <button
         @click.prevent="updateFav"
         :style="{
@@ -15,7 +9,15 @@
       >
         &#x2665;
       </button>
-      <button @click.prevent="deleteSentence" class="del-btn">x</button>
+
+      <div @click="showModal = true" class="details">
+        {{ sentence.sentence }} -{{ sentence.translate }}
+        <p style="margin: 0px">
+          <small> {{ sentence.description }}</small>
+        </p>
+      </div>
+
+      <button @click.prevent="deleteSentence" class="del-btn">&#x2715;</button>
     </div>
 
     <AddEditSentenceModal
@@ -75,5 +77,9 @@ const showModal = ref(false);
   border: 1px solid blue;
   display: flex;
   /* flex-wrap: wrap; */
+}
+
+.sentence:hover {
+  background: cyan;
 }
 </style>

@@ -196,7 +196,7 @@ function changeFilter(event) {
   color: rgb(34, 11, 61);
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
   .search-sg {
     display: block;
   }
