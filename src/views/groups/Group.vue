@@ -1,6 +1,14 @@
 <template>
   <div>
     <div class="group">
+      <!-- broj rjeci/recenica -->
+      <button class="details-btn" @click="viewItems(group)">
+        {{ group.numOfItems }}
+        <span v-if="group.type === 'WGROUP'"><small>words</small></span>
+        <span v-else><small>sentences</small></span>
+      </button>
+
+      <!--grupa  -->
       <div
         @click="showModal = true"
         :style="{ background: group.color }"
@@ -11,18 +19,14 @@
           <small>{{ group.description }}</small>
         </p>
       </div>
-      <button @click="viewItems(group)">
-        {{ group.numOfItems }}
-        <span v-if="group.type === 'WGROUP'"><small>words</small></span>
-        <span v-else><small>sentences</small></span>
-      </button>
 
+      <!-- brisanje grupe -->
       <button
         :disabled="group.numOfItems > 0"
         @click="deleteGroup"
         :class="[group.numOfItems > 0 ? 'disable-btn' : 'del-btn']"
       >
-        x
+        &#x2715;
       </button>
     </div>
 
@@ -43,7 +47,7 @@ import AddEditGroupModal from "./AddEditGroupModal.vue";
 import useCrud from "../../composables/useCRUD.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useWordStore } from "../../stores/words.js";
-import { useSentencesStore } from "../../stores/sentences.js";
+import { useSentenceStore } from "../../stores/sentences.js";
 import { useTabStore } from "../../stores/tabs.js";
 
 const props = defineProps({
@@ -54,7 +58,7 @@ const props = defineProps({
 const { deleteFun, readFun } = useCrud();
 const groupStore = useGroupStore();
 const wordStore = useWordStore();
-const sentenceStore = useSentencesStore();
+const sentenceStore = useSentenceStore();
 const tabStore = useTabStore();
 
 async function deleteGroup() {
@@ -68,7 +72,8 @@ async function deleteGroup() {
   ) {
     if (props.group.type === "WGROUP") {
       groupStore.activeWgId = "all";
-      await getWords("words/dic/" + props.group.dicId);
+      // await getWords("words/dic/" + props.group.dicId);
+      wordStore.getWords("DIC", props.group.dicId);
     } else {
       groupStore.activeSgId = "all";
       await getSentences("sentences/dic/" + props.group.dicId);
@@ -81,8 +86,10 @@ async function viewItems(group) {
     tabStore.currentTab = "Words";
     // da ne bi ucitavao sa bekenda, ako je u tabu rjeci vec aktivna ta grupa
     if (group.id !== groupStore.activeWgId) {
-      await getWords("words/wg/" + group.id);
+      // await getWords("words/wg/" + group.id);
       groupStore.activeWgId = group.id;
+      // wordStore.currentPage = 0;
+      wordStore.getWords("WG", group.id);
     }
   } else {
     tabStore.currentTab = "Sentences";
@@ -97,6 +104,8 @@ async function viewItems(group) {
 async function getWords(url) {
   let res = await readFun(url);
   wordStore.words = res.data.content;
+
+  wordStore.totalPages = res.data.totalPages;
 }
 
 async function getSentences(url) {
@@ -111,11 +120,34 @@ const showModal = ref(false);
 .group {
   margin: 3px 0px;
   padding: 4px;
-  border: 1px solid skyblue;
+  border: 1px solid whitesmoke;
   display: flex;
 }
+
+.group:hover {
+  border: 1px solid darkblue;
+}
+
 .del-btn {
   background: red;
   margin: 0px 0px 0px auto;
+}
+
+.details-btn {
+  padding: 2px;
+  color: springgreen;
+  background: rgb(19, 51, 20);
+  border-radius: 0px;
+}
+
+.details-btn:hover {
+  background: rgb(10, 31, 16);
+  color: yellow;
+}
+
+@media only screen and (max-width: 700px) {
+  /* .details-btn {
+    display: none;
+  } */
 }
 </style>
