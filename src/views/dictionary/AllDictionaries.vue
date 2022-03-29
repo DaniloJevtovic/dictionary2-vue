@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button @click="showModal = true" class="new-btn">+novi rjecnik</button>
+    <button @click="showModal = true" class="new-btn" style="width: 100%">
+      +novi rjecnik
+    </button>
 
     <AddEditDictionaryModal
       v-if="showModal"
@@ -11,17 +13,19 @@
     />
 
     <div
+      class="dictionaries"
       v-for="dictionary in dictionaryStore.dictionaries"
       :key="dictionary.id"
     >
       <router-link
+        style="text-decoration: none"
         @click="dictionaryStore.dictionary = dictionary"
         :to="{
           name: 'Dictionary',
-          params: { id: dictionary.id, name: dictionary.name },
+          params: { id: dictionary.id },
         }"
       >
-        <div :style="{ background: dictionary.color, color: 'black' }">
+        <div class="dictionary" :style="{ background: dictionary.color }">
           {{ dictionary.name }}
           <!-- <p style="margin: 0px">
             <small>{{ dictionary.description }}</small>
@@ -51,7 +55,7 @@ const newDictionary = reactive({
 </script>
 
 <style scoped>
-.a {
-  text-decoration: none;
+.dictionary:hover {
+  transform: scale(1.1);
 }
 </style>
