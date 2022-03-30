@@ -48,7 +48,7 @@
             <option value="z-a">[z-a]</option>
           </select> -->
 
-          <select
+          <!-- <select
             v-model="wordStore.filter"
             @change="changeFilter($event)"
             class="filter"
@@ -58,7 +58,13 @@
             <option value="sort=favorite,desc">favorite</option>
             <option value="sort=word,asc">[a-z]</option>
             <option value="sort=word,desc">[z-a]</option>
-          </select>
+          </select> -->
+
+          <Filter
+            :type="'word'"
+            :filterModel="wordStore.filter"
+            @filter="changeFilter2"
+          />
         </div>
 
         <!-- nova rjec -->
@@ -123,6 +129,7 @@ import WGroup from "../groups/WGroup.vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
+import Filter from "../../components/Filter.vue";
 
 const props = defineProps({
   dicId: String,
@@ -167,7 +174,7 @@ function changeWg(event) {
   }
 
   wordStore.currentPage = 0;
-  filterSelect.value = "newest";
+  // filterSelect.value = "newest";
   groupStore.activeWgId = newWord.wgId = id;
 }
 
@@ -248,6 +255,18 @@ function changeFilter(event) {
   } else {
     // let wgUrl = "words/wg/" + groupStore.activeWgId + sortFilter;
     // getWords(wgUrl);
+    wordStore.getWords("WG", groupStore.activeWgId);
+  }
+
+  wordStore.currentPage = 0;
+}
+
+function changeFilter2(filter) {
+  wordStore.filter = filter; // mora biti ovdje na pocetku
+
+  if (groupStore.activeWgId === "all") {
+    wordStore.getWords("DIC", props.dicId);
+  } else {
     wordStore.getWords("WG", groupStore.activeWgId);
   }
 
