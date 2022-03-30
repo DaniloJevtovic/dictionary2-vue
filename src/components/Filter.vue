@@ -1,0 +1,39 @@
+<template>
+  <select v-model="filterModel" @change="changeFilter($event)" class="filter">
+    <option value="sort=id,desc">newest</option>
+    <option value="sort=id,asc">oldest</option>
+    <option value="sort=favorite,desc">favorite</option>
+    <option :value="'sort=' + type + ',asc'">[a-z]</option>
+    <option :value="'sort=' + type + ',desc'">[z-a]</option>
+  </select>
+</template>
+
+<script setup>
+defineProps({
+  filterModel: String,
+  type: String,
+});
+const emit = defineEmits(["filter"]);
+
+function changeFilter(event) {
+  let filter = event.target.value;
+
+  console.log(filter);
+  emit("filter", filter);
+}
+</script>
+
+<style scoped>
+.filter {
+  width: auto;
+  text-align: center;
+  color: springgreen;
+  background: rgb(19, 51, 20);
+}
+
+@media only screen and (max-width: 700px) {
+  .filter {
+    width: 100%;
+  }
+}
+</style>
