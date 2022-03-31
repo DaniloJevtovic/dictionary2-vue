@@ -3,21 +3,27 @@
     <div class="word">
       <!-- :style="{ background: groupStore.getWGroupById(word.wgId).color }" -->
 
+      <!-- favorite button -->
+      <button
+        @click.prevent="updateFav"
+        :style="{
+          background: word.favorite === true ? 'rgb(19, 51, 20)' : 'white',
+          color: word.favorite === true ? 'springgreen' : 'black',
+        }"
+      >
+        &#x2665;
+      </button>
+
+      <!-- RJEC -->
       <div @click="showModal = true" class="details">
         {{ word.word }} - {{ word.translate }}
         <p style="margin: 0px">
           <small>{{ word.description }}</small>
         </p>
       </div>
-      <button
-        @click.prevent="updateFav"
-        :style="{
-          background: word.favorite === true ? 'yellow' : 'white',
-        }"
-      >
-        &#x2665;
-      </button>
-      <button @click.prevent="deleteWord" class="del-btn">x</button>
+
+      <!-- dugme za brisanje -->
+      <button @click.prevent="deleteWord" class="del-btn">&#x2715;</button>
     </div>
 
     <!-- modal -->
@@ -49,8 +55,10 @@ const wordStore = useWordStore();
 const groupStore = useGroupStore();
 
 async function deleteWord() {
-  await deleteFun("words", props.word.id);
-  wordStore.removeWord(props.idx);
+  // await deleteFun("words", props.word.id);
+  // wordStore.removeWord(props.idx);
+  wordStore.deleteWord(props.word, props.idx);
+
   // u grupi smanji broj rjeci za 1
   let group = groupStore.getWGroupById(props.word.wgId);
   group.numOfItems = group.numOfItems - 1;
