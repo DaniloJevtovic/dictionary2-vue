@@ -31,7 +31,7 @@
           </select>
 
           <!-- filter recenica -->
-          <select
+          <!-- <select
             v-model="filterSelect"
             @change="changeFilter($event)"
             class="filter"
@@ -41,7 +41,13 @@
             <option value="favorite">favorite</option>
             <option value="a-z">[a-z]</option>
             <option value="z-a">[z-a]</option>
-          </select>
+          </select> -->
+
+          <Filter
+            :type="'sentence'"
+            :filterModel="sentenceStore.filter"
+            @filter="changeFilter2"
+          />
         </div>
 
         <button
@@ -87,6 +93,7 @@ import SGroup from "../groups/SGroup.vue";
 import AddEditSentenceModal from "./AddEditSentenceModal.vue";
 import { useSentenceStore } from "../../stores/sentences.js";
 import { useGroupStore } from "../../stores/groups.js";
+import Filter from "../../components/Filter.vue";
 
 const props = defineProps({
   dicId: String,
@@ -170,6 +177,18 @@ function changeFilter(event) {
     getSentences(sgUrl);
   }
 }
+
+function changeFilter2(filter) {
+  sentenceStore.filter = filter;
+
+  if (groupStore.activeSgId === "all") {
+    sentenceStore.getSentences("DIC", props.dicId);
+  } else {
+    sentenceStore.getSentences("SG", groupStore.activeSgId);
+  }
+
+  sentenceStore.currentPage = 0;
+}
 </script>
 
 <style scoped>
@@ -189,12 +208,12 @@ function changeFilter(event) {
   column-gap: 5px;
 }
 
-.filter {
+/* .filter {
   width: auto;
   text-align: center;
   background: hotpink;
   color: rgb(34, 11, 61);
-}
+} */
 
 @media only screen and (max-width: 700px) {
   .search-sg {
@@ -205,8 +224,8 @@ function changeFilter(event) {
     display: block;
   }
 
-  .filter {
+  /* .filter {
     width: 100%;
-  }
+  } */
 }
 </style>
