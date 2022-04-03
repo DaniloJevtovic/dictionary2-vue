@@ -3,10 +3,11 @@
     <div
       @click="showModal = true"
       :style="{ background: dictionaryStore.dictionary.color }"
+      class="dic-header"
     >
-      <h3>
+      <h4 style="margin: 0px">
         {{ dictionaryStore.dictionary.name }}
-      </h3>
+      </h4>
     </div>
 
     <div class="demo">
@@ -18,6 +19,13 @@
       >
         {{ tab }}
       </button>
+
+      <!-- prikazuje se umjesto tabova ako je rezolucija < 600px -->
+      <select class="tab-select" v-show="true" v-model="tabStore.currentTab">
+        <option :value="tab" v-for="(_, tab) in tabs" :key="tab">
+          {{ tab }}
+        </option>
+      </select>
 
       <!-- DA TI SVAKI PUT NE MONTIRA KOMPONENTU -->
       <KeepAlive>
@@ -81,12 +89,16 @@ const showModal = ref(false);
 </script>
 
 <style scoped>
+.dic-header {
+  cursor: pointer;
+}
+
 .demo {
   font-family: sans-serif;
   border: 1px solid #eee;
   border-radius: 2px;
-  padding: 20px 30px;
-  margin-top: 1em;
+  padding: 10px 10px;
+  /* margin-top: 1em; */
   margin-bottom: 40px;
   user-select: none;
   overflow-x: auto;
@@ -95,9 +107,9 @@ const showModal = ref(false);
 
 .tab-button {
   padding: 3px 15px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border: 1px solid cyan;
+  /* border-top-left-radius: 3px;
+  border-top-right-radius: 3px; */
+  border: 1px solid #eee;
   cursor: pointer;
   background: white;
   margin-bottom: -1px;
@@ -113,10 +125,32 @@ const showModal = ref(false);
 
   background: darkslateblue;
   color: cyan;
+
+  color: springgreen;
+  background: rgb(19, 51, 20);
 }
 .tab {
-  border: 1px solid cyan;
+  border: 1px solid #eee;
   padding: 10px;
   min-height: 400px;
+}
+
+.tab-select {
+  display: none;
+}
+
+@media only screen and (max-width: 700px) {
+  .tab-button {
+    /* width: 100%; */
+    display: none;
+  }
+
+  .tab-select {
+    display: block;
+    background: darkslateblue;
+    color: cyan;
+    text-align: center;
+    border: 1px solid cyan;
+  }
 }
 </style>
