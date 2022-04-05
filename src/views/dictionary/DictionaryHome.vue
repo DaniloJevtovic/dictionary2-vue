@@ -1,12 +1,10 @@
 <template>
   <div class="home">
     <div class="navbar">
-      <button @click="$router.push({ name: 'User' })">Hi, Lemur</button>
+      <router-link :to="{ name: 'User' }"> Hi, Lemur </router-link> |
       <!-- <button @click="showList = !showList">Rjecnici</button> -->
-      <button @click="$router.push({ name: 'AllDictionaries' })">
-        Rjecnici
-      </button>
-      <button @click="$router.push('/login')">Logout</button>
+      <router-link :to="{ name: 'AllDictionaries' }"> Rjecnici </router-link> |
+      <router-link :to="{ name: 'Login' }">Logout</router-link>
     </div>
 
     <!-- <div v-if="showList" class="menu">
@@ -44,12 +42,16 @@ const showList = ref(false);
 
 <style scoped>
 .home {
-  border: 1px solid rgb(36, 51, 73);
+  /* border: 1px solid rgb(36, 51, 73); */
   padding: 4px;
 }
 
 .navbar {
   background: rgb(70, 51, 153);
+  color: cyan;
+
+  color: springgreen;
+  background: rgb(19, 51, 20);
 }
 
 .menu {
@@ -57,8 +59,14 @@ const showList = ref(false);
   text-align: center;
 }
 
+a {
+  color: springgreen;
+  text-decoration: none;
+}
+
 .container {
-  border: 1px solid royalblue;
+  /* border: 1px solid red; */
+  height: 100%;
   /* min-height: 500px; */
 }
 </style>
