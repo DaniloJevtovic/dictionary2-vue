@@ -47,19 +47,19 @@ const tabs = {
   padding: 20px 30px;
   user-select: none;
   overflow-x: auto;
-  text-align: left;
+  text-align: center;
 }
 
 .tab-button {
   padding: 3px 15px;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  border: 1px solid #ccc;
+  border: 1px solid cyan;
   cursor: pointer;
-  background: #f0f0f0cc;
+  background: white;
   margin-bottom: -1px;
   margin-right: -1px;
-  width: 50%;
+  /* width: 50%; */
 }
 
 .tab-button.active {
@@ -70,6 +70,6 @@ const tabs = {
 .tab {
   border: 1px solid #ccc;
   padding: 10px;
-  min-height: 100px;
+  min-height: 300px;
 }
 </style>
