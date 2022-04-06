@@ -34,7 +34,7 @@ const routes = [
         props: true,
       },
       {
-        path: "/dictionary/:id/:name",
+        path: "/dictionary/:id",
         name: "Dictionary",
         component: () => import("../views/dictionary/Dictionary.vue"),
         props: true,
