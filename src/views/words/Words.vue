@@ -13,6 +13,7 @@
 
           <!-- selekcija grupe -->
           <select
+            v-if="searchInput === ''"
             class="wgs"
             @change="changeWg($event)"
             v-model="groupStore.activeWgId"
@@ -61,6 +62,7 @@
           </select> -->
 
           <Filter
+          v-if="searchInput === ''"
             :type="'word'"
             :filterModel="wordStore.filter"
             @filter="changeFilter2"
