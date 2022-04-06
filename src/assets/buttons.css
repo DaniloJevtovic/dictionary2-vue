@@ -1,13 +1,12 @@
 button {
   background: white;
   border-radius: 2px;
-  border: 1px solid darkblue;
-  padding: 2px 15px;
+  border: 1px solid springgreen;
+  padding: 2px 12px;
   font-weight: 300;
   cursor: pointer;
   display: inline-block;
   outline: none;
-  margin-right: 5px;
 }
 
 button:hover {
@@ -16,16 +15,27 @@ button:hover {
 }
 
 .new-btn {
-  color: cyan;
-  width: 100%;
+  width: 50%;
   margin: 4px 0px;
-  background: rebeccapurple;
-  border: 1px solid cyan;
+  color: springgreen;
+  background: rgb(19, 51, 20);
+  border: 1px solid springgreen;
+}
+
+.fav-btn {
+  color: rgb(19, 51, 20);
+  background: white;
+}
+
+.fav-btn:active {
+  color: springgreen;
+  background: rgb(19, 51, 20);
+  border: 1px solid springgreen;
 }
 
 .del-btn {
   background: red;
-  margin: 0px 0px 0px auto;
+  /* margin: 0px 0px 0px auto; */
 }
 
 .disable-btn {
