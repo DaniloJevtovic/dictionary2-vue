@@ -1,13 +1,14 @@
 <template>
   <div>
     <div class="grammar">
+      <button @click="expandGrammar">V</button>
       <div @click="showModal = true" class="details">
         {{ grammar.title }}
         <p style="margin: 0px">
           <small> {{ grammar.content }}</small>
         </p>
       </div>
-      <button @click.prevent="deleteGrammar" class="del-btn">x</button>
+      <button @click.prevent="deleteGrammar" class="del-btn">&#x2715;</button>
     </div>
 
     <AddEditGrammarModal
@@ -49,5 +50,9 @@ const showModal = ref(false);
   padding: 3px;
   border: 1px solid blue;
   display: flex;
+}
+
+.grammar:hover {
+  background: rgb(248, 107, 25);
 }
 </style>

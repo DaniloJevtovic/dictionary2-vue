@@ -2,7 +2,9 @@
   <div>
     <input type="text" placeholder="search" />
 
-    <button @click="showModal = true" class="new-btn">new grammar</button>
+    <button @click="showModal = true" class="new-btn" style="width: 100%">
+      new grammar
+    </button>
 
     <div class="grammars">
       <div v-for="(grammar, index) in grammarStore.grammars" :key="grammar.id">
@@ -53,6 +55,6 @@ const showModal = ref(false);
 <style scoped>
 .grammars {
   overflow-y: auto;
-  max-height: 320px;
+  /* max-height: 320px; */
 }
 </style>
