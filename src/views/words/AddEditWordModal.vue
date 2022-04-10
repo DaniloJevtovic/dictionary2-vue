@@ -36,7 +36,7 @@
             }"
             required
           >
-            <option value="all" disabled>odaberi</option>
+            <option value="all" disabled>odaberi grupu</option>
             <option
               v-for="group in groupStore.wgroups"
               :key="group.id"
@@ -46,6 +46,18 @@
               Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
             </option>
             <option value="create">kreiraj novu grupu</option>
+          </select>
+
+          <select class="type" name="type" v-model="updateWord.type" required>
+            <!-- <option value="SELECT" disabled>odaberi tip rjeci</option> -->
+            <option value="NOUN">type: Noun</option>
+            <option value="PRONOUN">type: Pronoun</option>
+            <option value="ADJECTIVE">type: Adjective</option>
+            <option value="VERB">type: Verb</option>
+            <option value="ADVERB">type: Adverb</option>
+            <option value="PREOPOSITION">type: Preposition</option>
+            <option value="CONJUCTION">type: Conjuction</option>
+            <option value="INTERJECTION">type: Interjection</option>
           </select>
 
           <br />
@@ -113,7 +125,11 @@ async function save() {
 
   // provjera da li je bilo promjene grupe u odnosnu na selektovanu
   // ako jeste - dobavi rjeci za tu grupu
-  if (updateWord.wgId !== groupStore.activeWgId) {
+  // osim za sve rjeci iz rjecnika - za njih ne mjenjaj grupu
+  if (
+    updateWord.wgId !== groupStore.activeWgId &&
+    groupStore.activeWgId !== "all"
+  ) {
     groupStore.activeWgId = updateWord.wgId;
     // let res = await readFun("words/wg/" + updateWord.wgId);
     // wordStore.words = res.data.content;
@@ -134,4 +150,8 @@ async function updateNumOfWords(wgId, numOfItems) {
 </script>
 
 <style scoped>
+.type {
+  color: springgreen;
+  background: rgb(19, 51, 20);
+}
 </style>
