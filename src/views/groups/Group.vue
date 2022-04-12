@@ -1,8 +1,32 @@
 <template>
   <div>
-    <div class="group">
+    <div
+      class="group"
+      :style="{
+        background:
+          groupStore.activeWgId === group.id ||
+          groupStore.activeSgId === group.id
+            ? group.color
+            : 'white',
+        border:
+          groupStore.activeWgId === group.id ||
+          groupStore.activeSgId === group.id
+            ? '1px solid darkblue'
+            : '1px solid whitesmoke',
+      }"
+    >
       <!-- broj rjeci/recenica -->
-      <button class="details-btn" @click="viewItems(group)">
+      <button
+        class="details-btn"
+        @click="viewItems(group)"
+        :style="{
+          color:
+            groupStore.activeWgId === group.id ||
+            groupStore.activeSgId === group.id
+              ? 'yellow'
+              : 'springgreen',
+        }"
+      >
         {{ group.numOfItems }}
         <span v-if="group.type === 'WGROUP'"><small>words</small></span>
         <span v-else><small>sentences</small></span>
