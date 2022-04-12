@@ -27,6 +27,19 @@ select {
   margin: 8px auto;
 }
 
+input[type="color"] {
+  -webkit-appearance: none;
+  border: 1px solid darkblue;
+  height: 20px;
+  padding: 0px;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
 textarea {
   border: 1px solid darkblue;
 }
