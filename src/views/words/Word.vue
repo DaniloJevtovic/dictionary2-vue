@@ -16,9 +16,28 @@
 
       <!-- RJEC -->
       <div @click="showModal = true" class="details">
-        {{ word.word }} - {{ word.translate }}
         <p style="margin: 0px">
-          <small>{{ word.description }}</small>
+          <span>{{ idx + 1 }}.</span> {{ word.word }} -
+          {{ word.translate }}
+        </p>
+
+        <p style="margin: 0px">
+          <!-- <small style="background: cyan; color: darkblue">{{
+            word.type
+          }}</small> -->
+          <small
+            :style="{ background: wTypeStore.getTypeColor(word.type).color }"
+          >
+            {{ word.type.toLowerCase() }}</small
+          >
+          |
+
+          <small>{{ word.description }}</small> |
+          <!-- <small
+            :style="{ background: groupStore.getWGroupById(word.wgId).color }"
+          >
+            {{ groupStore.getWGroupById(word.wgId).name }}</small
+          > -->
         </p>
       </div>
 
@@ -44,6 +63,7 @@ import AddEditWordModal from "./AddEditWordModal.vue";
 import useCrud from "../../composables/useCRUD.js";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
+import { useWordTypeStore } from "../../stores/wordtypes.js";
 
 const props = defineProps({
   word: Object,
@@ -52,6 +72,7 @@ const props = defineProps({
 
 const { deleteFun, patchFun } = useCrud();
 const wordStore = useWordStore();
+const wTypeStore = useWordTypeStore();
 const groupStore = useGroupStore();
 
 async function deleteWord() {

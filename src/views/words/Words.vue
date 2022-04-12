@@ -346,6 +346,11 @@ async function loadMoreWords() {
   background: rgb(19, 51, 20);
 }
 
+/* .wgs-types {
+  height: 100%;
+  overflow: hidden;
+} */
+
 @media only screen and (max-width: 700px) {
   .search-wg {
     display: block;
