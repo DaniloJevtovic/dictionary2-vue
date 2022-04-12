@@ -62,7 +62,7 @@
           </select> -->
 
           <Filter
-          v-if="searchInput === ''"
+            v-if="searchInput === ''"
             :type="'word'"
             :filterModel="wordStore.filter"
             @filter="changeFilter2"
@@ -107,8 +107,9 @@
       </div>
 
       <!-- prikaz grupa - desna strana -->
-      <div class="wgroups">
+      <div class="wgs-types">
         <WGroup :dicId="dicId" :gType="'WGROUP'" />
+        <WordTypes />
       </div>
     </div>
 
@@ -124,7 +125,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive, watch } from "vue";
+import { onMounted, ref, reactive, watch, onBeforeMount } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import Word from "./Word.vue";
 import WGroup from "../groups/WGroup.vue";
@@ -132,14 +133,15 @@ import AddEditWordModal from "./AddEditWordModal.vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 import Filter from "../../components/Filter.vue";
+import WordTypes from "../wordtypes/WordTypes.vue";
 
 const props = defineProps({
   dicId: String,
 });
 
 const { readFun } = useCrud();
-const wordStore = useWordStore();
 const groupStore = useGroupStore();
+const wordStore = useWordStore();
 
 // dobavljanje rjeci za rjecnik ili grupu
 const words = ref([]);
@@ -158,7 +160,10 @@ async function getWGroups() {
 }
 
 onMounted(() => {
-  getWGroups();
+  // getWGroups();
+
+  groupStore.getWGroupsForDictionary(props.dicId);
+
   wordStore.filter = "sort=id,desc";
   //getWords("words/dic/" + props.dicId);
   wordStore.getWords("DIC", props.dicId);
@@ -187,6 +192,7 @@ const newWord = reactive({
   word: "",
   translate: "",
   description: "",
+  type: "NOUN",
   dicId: props.dicId,
   wgId: "all",
 });
