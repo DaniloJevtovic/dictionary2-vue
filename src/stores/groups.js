@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
+import useCRUD from "../composables/useCRUD.js";
 
 // grupe rjeci i recenica za rjecnik
+
+const { readFun, createFun, deleteFun } = useCRUD();
 
 export const useGroupStore = defineStore("groups", {
   state: () => {
@@ -47,6 +50,21 @@ export const useGroupStore = defineStore("groups", {
       let res = await readFun("groups/dic/" + id + "/group/SGROUP");
       this.sgroups = res.data;
     },
+
+    async saveGroup(group) {
+      let res = await createFun("groups", group);
+      this.addGroup(res.data);
+    },
+
+    async editGroup(group, idx) {
+      let res = await createFun("groups", group);
+      this.updateGroup(group, idx);
+    },
+
+    async deleteGroup(group, idx) {
+      this.removeGroup(group, idx);
+      await deleteFun("groups", group.id);
+    },
   },
 
   getters: {
@@ -66,5 +84,5 @@ export const useGroupStore = defineStore("groups", {
       this.getSGroupById(state.activeWgId);
     },
   },
-  persist: true
+  persist: true,
 });
