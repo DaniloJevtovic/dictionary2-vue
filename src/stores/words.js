@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import useCRUD from "../composables/useCRUD.js";
+import { useGroupStore } from "./groups.js";
+import { useDictionaryStore } from "./dictionaries.js";
 
 const { readFun, createFun, deleteFun } = useCRUD();
 
@@ -9,6 +11,7 @@ export const useWordStore = defineStore("words", {
       words: [],
       totalPages: "",
       currentPage: 0,
+      size: 30,
       filter: "sort=id,desc",
     };
   },
@@ -32,9 +35,13 @@ export const useWordStore = defineStore("words", {
       let res;
 
       if (type === "DIC") {
-        res = await readFun("words/dic/" + id + "/?" + this.filter);
+        res = await readFun(
+          "words/dic/" + id + "/?" + this.filter + "&size=" + this.size
+        );
       } else {
-        res = await readFun("words/wg/" + id + "/?" + this.filter);
+        res = await readFun(
+          "words/wg/" + id + "/?" + this.filter + "&size=" + this.size
+        );
       }
 
       this.words = res.data.content;
@@ -49,22 +56,42 @@ export const useWordStore = defineStore("words", {
 
       if (type === "DIC") {
         res = await readFun(
-          "words/dic/" + id + "/?page=" + this.currentPage + "&" + this.filter
+          "words/dic/" +
+            id +
+            "/?page=" +
+            this.currentPage +
+            "&" +
+            this.filter +
+            "&size=" +
+            this.size
         );
       } else {
         res = await readFun(
-          "words/wg/" + id + "/?page=" + this.currentPage + "&" + this.filter
+          "words/wg/" +
+            id +
+            "/?page=" +
+            this.currentPage +
+            "&" +
+            this.filter +
+            "&size=" +
+            this.size
         );
       }
 
       res.data.content.forEach((word) => {
         this.addWord(word);
       });
+
+      this.totalPages = res.data.totalPages;
     },
 
     async saveWord(word) {
       let res = await createFun("words", word);
-      this.addWord(res.data);
+      this.words.unshift(res.data); //dodavanje na pocetak
+
+      // dobavljanje najnovijih rjeci
+      // this.filter = "sort=id,desc";
+      // this.getWords("WG", word.wgId);
     },
 
     async editWord(word, idx) {
@@ -73,8 +100,48 @@ export const useWordStore = defineStore("words", {
     },
 
     async deleteWord(word, idx) {
-      await deleteFun("words/" + word.id);
       this.removeWord(idx);
+      await deleteFun("words", word.id);
+
+      //this.getNextWord();
+    },
+
+    // smisliti nesto pametnije
+    async getNextWord() {
+      const groupStore = useGroupStore();
+      const dicStore = useDictionaryStore();
+
+      let res;
+
+      if (groupStore.activeWgId === "all") {
+        res = await readFun(
+          "words/dic/" +
+            dicStore.dictionary.id +
+            "/?page=" +
+            this.currentPage +
+            "&" +
+            this.filter +
+            "&size=" +
+            this.size
+        );
+      } else {
+        res = await readFun(
+          "words/wg/" +
+            groupStore.activeWgId +
+            "/?page=" +
+            this.currentPage +
+            "&" +
+            this.filter +
+            "&size=" +
+            this.size
+        );
+      }
+
+      this.totalPages = res.data.totalPages;
+
+      if (res.data.content[this.size] !== undefined) {
+        this.addWord(res.data.content[this.size]);
+      }
     },
   },
   persist: true,
