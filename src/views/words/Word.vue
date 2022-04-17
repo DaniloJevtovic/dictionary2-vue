@@ -15,16 +15,18 @@
       </button>
 
       <!-- RJEC -->
-      <div @click="showModal = true" class="details">
+      <div
+        @click="showModal = true"
+        class="details"
+        v-if="groupStore.getWGroupById(word.wgId)"
+        :style="{ background: groupStore.getWGroupById(word.wgId).color }"
+      >
         <p style="margin: 0px">
           <span>{{ idx + 1 }}.</span> {{ word.word }} -
           {{ word.translate }}
         </p>
 
         <p style="margin: 0px">
-          <!-- <small style="background: cyan; color: darkblue">{{
-            word.type
-          }}</small> -->
           <small
             :style="{ background: wTypeStore.getTypeColor(word.type).color }"
           >
@@ -33,11 +35,13 @@
           |
 
           <small>{{ word.description }}</small> |
-          <!-- <small
+
+          <small
+            v-if="groupStore.getWGroupById(word.wgId)"
             :style="{ background: groupStore.getWGroupById(word.wgId).color }"
           >
             {{ groupStore.getWGroupById(word.wgId).name }}</small
-          > -->
+          >
         </p>
       </div>
 
