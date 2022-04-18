@@ -9,6 +9,7 @@ export const useSentenceStore = defineStore("sentences", {
       sentences: [],
       totalPages: "",
       currentPage: 0,
+      size: 10,
       filter: "sort=id,desc",
     };
   },
@@ -32,9 +33,13 @@ export const useSentenceStore = defineStore("sentences", {
       let res;
 
       if (type === "DIC") {
-        res = await readFun("sentences/dic/" + id + "/?" + this.filter);
+        res = await readFun(
+          "sentences/dic/" + id + "/?" + this.filter + "&size=" + this.size
+        );
       } else {
-        res = await readFun("sentences/wg/" + id + "/?" + this.filter);
+        res = await readFun(
+          "sentences/wg/" + id + "/?" + this.filter + "&size=" + this.size
+        );
       }
 
       this.sentences = res.data.content;
@@ -54,11 +59,20 @@ export const useSentenceStore = defineStore("sentences", {
             "/?page=" +
             this.currentPage +
             "&" +
-            this.filter
+            this.filter +
+            "&size=" +
+            this.size
         );
       } else {
         res = await readFun(
-          "words/wg/" + id + "/?page=" + this.currentPage + "&" + this.filter
+          "words/wg/" +
+            id +
+            "/?page=" +
+            this.currentPage +
+            "&" +
+            this.filter +
+            "&size=" +
+            this.size
         );
       }
 
@@ -71,13 +85,14 @@ export const useSentenceStore = defineStore("sentences", {
 
     async saveSentence(sentence) {
       let res = await createFun("sentences", word);
+      this.sentences.unshift(res.data);
 
-      //dobavljanje najnovijih recenica
-      this.filter = "sort=id,desc";
-      this.getSentences("SG", sentence.sgId);
+      // //dobavljanje najnovijih recenica
+      // this.filter = "sort=id,desc";
+      // this.getSentences("SG", sentence.sgId);
     },
 
-    async editeSentence(sentence, idx) {
+    async editSentence(sentence, idx) {
       let res = await createFun("sentences", sentence);
       this.updateSentence(sentence, idx);
     },
