@@ -25,6 +25,7 @@
             rows="5"
           ></textarea>
 
+          <!-- grupa rjeci -->
           <select
             class="wgs"
             v-model="updateWord.wgId"
@@ -48,16 +49,16 @@
             <option value="create">kreiraj novu grupu</option>
           </select>
 
+          <!-- tip rjeci -->
           <select class="type" name="type" v-model="updateWord.type" required>
-            <!-- <option value="SELECT" disabled>odaberi tip rjeci</option> -->
-            <option value="NOUN">type: Noun</option>
-            <option value="PRONOUN">type: Pronoun</option>
-            <option value="ADJECTIVE">type: Adjective</option>
-            <option value="VERB">type: Verb</option>
-            <option value="ADVERB">type: Adverb</option>
-            <option value="PREOPOSITION">type: Preposition</option>
-            <option value="CONJUCTION">type: Conjuction</option>
-            <option value="INTERJECTION">type: Interjection</option>
+            <option
+              v-for="type in typeStore.types"
+              :key="type.name"
+              :value="type.name"
+              :style="{ background: type.color }"
+            >
+              type: {{ type.name }}
+            </option>
           </select>
 
           <br />
@@ -65,8 +66,8 @@
 
         <div class="modal-footer">
           <slot name="footer">
-            <button @click="save">save</button>
-            <button @click.prevent="closeModal">cancel</button>
+            <button @click="save" class="save-btn">save</button>
+            <button @click.prevent="closeModal" class="cancel-btn">cancel</button>
           </slot>
         </div>
       </div>
@@ -79,6 +80,7 @@ import { reactive } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
+import { useWordTypeStore } from "../../stores/wordtypes.js";
 
 const props = defineProps({
   word: Object,
@@ -92,6 +94,7 @@ const emit = defineEmits(["close"]);
 const { createFun, readFun, patchFun } = useCrud();
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
+const typeStore = useWordTypeStore();
 
 const updateWord = reactive({ ...props.word });
 
@@ -150,8 +153,8 @@ async function updateNumOfWords(wgId, numOfItems) {
 </script>
 
 <style scoped>
-.type {
+/* .type {
   color: springgreen;
   background: rgb(19, 51, 20);
-}
+} */
 </style>
