@@ -20,17 +20,26 @@ button:hover {
   color: springgreen;
   background: rgb(19, 51, 20);
   border: 1px solid springgreen;
+
+  background: darkslateblue;
+  color: cyan;
 }
 
 .fav-btn {
   color: rgb(19, 51, 20);
   background: white;
+
+  background: darkslateblue;
+  color: cyan;
 }
 
 .fav-btn:active {
   color: springgreen;
   background: rgb(19, 51, 20);
   border: 1px solid springgreen;
+
+  background: darkslateblue;
+  color: cyan;
 }
 
 .del-btn {
@@ -38,8 +47,17 @@ button:hover {
   /* margin: 0px 0px 0px auto; */
 }
 
+.save-btn {
+  background: springgreen;
+}
+
+.cancel-btn {
+  background: orangered;
+  border: 1px solid orangered;
+}
+
 .disable-btn {
-  background: gray;
+  background: darkgray;
   margin: 0px 0px 0px auto;
   cursor: not-allowed;
 }
