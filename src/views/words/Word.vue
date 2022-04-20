@@ -6,10 +6,7 @@
       <!-- favorite button -->
       <button
         @click.prevent="updateFav"
-        :style="{
-          background: word.favorite === true ? 'rgb(19, 51, 20)' : 'white',
-          color: word.favorite === true ? 'springgreen' : 'black',
-        }"
+        :class="word.favorite === true ? 'fav-btn' : 'unfav-btn'"
       >
         &#x2665;
       </button>
@@ -28,7 +25,9 @@
 
         <p style="margin: 0px">
           <small
-            :style="{ background: wTypeStore.getTypeColor(word.type).color }"
+            :style="{
+              background: wTypeStore.getTypeColor(word.type).color,
+            }"
           >
             {{ word.type.toLowerCase() }}</small
           >
@@ -116,5 +115,13 @@ const showModal = ref(false);
 .word:hover {
   background: cyan;
   /* background: v-bind('groupStore.getWGroupById(props.word.wgId).color') */
+}
+
+.details [style]:hover {
+  background: yellow;
+}
+
+.fav-word {
+  background: red;
 }
 </style>
