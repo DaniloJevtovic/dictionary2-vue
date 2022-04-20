@@ -1,7 +1,7 @@
 button {
   background: white;
   border-radius: 2px;
-  border: 1px solid springgreen;
+  border: 1px solid darkblue;
   padding: 2px 12px;
   font-weight: 300;
   cursor: pointer;
@@ -26,20 +26,15 @@ button:hover {
 }
 
 .fav-btn {
-  color: rgb(19, 51, 20);
-  background: white;
-
+  /* background: rgb(19, 51, 20);
+  border: 1px solid springgreen; */
   background: darkslateblue;
-  color: cyan;
+  color: springgreen;
 }
 
-.fav-btn:active {
-  color: springgreen;
-  background: rgb(19, 51, 20);
-  border: 1px solid springgreen;
-
-  background: darkslateblue;
-  color: cyan;
+.unfav-btn {
+  color: darkblue;
+  background: white;
 }
 
 .del-btn {
