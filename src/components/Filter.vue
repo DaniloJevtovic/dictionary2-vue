@@ -5,6 +5,9 @@
     <option value="sort=favorite,desc">favorite</option>
     <option :value="'sort=' + type + ',asc'">[a-z]</option>
     <option :value="'sort=' + type + ',desc'">[z-a]</option>
+
+    <option v-if="type === 'word'" value="sort=wgId, asc">wgroup</option>
+    <option v-else value="sort=sgId, asc">sgroup</option>
   </select>
 </template>
 
