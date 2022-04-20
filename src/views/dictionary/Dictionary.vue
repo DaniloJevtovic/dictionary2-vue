@@ -1,13 +1,14 @@
 <template>
   <div class="main">
     <div
-      @click="showModal = true"
       :style="{ background: dictionaryStore.dictionary.color }"
       class="dic-header"
     >
-      <h4 style="margin: 0px">
+      <h4 @click="showModal = true" style="margin: 0px">
         {{ dictionaryStore.dictionary.name }}
       </h4>
+
+      <button class="light-mode" style="flex">dark</button>
     </div>
 
     <div class="demo">
@@ -78,6 +79,7 @@ const groupStore = useGroupStore();
 
 onMounted(() => {
   groupStore.resetActiveGroups();
+
   tabStore.currentTab = "Words";
 });
 
@@ -91,13 +93,16 @@ const showModal = ref(false);
 <style scoped>
 .dic-header {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .demo {
   font-family: sans-serif;
   border: 1px solid #eee;
   border-radius: 2px;
-  padding: 10px 10px;
+  /* padding: 2px; */
   /* margin-top: 1em; */
   margin-bottom: 40px;
   user-select: none;
@@ -112,8 +117,8 @@ const showModal = ref(false);
   border: 1px solid #eee;
   cursor: pointer;
   background: white;
-  margin-bottom: -1px;
-  margin-right: -1px;
+  /* margin-bottom: -1px;
+  margin-right: -1px; */
   width: 33.33%;
 }
 .tab-button:hover {
@@ -125,19 +130,25 @@ const showModal = ref(false);
 
   background: darkslateblue;
   color: cyan;
-
+  /* 
   color: springgreen;
-  background: rgb(19, 51, 20);
+  background: rgb(19, 51, 20); */
 }
 .tab {
   border: 1px solid #eee;
-  padding: 10px;
+  padding: 2px;
   min-height: 400px;
 }
 
 .tab-select {
   display: none;
 }
+
+/* .light-mode {
+  margin: auto;
+  float: right;
+  background: #ddd;
+} */
 
 @media only screen and (max-width: 700px) {
   .tab-button {
