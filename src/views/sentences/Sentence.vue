@@ -3,9 +3,7 @@
     <div class="sentence">
       <button
         @click.prevent="updateFav"
-        :style="{
-          background: sentence.favorite === true ? 'yellow' : 'white',
-        }"
+        :class="sentence.favorite === true ? 'fav-btn' : 'unfav-btn'"
       >
         &#x2665;
       </button>
