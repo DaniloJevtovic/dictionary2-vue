@@ -49,8 +49,20 @@ select {
   border: 1px solid darkblue;
 }
 
-input::color {
-  border: none;
+.ccolor {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  border: 1px solid darkblue;
+}
+
+div input[type="color"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 
 /* width */

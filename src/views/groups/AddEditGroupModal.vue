@@ -3,8 +3,14 @@
     <div class="modal-wrapper">
       <div class="modal-container">
         <div class="modal-header">
+          <!-- <div :style="{ background: updateGroup.color }"> -->
           <h3>{{ mode }} group</h3>
         </div>
+
+        <!-- <div class="ccolor">
+          <h3>{{ mode }} group</h3>
+          <input type="color" v-model="updateGroup.color" />
+        </div> -->
 
         <div class="modal-body">
           <input
@@ -12,6 +18,7 @@
             v-model="updateGroup.name"
             placeholder="group name"
             required
+            :style="{ background: updateGroup.color }"
           />
 
           <textarea
@@ -20,15 +27,20 @@
             rows="5"
           ></textarea>
 
-          <input type="color" v-model="updateGroup.color" />
+          <div class="ccolor">
+            Color
+            <input type="color" v-model="updateGroup.color" />
+          </div>
 
           <br />
         </div>
 
         <div class="modal-footer">
           <slot name="footer">
-            <button @click="save">save</button>
-            <button @click.prevent="closeModal">cancel</button>
+            <button @click="save" class="save-btn">save</button>
+            <button @click.prevent="closeModal" class="cancel-btn">
+              cancel
+            </button>
           </slot>
         </div>
       </div>
@@ -75,5 +87,9 @@ function closeModal() {
 <style scoped>
 .modal-container {
   width: 300px;
+}
+
+.ccolor {
+  background: v-bind("updateGroup.color");
 }
 </style>
