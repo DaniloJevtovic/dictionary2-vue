@@ -10,8 +10,14 @@
       new group
     </button>
 
-    <div class="groups">
+    <!-- <div class="groups">
       <div v-for="(group, index) in groupStore.wgroups" :key="group.id">
+        <Group :group="group" :idx="index" />
+      </div>
+    </div> -->
+
+    <div class="groups">
+      <div v-for="(group, index) in searchedWgs" :key="group.id">
         <Group :group="group" :idx="index" />
       </div>
     </div>
@@ -27,7 +33,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import Group from "./Group.vue";
 import AddEditGroupModal from "./AddEditGroupModal.vue";
@@ -48,13 +54,30 @@ async function getWgroups() {
   groupStore.wgroups = res.data;
 }
 
+const searchedWgs = ref([]);
+
 onMounted(() => {
   if (dictionaryStore.dictionary.id !== props.dicId) {
-    getWgroups();
+    //getWgroups();
+    groupStore.getWgroups();
   }
+
+  searchedWgs.value = groupStore.wgroups;
 });
 
 const searchInput = ref("");
+
+watch(searchInput, () => {
+  console.log(searchInput.value);
+
+  if (searchInput.value !== "") {
+    searchedWgs.value = groupStore.wgroups.filter((wg) =>
+      wg.name.includes(searchInput.value)
+    );
+  } else {
+    searchedWgs.value = groupStore.wgroups;
+  }
+});
 
 const newGroup = reactive({
   name: "",
@@ -70,7 +93,7 @@ const showModal = ref(false);
 
 <style scoped>
 .wgroups {
-  border: 1px solid red;
+  border: 1px solid darkgray;
   padding: 10px;
 }
 
