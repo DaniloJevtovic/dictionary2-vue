@@ -7,10 +7,24 @@ const { readFun, createFun, deleteFun } = useCRUD();
 
 export const useGroupStore = defineStore("groups", {
   state: () => {
-    return { wgroups: [], activeWgId: "all", sgroups: [], activeSgId: "all" };
+    return {
+      wgroups: [],
+      activeWgId: "all",
+      sgroups: [],
+      activeSgId: "all",
+    };
   },
 
   actions: {
+    // za prosljedjenu grupu vraca njen index u nizus
+    getIndex(group) {
+      if (group.type === "WGROUP") {
+        return this.wgroups.findIndex((gr) => gr.id === group.id);
+      } else {
+        return this.sgroups.findIndex((gr) => gr.id === group.id);
+      }
+    },
+
     addGroup(group) {
       if (group.type == "WGROUP") {
         this.wgroups.push(group);
@@ -21,7 +35,8 @@ export const useGroupStore = defineStore("groups", {
 
     updateGroup(group, idx) {
       if (group.type == "WGROUP") {
-        this.wgroups[idx] = group;
+        // this.wgroups[idx] = group;
+        this.wgroups[this.getIndex(group)] = group;
       } else {
         this.sgroups[idx] = group;
       }
@@ -29,7 +44,8 @@ export const useGroupStore = defineStore("groups", {
 
     removeGroup(group, idx) {
       if (group.type == "WGROUP") {
-        this.wgroups.splice(idx, 1);
+        //this.wgroups.splice(idx, 1);
+        this.wgroups.splice(this.getIndex(group), 1);
       } else {
         this.sgroups.splice(idx, 1);
       }
