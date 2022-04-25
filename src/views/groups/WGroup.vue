@@ -1,6 +1,8 @@
 <template>
   <div class="wgroups">
-    <input type="text" v-model="searchInput" placeholder="search wgroup" />
+    <!-- <input type="text" v-model="searchInput" placeholder="search wgroup" /> -->
+
+    <h4 style="margin: 2px">word groups</h4>
 
     <button
       @click.prevent="showModal = true"
@@ -10,17 +12,17 @@
       new group
     </button>
 
-    <!-- <div class="groups">
+    <div class="groups">
       <div v-for="(group, index) in groupStore.wgroups" :key="group.id">
         <Group :group="group" :idx="index" />
       </div>
-    </div> -->
+    </div>
 
-    <div class="groups">
+    <!-- <div class="groups">
       <div v-for="(group, index) in searchedWgs" :key="group.id">
         <Group :group="group" :idx="index" />
       </div>
-    </div>
+    </div> -->
 
     <AddEditGroupModal
       v-if="showModal"
@@ -33,7 +35,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import Group from "./Group.vue";
 import AddEditGroupModal from "./AddEditGroupModal.vue";
@@ -49,17 +51,18 @@ const { readFun } = useCrud();
 const groupStore = useGroupStore();
 const dictionaryStore = useDictionaryStore();
 
-async function getWgroups() {
-  let res = await readFun("groups/dic/" + props.dicId + "/group/WGROUP");
-  groupStore.wgroups = res.data;
-}
-
 const searchedWgs = ref([]);
+
+// async function getWgroups() {
+//   let res = await readFun("groups/dic/" + props.dicId + "/group/WGROUP");
+//   searchedWgs.value = res.data;
+//   groupStore.wgroups = res.data;
+// }
 
 onMounted(() => {
   if (dictionaryStore.dictionary.id !== props.dicId) {
-    //getWgroups();
-    groupStore.getWgroups();
+    //getWgroups(); // dobavljanje za bekenda
+    searchedWgs.value = groupStore.getWGroupsForDictionary(props.dicId);
   }
 
   searchedWgs.value = groupStore.wgroups;
@@ -71,11 +74,15 @@ watch(searchInput, () => {
   console.log(searchInput.value);
 
   if (searchInput.value !== "") {
-    searchedWgs.value = groupStore.wgroups.filter((wg) =>
-      wg.name.includes(searchInput.value)
+    // searchedWgs.value = groupStore.wgroups.filter((wg) =>
+    //   wg.name.includes(searchInput.value)
+    // );
+
+    searchedWgs.value = JSON.parse(JSON.stringify(groupStore.wgroups)).filter(
+      (wg) => wg.name.includes(searchInput.value)
     );
   } else {
-    searchedWgs.value = groupStore.wgroups;
+    searchedWgs.value = [...groupStore.wgroups];
   }
 });
 
