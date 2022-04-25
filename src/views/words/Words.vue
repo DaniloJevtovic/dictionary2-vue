@@ -2,6 +2,13 @@
   <div>
     <div class="words-wgs">
       <!-- lista rjeci -->
+
+      <!-- grupe sa desne strane -->
+      <div class="wgs-types" v-if="settingsStore.wgroupDirection === 'right'">
+        <WGroup :dicId="dicId" :gType="'WGROUP'" />
+        <WordTypes />
+      </div>
+
       <div class="words">
         <div class="search-wg" style="margin: 4px">
           <input
@@ -107,7 +114,7 @@
       </div>
 
       <!-- prikaz grupa - desna strana -->
-      <div class="wgs-types">
+      <div class="wgs-types" v-if="settingsStore.wgroupDirection === 'left'">
         <WGroup :dicId="dicId" :gType="'WGROUP'" />
         <WordTypes />
       </div>
@@ -132,6 +139,8 @@ import WGroup from "../groups/WGroup.vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
+import { useSettingsStore } from "../../stores/settings.js";
+
 import Filter from "../../components/Filter.vue";
 import WordTypes from "../wordtypes/WordTypes.vue";
 
@@ -142,6 +151,7 @@ const props = defineProps({
 const { readFun } = useCrud();
 const groupStore = useGroupStore();
 const wordStore = useWordStore();
+const settingsStore = useSettingsStore();
 
 // dobavljanje rjeci za rjecnik ili grupu
 const words = ref([]);
@@ -321,7 +331,7 @@ async function loadMoreWords() {
 <style scoped>
 .words {
   overflow-y: auto;
-  border: 1px solid darkblue;
+  border: 1px solid darkgray;
 }
 
 .btns {
@@ -336,7 +346,9 @@ async function loadMoreWords() {
 .words-wgs {
   display: grid;
   grid-template-columns: 60% 40%;
-  column-gap: 5px;
+  /* grid-template-columns: 40% 60%; */
+
+  column-gap: 2px;
 }
 
 .filter {
