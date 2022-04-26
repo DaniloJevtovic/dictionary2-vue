@@ -1,6 +1,6 @@
 button {
   background: white;
-  border-radius: 2px;
+  /* border-radius: 2px; */
   border: 1px solid darkblue;
   padding: 2px 12px;
   font-weight: 300;
@@ -25,14 +25,16 @@ button:hover {
   color: cyan;
 }
 
-.fav-btn {
+.fav-btn,
+.fav-btn:hover {
   /* background: rgb(19, 51, 20);
   border: 1px solid springgreen; */
   background: darkslateblue;
   color: springgreen;
 }
 
-.unfav-btn {
+.unfav-btn,
+.unfav-btn:hover {
   color: darkblue;
   background: white;
 }
