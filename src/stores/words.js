@@ -13,6 +13,7 @@ export const useWordStore = defineStore("words", {
       currentPage: 0,
       size: 30,
       filter: "sort=id,desc",
+      search: "",
     };
   },
 
@@ -32,21 +33,26 @@ export const useWordStore = defineStore("words", {
     //BEKEND
 
     async getWords(type, id) {
-      let res;
-
-      if (type === "DIC") {
-        res = await readFun(
-          "words/dic/" + id + "/?" + this.filter + "&size=" + this.size
-        );
+      if (this.search !== "") {
+        this.searchWords();
       } else {
-        res = await readFun(
-          "words/wg/" + id + "/?" + this.filter + "&size=" + this.size
-        );
-      }
+        let res;
 
-      this.words = res.data.content;
-      this.currentPage = 0;
-      this.totalPages = res.data.totalPages;
+        if (type === "DIC") {
+          res = await readFun(
+            "words/dic/" + id + "/?" + this.filter + "&size=" + this.size
+          );
+        } else {
+          res = await readFun(
+            "words/wg/" + id + "/?" + this.filter + "&size=" + this.size
+          );
+        }
+
+        this.words = res.data.content;
+        this.currentPage = 0;
+        this.totalPages = res.data.totalPages;
+        this.search = "";
+      }
     },
 
     //ucitavanje jos rjeci - (paginacija)
@@ -88,10 +94,6 @@ export const useWordStore = defineStore("words", {
     async saveWord(word) {
       let res = await createFun("words", word);
       this.words.unshift(res.data); //dodavanje na pocetak
-
-      // dobavljanje najnovijih rjeci
-      // this.filter = "sort=id,desc";
-      // this.getWords("WG", word.wgId);
     },
 
     async editWord(word, idx) {
@@ -103,45 +105,34 @@ export const useWordStore = defineStore("words", {
       this.removeWord(idx);
       await deleteFun("words", word.id);
 
-      //this.getNextWord();
+      // todo: ucitati prvu rjec sa sledece stranice
     },
 
-    // smisliti nesto pametnije
-    async getNextWord() {
+    async searchWords() {
+      let url;
       const groupStore = useGroupStore();
-      const dicStore = useDictionaryStore();
+      const dictionaryStore = useDictionaryStore();
 
-      let res;
-
-      if (groupStore.activeWgId === "all") {
-        res = await readFun(
-          "words/dic/" +
-            dicStore.dictionary.id +
-            "/?page=" +
-            this.currentPage +
-            "&" +
-            this.filter +
-            "&size=" +
-            this.size
-        );
+      if (groupStore.activeWgId !== "all") {
+        url =
+          "/wg/" +
+          groupStore.activeWgId +
+          "/search/" +
+          this.search +
+          "/?" +
+          this.filter;
       } else {
-        res = await readFun(
-          "words/wg/" +
-            groupStore.activeWgId +
-            "/?page=" +
-            this.currentPage +
-            "&" +
-            this.filter +
-            "&size=" +
-            this.size
-        );
+        url =
+          "/dic/" +
+          dictionaryStore.dictionary.id +
+          "/search/" +
+          this.search +
+          "/?" +
+          this.filter;
       }
 
-      this.totalPages = res.data.totalPages;
-
-      if (res.data.content[this.size] !== undefined) {
-        this.addWord(res.data.content[this.size]);
-      }
+      let res = await readFun("words" + url);
+      this.words = res.data;
     },
   },
   persist: true,
