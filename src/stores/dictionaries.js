@@ -1,4 +1,7 @@
 import { defineStore } from "pinia";
+import useCRUD from "../composables/useCRUD.js";
+
+const { readFun, createFun, deleteFun } = useCRUD();
 
 export const useDictionaryStore = defineStore("dictionaries", {
   state: () => {
@@ -6,17 +9,40 @@ export const useDictionaryStore = defineStore("dictionaries", {
   },
 
   actions: {
+    findIndex(dictionary) {
+      return this.dictionaries.findIndex((dic) => dic.id === dictionary.id);
+    },
+
     addDictionary(dictionary) {
-      this.dictionaries.push(dictionary);
+      // this.dictionaries.push(dictionary);
+      this.dictionaries.unshift(dictionary);
     },
 
     updateDictionary(dictionary) {
       // let dic = this.getDictionaryById(dictionary.id)
+
+      this.dictionaries[this.findIndex(dictionary)] = dictionary;
       this.dictionary = dictionary;
     },
 
     removeDictionary(idx) {
       this.dictionaries.splice(idx, 1);
+    },
+
+    //bekend
+    async saveDictionary(dictionary) {
+      let res = await createFun("dictionaries", dictionary);
+      this.addDictionary(res.data);
+    },
+
+    async editDictionary(dictionary) {
+      let res = await createFun("dictionaries", dictionary);
+      this.updateDictionary(dictionary);
+    },
+
+    //rjecnici za ulogovanog korisnika - id korisnika
+    async getDictionaries() {
+      let res = await readFun("/dictionaries");
     },
   },
   getters: {
