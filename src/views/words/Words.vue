@@ -11,6 +11,7 @@
 
       <div class="words">
         <div class="search-wg" style="margin: 4px">
+          <!-- polje za pretragu -->
           <input
             class="search"
             v-model="searchInput"
@@ -20,7 +21,6 @@
 
           <!-- selekcija grupe -->
           <select
-            v-if="searchInput === ''"
             class="wgs"
             @change="changeWg($event)"
             v-model="groupStore.activeWgId"
@@ -69,7 +69,6 @@
           </select> -->
 
           <Filter
-            v-if="searchInput === ''"
             :type="'word'"
             :filterModel="wordStore.filter"
             @filter="changeFilter2"
@@ -120,7 +119,7 @@
       </div>
     </div>
 
-    <!-- modal -->
+    <!-- modal - dodavanje nove rjeci -->
     <AddEditWordModal
       v-if="showModal"
       :word="newWord"
@@ -171,7 +170,6 @@ async function getWGroups() {
 
 onMounted(() => {
   // getWGroups();
-
   groupStore.getWGroupsForDictionary(props.dicId);
 
   wordStore.filter = "sort=id,desc";
@@ -182,17 +180,20 @@ onMounted(() => {
 function changeWg(event) {
   let id = event.target.value;
 
-  if (id === "all") {
-    //getWords("words/dic/" + props.dicId);
-    wordStore.getWords("DIC", props.dicId);
-  } else {
-    // getWords("words/wg/" + id);
-    wordStore.getWords("WG", id);
-  }
-
-  wordStore.currentPage = 0;
-  // filterSelect.value = "newest";
   groupStore.activeWgId = newWord.wgId = id;
+  wordStore.currentPage = 0;
+
+  if (searchInput.value !== "") {
+    search("/wg/" + groupStore.activeWgId + "/search/" + searchInput.value);
+  } else {
+    if (id === "all") {
+      //getWords("words/dic/" + props.dicId);
+      wordStore.getWords("DIC", props.dicId);
+    } else {
+      // getWords("words/wg/" + id);
+      wordStore.getWords("WG", id);
+    }
+  }
 }
 
 const showModal = ref(false);
@@ -210,15 +211,18 @@ const newWord = reactive({
 const searchInput = ref("");
 watch(searchInput, () => {
   if (searchInput.value) {
-    console.log(searchInput.value);
+    wordStore.search = searchInput.value;
+    //search();
+    wordStore.searchWords();
+  } else {
+    wordStore.search = "";
+    //wordStore.words = words.value;
 
     if (groupStore.activeWgId !== "all") {
-      search("/wg/" + groupStore.activeWgId + "/search/" + searchInput.value);
+      wordStore.getWords("WG", groupStore.activeWgId);
     } else {
-      search("/dic/" + props.dicId + "/search/" + searchInput.value);
+      wordStore.getWords("DIC", props.dicId);
     }
-  } else {
-    wordStore.words = words.value;
   }
 });
 
@@ -228,7 +232,15 @@ function newSearchWord() {
   showModal.value = true;
 }
 
-async function search(url) {
+async function search() {
+  let url;
+
+  if (groupStore.activeWgId !== "all") {
+    url = "/wg/" + groupStore.activeWgId + "/search/" + searchInput.value;
+  } else {
+    url = "/dic/" + props.dicId + "/search/" + searchInput.value;
+  }
+
   let res = await readFun("words" + url);
   wordStore.words = res.data;
 }
