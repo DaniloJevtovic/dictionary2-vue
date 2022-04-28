@@ -25,8 +25,8 @@
 
         <div class="modal-footer">
           <slot name="footer">
-            <button @click="save">save</button>
-            <button @click.prevent="closeModal">cancel</button>
+            <button @click="save" class="save-btn">save</button>
+            <button @click.prevent="closeModal" class="cancel-btn">cancel</button>
           </slot>
         </div>
       </div>
@@ -71,7 +71,7 @@ function closeModal() {
 </script>
 
 <style scoped>
-.modal-container {
-  width: 700px;
-}
+/* .modal-container {
+  width: 500px;
+} */
 </style>

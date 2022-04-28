@@ -103,10 +103,10 @@ const showModal = ref(false);
 
 <style scoped>
 .word {
-  border: 1px solid darkblue;
+  /* border: 1px solid darkgray; */
   border-radius: 3px;
   margin: 4px;
-  padding: 2px;
+  /* padding: 2px; */
   text-align: center;
   display: flex;
   /* align-items: center; */

@@ -44,7 +44,7 @@
               :value="group.id"
               :style="{ background: group.color }"
             >
-              Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
+              group: {{ group.name }} -- [{{ group.numOfItems }}]
             </option>
             <option value="create">kreiraj novu grupu</option>
           </select>
