@@ -20,15 +20,22 @@
             rows="5"
           ></textarea>
 
-          <input type="color" v-model="updateDictionary.color" />
+          <!-- <input type="color" v-model="updateDictionary.color" /> -->
+
+          <div class="ccolor">
+            Color
+            <input type="color" v-model="updateDictionary.color" />
+          </div>
 
           <br />
         </div>
 
         <div class="modal-footer">
           <slot name="footer">
-            <button @click="save">save</button>
-            <button @click.prevent="closeModal">cancel</button>
+            <button @click="save" class="save-btn">save</button>
+            <button @click.prevent="closeModal" class="cancel-btn">
+              cancel
+            </button>
           </slot>
         </div>
       </div>
@@ -56,13 +63,15 @@ const dictionaryStore = useDictionaryStore();
 const updateDictionary = reactive({ ...props.dictionary });
 
 async function save() {
-  let res = await createFun("dictionaries", updateDictionary);
+  //let res = await createFun("dictionaries", updateDictionary);
 
   if (props.mode === "new") {
-    dictionaryStore.addDictionary(res.data);
+    // dictionaryStore.addDictionary(res.data);
+
+    dictionaryStore.saveDictionary(updateDictionary);
     //preusmjeri na taj novi rjecnik
   } else {
-    dictionaryStore.updateDictionary(res.data);
+    dictionaryStore.editDictionary(updateDictionary);
   }
 
   closeModal();
@@ -75,6 +84,10 @@ function closeModal() {
 
 <style scoped>
 .modal-container {
-  width: 500px;
+  width: 300px;
+}
+
+.ccolor {
+  background: v-bind("updateDictionary.color");
 }
 </style>
