@@ -27,7 +27,7 @@ export const useGroupStore = defineStore("groups", {
 
     addGroup(group) {
       if (group.type == "WGROUP") {
-        this.wgroups.push(group);
+        this.wgroups.unshift(group);
       } else {
         this.sgroups.push(group);
       }
@@ -60,6 +60,7 @@ export const useGroupStore = defineStore("groups", {
     async getWGroupsForDictionary(id) {
       let res = await readFun("groups/dic/" + id + "/group/WGROUP");
       this.wgroups = res.data;
+      return res.data;
     },
 
     async getSGroupsForDictionary(id) {
