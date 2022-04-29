@@ -84,12 +84,14 @@
           new word
         </button>
 
+        <!-- dugme koje se prikazuje kada se unosi nesto u search - iz kojeg je moguce odmah kreirati rjec -->
         <button
+          class="new-word-btn-search"
           v-if="searchInput"
           @click="newSearchWord"
-          style="background: cyan"
+          style="background: springgreen"
         >
-          +{{ searchInput }}
+          + {{ searchInput }}
         </button>
 
         <!-- rjeci -->
@@ -183,16 +185,22 @@ function changeWg(event) {
   groupStore.activeWgId = newWord.wgId = id;
   wordStore.currentPage = 0;
 
-  if (searchInput.value !== "") {
-    search("/wg/" + groupStore.activeWgId + "/search/" + searchInput.value);
+  // if (searchInput.value !== "") {
+  //   search("/wg/" + groupStore.activeWgId + "/search/" + searchInput.value);
+  // } else {
+  //   if (id === "all") {
+  //     //getWords("words/dic/" + props.dicId);
+  //     wordStore.getWords("DIC", props.dicId);
+  //   } else {
+  //     // getWords("words/wg/" + id);
+  //     wordStore.getWords("WG", id);
+  //   }
+  // }
+
+  if (id === "all") {
+    wordStore.getWords("DIC", props.dicId);
   } else {
-    if (id === "all") {
-      //getWords("words/dic/" + props.dicId);
-      wordStore.getWords("DIC", props.dicId);
-    } else {
-      // getWords("words/wg/" + id);
-      wordStore.getWords("WG", id);
-    }
+    wordStore.getWords("WG", id);
   }
 }
 
@@ -374,6 +382,19 @@ async function loadMoreWords() {
   height: 100%;
   overflow: hidden;
 } */
+
+.new-word-btn-search {
+  padding: 20px;
+  animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    /* opacity: 0; */
+    background: hotpink;
+    border-radius: 10px;
+  }
+}
 
 @media only screen and (max-width: 700px) {
   .search-wg {
