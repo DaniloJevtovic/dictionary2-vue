@@ -93,7 +93,17 @@ export const useWordStore = defineStore("words", {
 
     async saveWord(word) {
       let res = await createFun("words", word);
-      this.words.unshift(res.data); //dodavanje na pocetak
+
+      if (this.search !== "") {
+        if (
+          word.word.includes(this.search) ||
+          word.translate.includes(this.search)
+        ) {
+          this.words.unshift(res.data); //dodavanje na pocetak
+        }
+      } else {
+        this.words.unshift(res.data); //dodavanje na pocetak
+      }
     },
 
     async editWord(word, idx) {
@@ -121,6 +131,10 @@ export const useWordStore = defineStore("words", {
           this.search +
           "/?" +
           this.filter;
+
+        let group = groupStore.getWGroupById(groupStore.activeWgId);
+
+        groupStore.wgroups[groupStore.getIndex(group)].numOfItems = 0;
       } else {
         url =
           "/dic/" +
@@ -129,10 +143,25 @@ export const useWordStore = defineStore("words", {
           this.search +
           "/?" +
           this.filter;
+
+        groupStore.wgroups.forEach((wg) => {
+          wg.numOfItems = 0;
+        });
       }
 
+      // ideja da se pretraga vrsi u cijelom rjecniku, ako je selektovana neka grupa da se za tu grupu vrate
+      // rjeci, a za ostale grupe da se vrati broj rjeci (zelena)
+
       let res = await readFun("words" + url);
-      this.words = res.data;
+      this.words = res.data.content;
+
+      for (let i = 0; i < res.data.content.length; i++) {
+        for (let j = 0; j < groupStore.wgroups.length; j++) {
+          if (res.data.content[i].wgId === groupStore.wgroups[j].id) {
+            groupStore.wgroups[j].numOfItems++;
+          }
+        }
+      }
     },
   },
   persist: true,
