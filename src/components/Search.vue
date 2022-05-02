@@ -1,10 +1,16 @@
 <template>
-  <input class="search-input" type="text" v-model="searchInput" />
+  <input
+    class="search-input"
+    type="text"
+    v-model="searchInput"
+    placeholder="pretraga"
+  />
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
 import useCrud from "../composables/useCRUD.js";
+
 const props = defineProps({
   url: String,
 });
