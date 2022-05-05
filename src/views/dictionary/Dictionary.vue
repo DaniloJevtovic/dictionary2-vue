@@ -8,7 +8,7 @@
         {{ dictionaryStore.dictionary.name }}
       </h4>
 
-      <button class="light-mode" style="flex">dark</button>
+      <!-- <button class="light-mode" style="flex">dark</button> -->
     </div>
 
     <div class="demo">

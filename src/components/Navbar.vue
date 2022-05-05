@@ -13,7 +13,7 @@
 .navbar {
   color: cyan;
   background: rgb(7, 41, 68);
-  margin: 10px;
+  margin: 5px;
   text-align: center;
 }
 a {
