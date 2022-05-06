@@ -6,6 +6,8 @@
       <!-- grupe sa desne strane -->
       <div class="wgs-types" v-if="settingsStore.wgroupDirection === 'right'">
         <WGroup :dicId="dicId" :gType="'WGROUP'" />
+
+        <!-- vrste rjeci -->
         <WordTypes />
       </div>
 
@@ -217,6 +219,7 @@ const newWord = reactive({
 });
 
 const searchInput = ref("");
+
 watch(searchInput, () => {
   if (searchInput.value) {
     wordStore.search = searchInput.value;
@@ -225,6 +228,8 @@ watch(searchInput, () => {
   } else {
     wordStore.search = "";
     //wordStore.words = words.value;
+
+    groupStore.getWGroupsForDictionary(props.dicId);
 
     if (groupStore.activeWgId !== "all") {
       wordStore.getWords("WG", groupStore.activeWgId);
