@@ -26,10 +26,12 @@
         }"
       >
         <div class="dictionary" :style="{ background: dictionary.color }">
-          {{ dictionary.name }}
+          <p style="margin: 0px; padding: 0px">{{ dictionary.name }}</p>
           <!-- <p style="margin: 0px">
             <small>{{ dictionary.description }}</small>
           </p> -->
+
+          <span class="tooltip">{{ dictionary.description }}</span>
         </div>
       </router-link>
     </div>
@@ -55,7 +57,20 @@ const newDictionary = reactive({
 </script>
 
 <style scoped>
-.dictionary:hover {
+.dictionary {
+  color: black;
+}
+
+/* .dictionary:hover {
   transform: scale(1.1);
+} */
+
+.dictionary:hover .tooltip {
+  display: block;
+}
+
+.tooltip {
+  display: none;
+  color: black;
 }
 </style>
