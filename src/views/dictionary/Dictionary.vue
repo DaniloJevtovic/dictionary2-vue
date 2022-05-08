@@ -135,7 +135,7 @@ const showModal = ref(false);
   background: rgb(19, 51, 20); */
 }
 .tab {
-  border: 1px solid #eee;
+  /* border: 1px solid #eee; */
   padding: 2px;
   min-height: 400px;
 }
