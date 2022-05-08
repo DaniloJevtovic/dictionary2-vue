@@ -16,8 +16,9 @@
         @click="showModal = true"
         class="details"
         v-if="groupStore.getWGroupById(word.wgId)"
-        :style="{ background: groupStore.getWGroupById(word.wgId).color }"
       >
+        <!-- :style="{ background: groupStore.getWGroupById(word.wgId).color }" -->
+
         <p style="margin: 0px">
           <span>{{ idx + 1 }}.</span> {{ word.word }} -
           {{ word.translate }}
@@ -37,7 +38,9 @@
 
           <small
             v-if="groupStore.getWGroupById(word.wgId)"
-            :style="{ background: groupStore.getWGroupById(word.wgId).color }"
+            :style="{
+              background: groupStore.getWGroupById(word.wgId).color,
+            }"
           >
             {{ groupStore.getWGroupById(word.wgId).name }}</small
           >
@@ -103,10 +106,10 @@ const showModal = ref(false);
 
 <style scoped>
 .word {
-  /* border: 1px solid darkgray; */
-  border-radius: 3px;
+  border: 1px solid darkblue;
+  /* border-radius: 3px; */
   margin: 4px;
-  /* padding: 2px; */
+  padding: 2px;
   text-align: center;
   display: flex;
   /* align-items: center; */
@@ -117,9 +120,9 @@ const showModal = ref(false);
   /* background: v-bind('groupStore.getWGroupById(props.word.wgId).color') */
 }
 
-.details [style]:hover {
+/* .details [style]:hover {
   background: yellow;
-}
+} */
 
 .fav-word {
   background: red;
