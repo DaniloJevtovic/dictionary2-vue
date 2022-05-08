@@ -13,6 +13,13 @@
 
       <div class="words">
         <div class="search-wg" style="margin: 4px">
+          <button
+            @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
+            class="new-word"
+          >
+            new
+          </button>
+
           <!-- polje za pretragu -->
           <input
             class="search"
@@ -78,13 +85,13 @@
         </div>
 
         <!-- nova rjec -->
-        <button
+        <!-- <button
           @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
           class="new-btn"
           style="width: 100%"
         >
           new word
-        </button>
+        </button> -->
 
         <!-- dugme koje se prikazuje kada se unosi nesto u search - iz kojeg je moguce odmah kreirati rjec -->
         <button
@@ -177,6 +184,7 @@ onMounted(() => {
   groupStore.getWGroupsForDictionary(props.dicId);
 
   wordStore.filter = "sort=id,desc";
+  wordStore.search = "";
   //getWords("words/dic/" + props.dicId);
   wordStore.getWords("DIC", props.dicId);
 });
@@ -411,6 +419,10 @@ async function loadMoreWords() {
   }
 
   .filter {
+    width: 100%;
+  }
+
+  .new-word {
     width: 100%;
   }
 
