@@ -125,14 +125,20 @@ const showModal = ref(false);
   background: rgb(19, 243, 243);
 }
 .tab-button.active {
-  /* background: #032135;
-  color: #ccc; */
+  background: #032135;
+  color: #ccc;
 
-  background: darkslateblue;
-  color: cyan;
+  /* background: darkslateblue;
+  color: cyan; */
   /* 
   color: springgreen;
   background: rgb(19, 51, 20); */
+
+  background: rgb(101, 192, 245);
+  color: rgb(35, 32, 39);
+
+  background: rgb(147, 132, 206);
+  color: rgb(247, 247, 247);
 }
 .tab {
   /* border: 1px solid #eee; */

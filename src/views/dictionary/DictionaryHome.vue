@@ -47,11 +47,11 @@ const showList = ref(false);
 }
 
 .navbar {
-  background: rgb(70, 51, 153);
+  background: rgb(49, 40, 85);
   color: cyan;
 
-  color: springgreen;
-  background: rgb(19, 51, 20);
+  /* color: springgreen;
+  background: rgb(19, 51, 20); */
 }
 
 .menu {
@@ -60,7 +60,7 @@ const showList = ref(false);
 }
 
 a {
-  color: springgreen;
+  color: rgb(146, 146, 212);
   text-decoration: none;
 }
 
