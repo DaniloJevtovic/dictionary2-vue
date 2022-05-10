@@ -3,7 +3,7 @@
     <div class="words-wgs">
       <!-- lista rjeci -->
 
-      <!-- grupe sa desne strane -->
+      <!-- grupe sa desne strane - ako je odabrano da budu na desnoj strani -->
       <div class="wgs-types" v-if="settingsStore.wgroupDirection === 'right'">
         <WGroup :dicId="dicId" :gType="'WGROUP'" />
 
@@ -12,7 +12,7 @@
       </div>
 
       <div class="words">
-        <div class="search-wg" style="margin: 4px">
+        <div class="search-wg">
           <button
             @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
             class="new-word"
@@ -52,46 +52,12 @@
             </option>
           </select>
 
-          <!-- filter rjeci -->
-          <!-- <select
-            v-model="filterSelect"
-            @change="changeFilter($event)"
-            class="filter"
-          >
-            <option value="newest">newest</option>
-            <option value="oldest">oldest</option>
-            <option value="favorite">favorite</option>
-            <option value="a-z">[a-z]</option>
-            <option value="z-a">[z-a]</option>
-          </select> -->
-
-          <!-- <select
-            v-model="wordStore.filter"
-            @change="changeFilter($event)"
-            class="filter"
-          >
-            <option value="sort=id,desc">newest</option>
-            <option value="sort=id,asc">oldest</option>
-            <option value="sort=favorite,desc">favorite</option>
-            <option value="sort=word,asc">[a-z]</option>
-            <option value="sort=word,desc">[z-a]</option>
-          </select> -->
-
           <Filter
             :type="'word'"
             :filterModel="wordStore.filter"
             @filter="changeFilter2"
           />
         </div>
-
-        <!-- nova rjec -->
-        <!-- <button
-          @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
-          class="new-btn"
-          style="width: 100%"
-        >
-          new word
-        </button> -->
 
         <!-- dugme koje se prikazuje kada se unosi nesto u search - iz kojeg je moguce odmah kreirati rjec -->
         <button
@@ -103,7 +69,7 @@
           + {{ searchInput }}
         </button>
 
-        <!-- rjeci -->
+        <!-- lista rjeci -->
         <div v-for="(word, index) in wordStore.words" :key="word.id">
           <Word :word="word" :idx="index" />
         </div>
@@ -123,7 +89,7 @@
         </button>
       </div>
 
-      <!-- prikaz grupa - desna strana -->
+      <!-- grupe sa lijeve strane - ako je odabrano da budu na lijevoj strani -->
       <div class="wgs-types" v-if="settingsStore.wgroupDirection === 'left'">
         <WGroup :dicId="dicId" :gType="'WGROUP'" />
         <WordTypes />
@@ -165,27 +131,12 @@ const settingsStore = useSettingsStore();
 
 // dobavljanje rjeci za rjecnik ili grupu
 const words = ref([]);
-async function getWords(url) {
-  let res = await readFun(url);
-  wordStore.currentPage = 0;
-  wordStore.totalPages = res.data.totalPages;
-  words.value = res.data.content;
-  wordStore.words = res.data.content;
-}
-
-// dobavljanje grupe rjeci za rjecnik
-async function getWGroups() {
-  let res = await readFun("groups/dic/" + props.dicId + "/group/WGROUP");
-  groupStore.wgroups = res.data;
-}
 
 onMounted(() => {
-  // getWGroups();
   groupStore.getWGroupsForDictionary(props.dicId);
 
   wordStore.filter = "sort=id,desc";
   wordStore.search = "";
-  //getWords("words/dic/" + props.dicId);
   wordStore.getWords("DIC", props.dicId);
 });
 
@@ -194,18 +145,6 @@ function changeWg(event) {
 
   groupStore.activeWgId = newWord.wgId = id;
   wordStore.currentPage = 0;
-
-  // if (searchInput.value !== "") {
-  //   search("/wg/" + groupStore.activeWgId + "/search/" + searchInput.value);
-  // } else {
-  //   if (id === "all") {
-  //     //getWords("words/dic/" + props.dicId);
-  //     wordStore.getWords("DIC", props.dicId);
-  //   } else {
-  //     // getWords("words/wg/" + id);
-  //     wordStore.getWords("WG", id);
-  //   }
-  // }
 
   if (id === "all") {
     wordStore.getWords("DIC", props.dicId);
@@ -231,11 +170,9 @@ const searchInput = ref("");
 watch(searchInput, () => {
   if (searchInput.value) {
     wordStore.search = searchInput.value;
-    //search();
     wordStore.searchWords();
   } else {
     wordStore.search = "";
-    //wordStore.words = words.value;
 
     groupStore.getWGroupsForDictionary(props.dicId);
 
@@ -253,64 +190,8 @@ function newSearchWord() {
   showModal.value = true;
 }
 
-async function search() {
-  let url;
-
-  if (groupStore.activeWgId !== "all") {
-    url = "/wg/" + groupStore.activeWgId + "/search/" + searchInput.value;
-  } else {
-    url = "/dic/" + props.dicId + "/search/" + searchInput.value;
-  }
-
-  let res = await readFun("words" + url);
-  wordStore.words = res.data;
-}
-
 //filter
 const filterSelect = ref("newest");
-
-function changeFilter(event) {
-  let filter = event.target.value;
-
-  wordStore.filter = filter;
-
-  // let sortFilter;
-
-  // switch (filter) {
-  //   case "newest":
-  //     sortFilter = "/?sort=id,desc";
-  //     wordStore.filter = "sort=id,desc";
-  //     break;
-  //   case "oldest":
-  //     sortFilter = "/?sort=id,asc";
-  //     wordStore.filter = "sort=id,asc";
-  //     break;
-  //   case "favorite":
-  //     sortFilter = "/?sort=favorite,desc";
-  //     wordStore.filter = "sort=favorite,desc";
-  //     break;
-  //   case "a-z":
-  //     sortFilter = "/?sort=word,asc";
-  //     wordStore.filter = "sort=word,asc";
-  //     break;
-  //   case "z-a":
-  //     sortFilter = "/?sort=word,desc";
-  //     wordStore.filter = "sort=word,desc";
-  //     break;
-  // }
-
-  if (groupStore.activeWgId === "all") {
-    // let dicUrl = "words/dic/" + props.dicId + sortFilter;
-    // getWords(dicUrl);
-    wordStore.getWords("DIC", props.dicId);
-  } else {
-    // let wgUrl = "words/wg/" + groupStore.activeWgId + sortFilter;
-    // getWords(wgUrl);
-    wordStore.getWords("WG", groupStore.activeWgId);
-  }
-
-  wordStore.currentPage = 0;
-}
 
 function changeFilter2(filter) {
   wordStore.filter = filter; // mora biti ovdje na pocetku
@@ -326,36 +207,9 @@ function changeFilter2(filter) {
 
 //ucitavanje jos rjeci sa bekenda (paginacija)
 async function loadMoreWords() {
-  // wordStore.currentPage++;
-
   if (groupStore.activeWgId === "all") {
-    // let res = await readFun(
-    //   "words/dic/" + props.dicId + "/?page=" + wordStore.currentPage
-    // );
-
-    // console.log(res.data.content);
-
-    // //konkatenacija ne radi iz nekog razloga pa mora ovako :/ - popraviti!
-    // //words.value.concat(res.data.content);
-    // res.data.content.forEach((word) => {
-    //   words.value.push(word);
-    // });
-
-    // wordStore.words = words.value;
     wordStore.loadMoreWords("DIC", props.dicId);
   } else {
-    // let res = await readFun(
-    //   "words/wg/" + groupStore.activeWgId + "/?page=" + wordStore.currentPage
-    // );
-
-    // //konkatenacija ne radi iz nekog razloga pa mora ovako :/ - popraviti
-    // //wordStore.words.concat(res.data.content);
-    // res.data.content.forEach((word) => {
-    //   words.value.push(word);
-    // });
-
-    // wordStore.words = words.value;
-
     wordStore.loadMoreWords("WG", groupStore.activeWgId);
   }
 }
@@ -374,6 +228,7 @@ async function loadMoreWords() {
 .search-wg {
   display: flex;
   gap: 5px;
+  margin: 4px;
 }
 
 .words-wgs {
@@ -407,6 +262,14 @@ async function loadMoreWords() {
     background: hotpink;
     border-radius: 10px;
   }
+}
+
+.new-word {
+  background: rgb(49, 40, 85);
+  color: rgb(146, 146, 212);
+  border: none;
+  padding: 6px;
+  border-radius: 3px;
 }
 
 @media only screen and (max-width: 700px) {
