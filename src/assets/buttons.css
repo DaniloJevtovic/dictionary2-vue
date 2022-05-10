@@ -21,16 +21,17 @@ button:hover {
   background: rgb(19, 51, 20);
   /* border: 1px solid springgreen; */
 
-  background: darkslateblue;
-  color: cyan;
+  background: rgb(134, 208, 240);
+  color: darkblue;
+  border: none;
 }
 
 .fav-btn,
 .fav-btn:hover {
   /* background: rgb(19, 51, 20);
   border: 1px solid springgreen; */
-  background: darkslateblue;
-  color: springgreen;
+  background: rgb(173, 163, 238);
+  color: rgb(24, 24, 104);
 }
 
 .unfav-btn,

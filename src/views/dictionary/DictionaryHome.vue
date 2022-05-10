@@ -49,6 +49,7 @@ const showList = ref(false);
 .navbar {
   background: rgb(49, 40, 85);
   color: cyan;
+  color: rgb(146, 146, 212);
 
   /* color: springgreen;
   background: rgb(19, 51, 20); */

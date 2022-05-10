@@ -106,7 +106,7 @@ const showModal = ref(false);
 
 <style scoped>
 .word {
-  border: 1px solid darkblue;
+  border: 1px solid rgb(214, 238, 238);
   /* border-radius: 3px; */
   margin: 4px;
   padding: 2px;

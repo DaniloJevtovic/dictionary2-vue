@@ -53,6 +53,6 @@ const showModal = ref(false);
 }
 
 .grammar:hover {
-  background: rgb(248, 107, 25);
+  background: rgb(120, 127, 223);
 }
 </style>
