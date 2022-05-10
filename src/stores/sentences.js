@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import useCRUD from "../composables/useCRUD.js";
+import { useGroupStore } from "./groups.js";
+import { useDictionaryStore } from "./dictionaries.js";
 
 const { readFun, createFun, deleteFun } = useCRUD();
 
@@ -11,6 +13,7 @@ export const useSentenceStore = defineStore("sentences", {
       currentPage: 0,
       size: 10,
       filter: "sort=id,desc",
+      search: "",
     };
   },
 
@@ -30,21 +33,25 @@ export const useSentenceStore = defineStore("sentences", {
     //BEKEND
 
     async getSentences(type, id) {
-      let res;
-
-      if (type === "DIC") {
-        res = await readFun(
-          "sentences/dic/" + id + "/?" + this.filter + "&size=" + this.size
-        );
+      if (this.search !== "") {
+        this.searchSentences();
       } else {
-        res = await readFun(
-          "sentences/wg/" + id + "/?" + this.filter + "&size=" + this.size
-        );
-      }
+        let res;
 
-      this.sentences = res.data.content;
-      this.currentPage = 0;
-      this.totalPages = res.data.totalPages;
+        if (type === "DIC") {
+          res = await readFun(
+            "sentences/dic/" + id + "/?" + this.filter + "&size=" + this.size
+          );
+        } else {
+          res = await readFun(
+            "sentences/wg/" + id + "/?" + this.filter + "&size=" + this.size
+          );
+        }
+
+        this.sentences = res.data.content;
+        this.currentPage = 0;
+        this.totalPages = res.data.totalPages;
+      }
     },
 
     //ucitavanje jos recenica - (paginacija)
@@ -84,12 +91,18 @@ export const useSentenceStore = defineStore("sentences", {
     },
 
     async saveSentence(sentence) {
-      let res = await createFun("sentences", word);
-      this.sentences.unshift(res.data);
-
-      // //dobavljanje najnovijih recenica
-      // this.filter = "sort=id,desc";
-      // this.getSentences("SG", sentence.sgId);
+      let res = await createFun("sentences", sentence);
+      
+      if (this.search !== "") {
+        if (
+          sentence.sentence.includes(this.search) ||
+          sentence.translate.includes(this.search)
+        ) {
+          this.sentences.unshift(res.data); //dodavanje na pocetak
+        }
+      } else {
+        this.sentences.unshift(res.data); //dodavanje na pocetak
+      }
     },
 
     async editSentence(sentence, idx) {
@@ -100,6 +113,52 @@ export const useSentenceStore = defineStore("sentences", {
     async deleteSentence(sentence, idx) {
       await deleteFun("sentences/" + sentence.id);
       this.removeSentence(idx);
+    },
+
+    async searchSentences() {
+      let url;
+      const groupStore = useGroupStore();
+      const dictionaryStore = useDictionaryStore();
+
+      if (groupStore.activeSgId !== "all") {
+        url =
+          "/sg/" +
+          groupStore.activeSgId +
+          "/search/" +
+          this.search +
+          "/?" +
+          this.filter;
+
+        let group = groupStore.getSGroupById(groupStore.activeSgId);
+
+        groupStore.sgroups[groupStore.getIndex(group)].numOfItems = 0;
+      } else {
+        url =
+          "/dic/" +
+          dictionaryStore.dictionary.id +
+          "/search/" +
+          this.search +
+          "/?" +
+          this.filter;
+
+        groupStore.sgroups.forEach((sg) => {
+          sg.numOfItems = 0;
+        });
+      }
+
+      // ideja da se pretraga vrsi u cijelom rjecniku, ako je selektovana neka grupa da se za tu grupu vrate
+      // rjeci, a za ostale grupe da se vrati broj rjeci (zelena)
+
+      let res = await readFun("sentences" + url);
+      this.sentences = res.data.content;
+
+      for (let i = 0; i < res.data.content.length; i++) {
+        for (let j = 0; j < groupStore.sgroups.length; j++) {
+          if (res.data.content[i].sgId === groupStore.sgroups[j].id) {
+            groupStore.sgroups[j].numOfItems++;
+          }
+        }
+      }
     },
   },
   persist: true,
