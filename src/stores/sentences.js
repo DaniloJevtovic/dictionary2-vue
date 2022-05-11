@@ -44,13 +44,14 @@ export const useSentenceStore = defineStore("sentences", {
           );
         } else {
           res = await readFun(
-            "sentences/wg/" + id + "/?" + this.filter + "&size=" + this.size
+            "sentences/sg/" + id + "/?" + this.filter + "&size=" + this.size
           );
         }
 
         this.sentences = res.data.content;
         this.currentPage = 0;
         this.totalPages = res.data.totalPages;
+        this.search = "";
       }
     },
 
@@ -72,7 +73,7 @@ export const useSentenceStore = defineStore("sentences", {
         );
       } else {
         res = await readFun(
-          "words/wg/" +
+          "sentences/sg/" +
             id +
             "/?page=" +
             this.currentPage +
