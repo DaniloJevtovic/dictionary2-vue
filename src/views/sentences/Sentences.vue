@@ -4,7 +4,7 @@
       <div class="sentences">
         <div class="search-sg" style="margin: 4px">
           <!-- pretraga -->
-          <input type="text" placeholder="search" />
+          <input type="text" v-model="searchInput" placeholder="search" />
 
           <!-- selekcija grupe -->
           <select
@@ -29,19 +29,6 @@
               Grupa: {{ group.name }} -- [{{ group.numOfItems }}s]
             </option>
           </select>
-
-          <!-- filter recenica -->
-          <!-- <select
-            v-model="filterSelect"
-            @change="changeFilter($event)"
-            class="filter"
-          >
-            <option value="newest">newest</option>
-            <option value="oldest">oldest</option>
-            <option value="favorite">favorite</option>
-            <option value="a-z">[a-z]</option>
-            <option value="z-a">[z-a]</option>
-          </select> -->
 
           <Filter
             :type="'sentence'"
@@ -86,7 +73,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, watch } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import Sentence from "./Sentence.vue";
 import SGroup from "../groups/SGroup.vue";
@@ -103,33 +90,25 @@ const { readFun } = useCrud();
 const sentenceStore = useSentenceStore();
 const groupStore = useGroupStore();
 
-const getSentences = async (url) => {
-  let res = await readFun(url);
-  sentenceStore.sentences = res.data.content;
-};
-
-// grupe recenica za rjecnik
-async function getGroups() {
-  let res = await readFun("groups/dic/" + props.dicId + "/group/SGROUP");
-  groupStore.sgroups = res.data;
-}
-
 onMounted(() => {
-  getSentences("sentences/dic/" + props.dicId);
-  getGroups();
+  groupStore.getWGroupsForDictionary(props.dicId);
+
+  sentenceStore.filter = "sort=id,desc";
+  sentenceStore.search = "";
+  sentenceStore.getSentences("DIC", props.dicId);
 });
 
 function changeSg(event) {
   let id = event.target.value;
 
-  if (id == "all") {
-    getSentences("sentences/dic/" + props.dicId);
-  } else {
-    getSentences("sentences/sg/" + id);
-  }
-
-  filterSelect.value = "newest";
   groupStore.activeSgId = newSentence.sgId = id;
+  sentenceStore.currentPage = 0;
+
+  if (id == "all") {
+    sentenceStore.getSentences("DIC", props.dicId);
+  } else {
+    sentenceStore.getSentences("SG", id);
+  }
 }
 
 const showModal = ref(false);
@@ -147,37 +126,6 @@ const showGroups = ref(false);
 //filter
 const filterSelect = ref("newest");
 
-function changeFilter(event) {
-  let filter = event.target.value;
-  let sortFilter;
-
-  switch (filter) {
-    case "newest":
-      sortFilter = "/?sort=id,desc";
-      break;
-    case "oldest":
-      sortFilter = "/?sort=id,asc";
-      break;
-    case "favorite":
-      sortFilter = "/?sort=favorite,desc";
-      break;
-    case "a-z":
-      sortFilter = "/?sort=sentence,asc";
-      break;
-    case "z-a":
-      sortFilter = "/?sort=sentence,desc";
-      break;
-  }
-
-  if (groupStore.activeWgId === "all") {
-    let dicUrl = "sentences/dic/" + props.dicId + sortFilter;
-    getSentences(dicUrl);
-  } else {
-    let sgUrl = "sentences/sg/" + groupStore.activeSgId + sortFilter;
-    getSentences(sgUrl);
-  }
-}
-
 function changeFilter2(filter) {
   sentenceStore.filter = filter;
 
@@ -189,12 +137,32 @@ function changeFilter2(filter) {
 
   sentenceStore.currentPage = 0;
 }
+
+//pretraga
+const searchInput = ref("");
+
+watch(searchInput, () => {
+  if (searchInput.value) {
+    sentenceStore.search = searchInput.value;
+    sentenceStore.searchSentences();
+  } else {
+    sentenceStore.search = "";
+
+    groupStore.getSGroupsForDictionary(props.dicId);
+
+    if (groupStore.activeSgId !== "all") {
+      sentenceStore.getSentences("SG", groupStore.activeSgId);
+    } else {
+      sentenceStore.getSentences("DIC", props.dicId);
+    }
+  }
+});
 </script>
 
 <style scoped>
 .sentences {
   overflow-y: auto;
-  border: 1px solid darkblue;
+  border: 1px solid darkgray;
 }
 
 .search-sg {
@@ -205,7 +173,7 @@ function changeFilter2(filter) {
 .sentences-sgs {
   display: grid;
   grid-template-columns: 60% 40%;
-  column-gap: 5px;
+  column-gap: 2px;
 }
 
 /* .filter {

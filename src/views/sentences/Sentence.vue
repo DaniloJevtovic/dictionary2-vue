@@ -9,7 +9,9 @@
       </button>
 
       <div @click="showModal = true" class="details">
-        {{ sentence.sentence }} -{{ sentence.translate }}
+        <span>{{ idx + 1 }}.</span> {{ sentence.sentence }} -{{
+          sentence.translate
+        }}
         <p style="margin: 0px">
           <small> {{ sentence.description }}</small>
         </p>
@@ -71,7 +73,7 @@ const showModal = ref(false);
 <style scoped>
 .sentence {
   margin: 4px;
-  padding: 3px;
+  padding: 2px;
   border: 1px solid blue;
   display: flex;
   /* flex-wrap: wrap; */
