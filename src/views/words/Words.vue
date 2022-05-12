@@ -13,12 +13,12 @@
 
       <div class="words">
         <div class="search-wg">
-          <button
+          <!-- <button
             @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
             class="new-word"
           >
             new
-          </button>
+          </button> -->
 
           <!-- polje za pretragu -->
           <input
@@ -70,6 +70,15 @@
         </button>
 
         <!-- lista rjeci -->
+
+        <button
+          @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
+          class="new-btn"
+          style="width: 100%"
+        >
+          new word
+        </button>
+
         <div v-for="(word, index) in wordStore.words" :key="word.id">
           <Word :word="word" :idx="index" />
         </div>
@@ -165,6 +174,7 @@ const newWord = reactive({
   wgId: "all",
 });
 
+//pretraga
 const searchInput = ref("");
 
 watch(searchInput, () => {
@@ -262,14 +272,6 @@ async function loadMoreWords() {
     background: hotpink;
     border-radius: 10px;
   }
-}
-
-.new-word {
-  background: rgb(49, 40, 85);
-  color: rgb(146, 146, 212);
-  border: none;
-  padding: 6px;
-  border-radius: 3px;
 }
 
 @media only screen and (max-width: 700px) {

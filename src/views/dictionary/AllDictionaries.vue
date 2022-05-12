@@ -31,7 +31,9 @@
             <small>{{ dictionary.description }}</small>
           </p> -->
 
-          <span class="tooltip">{{ dictionary.description }}</span>
+          <span class="tooltip">
+            <small>{{ dictionary.description }}</small></span
+          >
         </div>
       </router-link>
     </div>

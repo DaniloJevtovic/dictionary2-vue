@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <router-link :to="{ name: 'User' }"> Hi, Lemur </router-link> |
+    <router-link :to="{ name: 'User' }">Hi, Lemur</router-link> |
     <!-- <button @click="showList = !showList">Rjecnici</button> -->
 
     <!-- <router-link :to="{ name: 'AllDictionaries' }">
@@ -28,6 +28,8 @@ const showList = ref(false);
 
 <style>
 .navbar {
+  text-align: center;
+
   background: rgb(49, 40, 85);
   color: cyan;
   color: rgb(146, 146, 212);

@@ -17,11 +17,11 @@ button:hover {
 .new-btn {
   width: 50%;
   margin: 4px 0px;
-  color: springgreen;
-  background: rgb(19, 51, 20);
+  /* color: springgreen;
+  background: rgb(19, 51, 20); */
   /* border: 1px solid springgreen; */
 
-  background: rgb(134, 208, 240);
+  background: rgb(179, 218, 243);
   color: darkblue;
   border: none;
 }

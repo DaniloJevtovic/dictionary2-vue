@@ -1,6 +1,8 @@
 <template>
   <div class="sgroups">
-    <input type="text" v-model="searchInput" placeholder="search" />
+    <!-- <input type="text" v-model="searchInput" placeholder="search" /> -->
+
+    <h4 style="margin: 2px">sentence groups</h4>
 
     <button
       @click.prevent="showModal = true"
@@ -66,7 +68,7 @@ const showModal = ref(false);
 
 <style scoped>
 .sgroups {
-  border: 1px solid red;
+  border: 1px solid darkgray;
   padding: 10px;
 }
 
