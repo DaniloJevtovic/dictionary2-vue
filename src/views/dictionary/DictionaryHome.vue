@@ -1,15 +1,6 @@
 <template>
   <div class="home">
-    <div class="navbar">
-      <router-link :to="{ name: 'User' }"> Hi, Lemur </router-link> |
-      <!-- <button @click="showList = !showList">Rjecnici</button> -->
-      <router-link :to="{ name: 'AllDictionaries' }"> Rjecnici </router-link> |
-      <router-link :to="{ name: 'Login' }">Logout</router-link>
-    </div>
-
-    <!-- <div v-if="showList" class="menu">
-      <DictionariesList @closeSidebar="showList = false" />
-    </div> -->
+    <DictionaryNavbar />
 
     <div class="container">
       <router-view :key="$route.path" />
@@ -20,7 +11,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
-import DictionariesList from "./DictionariesList.vue";
+import DictionaryNavbar from "./DictionaryNavbar.vue";
 
 import useCrud from "../../composables/useCRUD.js";
 import { useRouter } from "vue-router";
@@ -44,25 +35,6 @@ const showList = ref(false);
 .home {
   /* border: 1px solid rgb(36, 51, 73); */
   padding: 4px;
-}
-
-.navbar {
-  background: rgb(49, 40, 85);
-  color: cyan;
-  color: rgb(146, 146, 212);
-
-  /* color: springgreen;
-  background: rgb(19, 51, 20); */
-}
-
-.menu {
-  margin: auto;
-  text-align: center;
-}
-
-a {
-  color: rgb(146, 146, 212);
-  text-decoration: none;
 }
 
 .container {
