@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <input type="text" placeholder="search" />
+  <div class="grammars-div">
+    <input type="text" v-model="searchInput" placeholder="search by title" />
 
     <button @click="showModal = true" class="new-btn" style="width: 100%">
       new grammar
@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, watch } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import Grammar from "./Grammar.vue";
 import AddEditGrammarModal from "./AddEditGrammarModal.vue";
@@ -36,12 +36,9 @@ const props = defineProps({
 const { readFun } = useCrud();
 const grammarStore = useGrammarStore();
 
-const getGrammars = async () => {
-  let res = await readFun("/grammars/dic/" + props.dicId);
-  grammarStore.grammars = res.data.content;
-};
-
-onMounted(() => getGrammars());
+onMounted(() => {
+  grammarStore.getGrammars();
+});
 
 const newGrammar = reactive({
   title: "",
@@ -50,9 +47,28 @@ const newGrammar = reactive({
 });
 
 const showModal = ref(false);
+
+//pretraga
+const searchInput = ref("");
+
+watch(searchInput, () => {
+  if (searchInput.value) {
+    grammarStore.search = searchInput.value;
+    grammarStore.searchGrammars();
+  } else {
+    grammarStore.search = "";
+
+    grammarStore.getGrammars();
+  }
+});
 </script>
 
 <style scoped>
+.grammars-div {
+  margin: 2px;
+  border: 1px solid darkgray;
+}
+
 .grammars {
   overflow-y: auto;
   /* max-height: 320px; */
