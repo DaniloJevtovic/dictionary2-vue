@@ -1,11 +1,15 @@
 <template>
   <div>
     <div class="grammar">
-      <button @click="expandGrammar">V</button>
-      <div @click="showModal = true" class="details">
+      <button @click="showModal = true">&#9998;</button>
+      <div @click="expandGrammar = !expandGrammar" class="details">
         {{ grammar.title }}
-        <p style="margin: 0px">
+        <p v-if="expandGrammar" style="margin: 0px">
           <small> {{ grammar.content }}</small>
+        </p>
+
+        <p v-else style="margin: 0px">
+          <small> {{ grammar.content.substring(0, 30) }}...</small>
         </p>
       </div>
       <button @click.prevent="deleteGrammar" class="del-btn">&#x2715;</button>
@@ -37,17 +41,18 @@ const props = defineProps({
 });
 
 async function deleteGrammar() {
-  await deleteFun("grammars", props.grammar.id);
-  grammarStore.removeGrammar(props.idx);
+  grammarStore.deleteGrammar(props.grammar, props.idx);
 }
 
 const showModal = ref(false);
+
+const expandGrammar = ref(false);
 </script>
 
 <style scoped>
 .grammar {
   margin: 3px 0px;
-  padding: 3px;
+  padding: 2px;
   border: 1px solid blue;
   display: flex;
 }
