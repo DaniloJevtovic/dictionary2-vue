@@ -108,7 +108,21 @@ export const useWordStore = defineStore("words", {
 
     async editWord(word, idx) {
       let res = await createFun("words", word);
-      this.updateWord(word, idx);
+
+      //ako je nesto ukucano u search
+      if (this.search !== "") {
+        //ideja ako se skroz promjeni rjeci ili prevod - ukloniti tu rjec iz liste
+        if (
+          !word.word.includes(this.search) &&
+          !word.translate.includes(this.search)
+        ) {
+          this.removeWord(idx);
+        } else {
+          this.updateWord(word, idx);
+        }
+      } else {
+        this.updateWord(word, idx);
+      }
     },
 
     async deleteWord(word, idx) {
