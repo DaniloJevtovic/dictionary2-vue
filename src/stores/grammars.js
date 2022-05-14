@@ -33,12 +33,28 @@ export const useGrammarStore = defineStore("grammars", {
 
     async saveGrammar(grammar) {
       let res = await createFun("grammars", grammar);
-      this.addGrammar(res.data);
+
+      if (this.search !== "") {
+        if (grammar.title.includes(this.search)) {
+          this.addGrammar(res.data);
+        }
+      } else {
+        this.addGrammar(res.data);
+      }
     },
 
     async editGrammar(grammar, idx) {
       let res = await createFun("grammars", grammar);
-      this.updateGrammar(res.data, idx);
+
+      //ako je nesto ukucano u search
+      if (this.search !== "") {
+        //ideja ako se skroz promjeni naziv - ukloniti tu gramatiku iz liste
+        if (!grammar.title.includes(this.search)) {
+          this.removeGrammar(idx);
+        }
+      } else {
+        this.updateGrammar(res.data, idx);
+      }
     },
 
     async deleteGrammar(grammar, idx) {
