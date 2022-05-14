@@ -27,7 +27,9 @@ export const useGrammarStore = defineStore("grammars", {
     async getGrammars() {
       const dictionaryStore = useDictionaryStore();
 
-      let res = await readFun("/grammars/dic/" + dictionaryStore.dictionary.id);
+      let res = await readFun(
+        "/grammars/dic/" + dictionaryStore.dictionary.id + "/?" + this.filter
+      );
       this.grammars = res.data.content;
     },
 
@@ -51,6 +53,8 @@ export const useGrammarStore = defineStore("grammars", {
         //ideja ako se skroz promjeni naziv - ukloniti tu gramatiku iz liste
         if (!grammar.title.includes(this.search)) {
           this.removeGrammar(idx);
+        } else {
+          this.updateGrammar(res.data, idx);
         }
       } else {
         this.updateGrammar(res.data, idx);
