@@ -26,7 +26,9 @@
         <div class="modal-footer">
           <slot name="footer">
             <button @click="save" class="save-btn">save</button>
-            <button @click.prevent="closeModal" class="cancel-btn">cancel</button>
+            <button @click.prevent="closeModal" class="cancel-btn">
+              cancel
+            </button>
           </slot>
         </div>
       </div>
@@ -35,6 +37,7 @@
 </template>
 
 <script setup>
+import { update } from "lodash";
 import { reactive } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import { useGrammarStore } from "../../stores/grammars.js";
@@ -54,12 +57,10 @@ const grammarStore = useGrammarStore();
 const updateGrammar = reactive({ ...props.grammar });
 
 async function save() {
-  let res = await createFun("grammars", updateGrammar);
-
   if (props.mode === "new") {
-    grammarStore.addGrammar(res.data);
+    grammarStore.saveGrammar(updateGrammar);
   } else {
-    grammarStore.updateGrammar(res.data, props.idx);
+    grammarStore.editGrammar(updateGrammar, props.idx);
   }
 
   closeModal();
@@ -71,7 +72,13 @@ function closeModal() {
 </script>
 
 <style scoped>
-/* .modal-container {
+.modal-container {
   width: 500px;
-} */
+}
+
+@media only screen and (max-width: 700px) {
+  .modal-container {
+    width: auto;
+  }
+}
 </style>
