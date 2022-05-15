@@ -29,13 +29,8 @@ const showList = ref(false);
 <style>
 .navbar {
   text-align: center;
-
-  background: rgb(49, 40, 85);
+  background: darkblue;
   color: cyan;
-  color: rgb(146, 146, 212);
-
-  /* color: springgreen;
-  background: rgb(19, 51, 20); */
 }
 
 .menu {
@@ -44,7 +39,7 @@ const showList = ref(false);
 }
 
 a {
-  color: rgb(146, 146, 212);
+  color: cyan;
   text-decoration: none;
 }
 </style>

@@ -112,10 +112,11 @@ const showModal = ref(false);
   margin: 5px 0px;
 }
 .tab-button:hover {
-  background: rgb(158, 209, 209);
+  background: cyan;
 }
 .tab-button.active {
-  background: rgb(156, 156, 219);
+  background: darkblue;
+  color: cyan;
 }
 .tab {
   padding: 2px;

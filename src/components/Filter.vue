@@ -30,8 +30,8 @@ function changeFilter(event) {
 .filter {
   width: auto;
   text-align: center;
-  color: springgreen;
-  background: rgb(19, 51, 20);
+  /* color: springgreen;
+  background: rgb(19, 51, 20); */
 }
 
 @media only screen and (max-width: 700px) {
