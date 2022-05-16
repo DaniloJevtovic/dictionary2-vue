@@ -17,12 +17,8 @@ button:hover {
 .new-btn {
   width: 50%;
   margin: 4px 0px;
-  /* color: springgreen;
-  background: rgb(19, 51, 20); */
-  /* border: 1px solid springgreen; */
-
-  background: rgb(179, 218, 243);
-  color: darkblue;
+  background: rgb(76, 76, 221);
+  color: cyan;
   border: none;
 }
 
