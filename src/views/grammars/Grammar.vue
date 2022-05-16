@@ -3,7 +3,7 @@
     <div class="grammar">
       <button @click="showModal = true">&#9998;</button>
       <div @click="expandGrammar = !expandGrammar" class="details">
-        {{ grammar.title }}
+        {{ idx + 1 }}.{{ grammar.title }}
         <p v-if="expandGrammar" style="margin: 0px">
           <small> {{ grammar.content }}</small>
         </p>

@@ -74,7 +74,7 @@
         <button
           @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
           class="new-btn"
-          style="width: 100%"
+          style="width: 99%"
         >
           new word
         </button>
@@ -247,13 +247,6 @@ async function loadMoreWords() {
   /* grid-template-columns: 40% 60%; */
 
   column-gap: 2px;
-}
-
-.filter {
-  width: auto;
-  text-align: center;
-  color: springgreen;
-  background: rgb(19, 51, 20);
 }
 
 /* .wgs-types {
