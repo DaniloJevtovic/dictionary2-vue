@@ -37,23 +37,15 @@
 
 <script setup>
 import { onMounted, ref, reactive } from "vue";
-import useCrud from "../../composables/useCRUD.js";
+
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 import AddEditDictionaryModal from "./AddEditDictionaryModal.vue";
 import { useRouter } from "vue-router";
 
-const dictionaries = ref([]);
-const { readFun } = useCrud();
 const dictionaryStore = useDictionaryStore();
 
-const getDictionaries = async () => {
-  let res = await readFun("/dictionaries");
-  dictionaryStore.dictionaries = res.data;
-};
-
 onMounted(() => {
-  console.log("rjjjje");
-  getDictionaries();
+  dictionaryStore.getDictionaries();
 });
 
 const showModal = ref(false);
