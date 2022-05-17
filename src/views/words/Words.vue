@@ -245,7 +245,6 @@ async function loadMoreWords() {
   display: grid;
   grid-template-columns: 60% 40%;
   /* grid-template-columns: 40% 60%; */
-
   column-gap: 2px;
 }
 

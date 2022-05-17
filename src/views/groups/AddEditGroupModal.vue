@@ -3,7 +3,6 @@
     <div class="modal-wrapper">
       <div class="modal-container">
         <div class="modal-header">
-          <!-- <div :style="{ background: updateGroup.color }"> -->
           <h3>{{ mode }} group</h3>
         </div>
 
@@ -85,10 +84,6 @@ function closeModal() {
 </script>
 
 <style scoped>
-.modal-container {
-  width: 300px;
-}
-
 .ccolor {
   background: v-bind("updateGroup.color");
 }

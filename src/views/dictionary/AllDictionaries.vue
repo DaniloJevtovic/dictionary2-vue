@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- <h3 style="margin: 5px">Dictionaries</h3> -->
+
     <button @click="showModal = true" class="new-btn" style="width: 100%">
       +novi rjecnik
     </button>
@@ -27,9 +29,6 @@
       >
         <div class="dictionary" :style="{ background: dictionary.color }">
           <p style="margin: 0px; padding: 0px">{{ dictionary.name }}</p>
-          <!-- <p style="margin: 0px">
-            <small>{{ dictionary.description }}</small>
-          </p> -->
 
           <span class="tooltip">
             <small>{{ dictionary.description }}</small></span
@@ -49,6 +48,10 @@ import AddEditDictionaryModal from "./AddEditDictionaryModal.vue";
 const { readFun } = useCrud();
 const dictionaryStore = useDictionaryStore();
 
+onMounted(() => {
+  dictionaryStore.getDictionaries();
+});
+
 const showModal = ref(false);
 const newDictionary = reactive({
   name: "",
@@ -62,10 +65,6 @@ const newDictionary = reactive({
 .dictionary {
   color: black;
 }
-
-/* .dictionary:hover {
-  transform: scale(1.1);
-} */
 
 .dictionary:hover .tooltip {
   display: block;

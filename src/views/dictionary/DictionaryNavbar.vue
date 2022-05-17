@@ -6,11 +6,6 @@
     |
     <!-- <button @click="showList = !showList">Rjecnici</button> -->
 
-    <!-- <router-link :to="{ name: 'AllDictionaries' }">
-      {{ dictionaryStore.dictionary.name }}
-    </router-link>
-    | -->
-
     <router-link :to="{ name: 'AllDictionaries' }" active-class="active">
       Rjecnici
     </router-link>
@@ -19,13 +14,13 @@
   </div>
 
   <div v-if="showList" class="menu">
-    <DictionariesList @closeSidebar="showList = false" />
+    <DictionariesMenu @closeSidebar="showList = false" />
   </div>
 </template>
 
 <script setup >
 import { ref } from "vue";
-import DictionariesList from "./DictionariesList.vue";
+import DictionariesMenu from "./DictionariesMenu.vue";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 const dictionaryStore = useDictionaryStore();
 
