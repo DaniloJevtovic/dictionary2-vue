@@ -45,7 +45,6 @@
 
 <script setup>
 import { reactive } from "vue";
-import useCrud from "../../composables/useCRUD.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 
 const props = defineProps({
@@ -57,17 +56,12 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
-const { createFun } = useCrud();
 const dictionaryStore = useDictionaryStore();
 
 const updateDictionary = reactive({ ...props.dictionary });
 
 async function save() {
-  //let res = await createFun("dictionaries", updateDictionary);
-
   if (props.mode === "new") {
-    // dictionaryStore.addDictionary(res.data);
-
     dictionaryStore.saveDictionary(updateDictionary);
     //preusmjeri na taj novi rjecnik
   } else {
@@ -83,10 +77,6 @@ function closeModal() {
 </script>
 
 <style scoped>
-.modal-container {
-  width: 300px;
-}
-
 .ccolor {
   background: v-bind("updateDictionary.color");
 }
