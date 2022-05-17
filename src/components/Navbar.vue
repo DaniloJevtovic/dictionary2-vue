@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
-    <router-link to="/login">Login</router-link> |
-    <router-link to="/register">Register</router-link> |
+    <router-link to="/login" active-class="active">Login</router-link> |
+    <router-link to="/register" active-class="active">Register</router-link> |
     <router-link to="/dictionaries">Dictionary</router-link>
   </div>
 </template>
@@ -21,7 +21,7 @@ a {
   text-decoration: none;
 }
 
-a:active {
+a.active {
   color: red;
 }
 </style>

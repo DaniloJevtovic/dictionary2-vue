@@ -1,6 +1,9 @@
 <template>
   <div class="navbar">
-    <router-link :to="{ name: 'User' }">Hi, Lemur</router-link> |
+    <router-link :to="{ name: 'User' }" active-class="active"
+      >Hi, Lemur</router-link
+    >
+    |
     <!-- <button @click="showList = !showList">Rjecnici</button> -->
 
     <!-- <router-link :to="{ name: 'AllDictionaries' }">
@@ -8,7 +11,10 @@
     </router-link>
     | -->
 
-    <router-link :to="{ name: 'AllDictionaries' }"> Rjecnici </router-link> |
+    <router-link :to="{ name: 'AllDictionaries' }" active-class="active">
+      Rjecnici
+    </router-link>
+    |
     <router-link :to="{ name: 'Login' }">Logout</router-link>
   </div>
 
@@ -41,5 +47,9 @@ const showList = ref(false);
 a {
   color: cyan;
   text-decoration: none;
+}
+
+a.active {
+  color: hotpink;
 }
 </style>
