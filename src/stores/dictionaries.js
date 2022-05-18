@@ -14,13 +14,10 @@ export const useDictionaryStore = defineStore("dictionaries", {
     },
 
     addDictionary(dictionary) {
-      // this.dictionaries.push(dictionary);
       this.dictionaries.unshift(dictionary);
     },
 
     updateDictionary(dictionary) {
-      // let dic = this.getDictionaryById(dictionary.id)
-
       this.dictionaries[this.findIndex(dictionary)] = dictionary;
       this.dictionary = dictionary;
     },
@@ -43,6 +40,7 @@ export const useDictionaryStore = defineStore("dictionaries", {
     //rjecnici za ulogovanog korisnika - id korisnika
     async getDictionaries() {
       let res = await readFun("/dictionaries");
+      this.dictionaries = res.data;
     },
   },
   getters: {
