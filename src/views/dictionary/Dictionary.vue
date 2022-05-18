@@ -1,15 +1,19 @@
 <template>
   <div class="main">
+    <!-- header sa nazivom rjecnik -->
     <div
       :style="{ background: dictionaryStore.dictionary.color }"
       class="dic-header"
+      @click="showModal = true"
     >
-      <h4 @click="showModal = true" style="margin: 0px">
+      <h4 style="margin: 0px">
         {{ dictionaryStore.dictionary.name }}
       </h4>
     </div>
 
-    <div class="demo">
+    <!-- tjelo rjecnika - tabovi, rjeci, grupe... -->
+    <div class="dic-body">
+      <!-- tabovi -->
       <button
         v-for="(_, tab) in tabs"
         :key="tab"
@@ -19,7 +23,7 @@
         {{ tab }}
       </button>
 
-      <!-- prikazuje se umjesto tabova ako je rezolucija < 600px -->
+      <!--select-tab - prikazuje se umjesto tabova ako je rezolucija < 600px -->
       <select class="tab-select" v-show="true" v-model="tabStore.currentTab">
         <option :value="tab" v-for="(_, tab) in tabs" :key="tab">
           {{ tab }}
@@ -30,7 +34,7 @@
       <KeepAlive>
         <component
           :is="tabs[tabStore.currentTab]"
-          :dicId="dictionary.id"
+          :dicId="dictionaryStore.dictionary.id"
           class="tab"
         >
         </component>
@@ -49,18 +53,14 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
 import { useGroupStore } from "../../stores/groups.js";
 import { useTabStore } from "../../stores/tabs.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 import AddEditDictionaryModal from "./AddEditDictionaryModal.vue";
-import DictionariesList from "./DictionariesList.vue";
 
 import Words from "../../views/words/Words.vue";
 import Sentences from "../../views/sentences/Sentences.vue";
 import Grammars from "../../views/grammars/Grammars.vue";
-
-// const currentTab = ref("Words");
 
 const dictionaryStore = useDictionaryStore();
 
@@ -79,10 +79,6 @@ onMounted(() => {
   tabStore.currentTab = "Words";
 });
 
-const route = useRoute();
-
-const dictionary = ref({ name: route.params.name, id: route.params.id });
-
 const showModal = ref(false);
 </script>
 
@@ -94,7 +90,7 @@ const showModal = ref(false);
   justify-content: center;
 }
 
-.demo {
+.dic-body {
   font-family: sans-serif;
   border: 1px solid #eee;
   border-radius: 2px;
@@ -111,13 +107,16 @@ const showModal = ref(false);
   padding: 1px 40px;
   margin: 5px 0px;
 }
+
 .tab-button:hover {
   background: cyan;
 }
+
 .tab-button.active {
   background: darkblue;
   color: cyan;
 }
+
 .tab {
   padding: 2px;
   min-height: 400px;
