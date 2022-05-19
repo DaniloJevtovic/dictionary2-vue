@@ -1,6 +1,6 @@
 <template>
   <form>
-    <h4 style="margin: 0px; background: cyan; color: darkslateblue">Login</h4>
+    <h4 style="margin: 0px; background: cyan; color: darkblue">Login</h4>
 
     <input type="email" placeholder="email" required />
     <input type="password" placeholder="password" required />

@@ -1,6 +1,6 @@
 <template>
   <form>
-    <h4 style="margin: 0px; background: cyan; color: darkslateblue">
+    <h4 style="margin: 0px; background: cyan; color: darkblue">
       Register
     </h4>
 
