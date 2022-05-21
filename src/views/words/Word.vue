@@ -1,8 +1,6 @@
 <template>
   <div>
     <div class="word">
-      <!-- :style="{ background: groupStore.getWGroupById(word.wgId).color }" -->
-
       <!-- favorite button -->
       <button
         @click.prevent="updateFav"
@@ -17,8 +15,6 @@
         class="details"
         v-if="groupStore.getWGroupById(word.wgId)"
       >
-        <!-- :style="{ background: groupStore.getWGroupById(word.wgId).color }" -->
-
         <p style="margin: 0px">
           <span>{{ idx + 1 }}.</span> {{ word.word }} -
           {{ word.translate }}
@@ -82,8 +78,6 @@ const wTypeStore = useWordTypeStore();
 const groupStore = useGroupStore();
 
 async function deleteWord() {
-  // await deleteFun("words", props.word.id);
-  // wordStore.removeWord(props.idx);
   wordStore.deleteWord(props.word, props.idx);
 
   // u grupi smanji broj rjeci za 1
@@ -119,10 +113,6 @@ const showModal = ref(false);
   background: cyan;
   /* background: v-bind('groupStore.getWGroupById(props.word.wgId).color') */
 }
-
-/* .details [style]:hover {
-  background: yellow;
-} */
 
 .fav-word {
   background: red;
