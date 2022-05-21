@@ -42,7 +42,7 @@
             (showModal = true), (newSentence.sgId = groupStore.activeSgId)
           "
           class="new-btn"
-          style="width: 100%"
+          style="width: 99%"
         >
           new sentence
         </button>

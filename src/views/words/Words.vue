@@ -91,7 +91,7 @@
           "
           @click="loadMoreWords"
           class="new-btn"
-          style="width: 100%"
+          style="width: 99%"
         >
           load more words [{{ wordStore.currentPage + 1 }} /
           {{ wordStore.totalPages }}]
