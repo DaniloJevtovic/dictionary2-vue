@@ -13,7 +13,16 @@
           sentence.translate
         }}
         <p style="margin: 0px">
-          <small> {{ sentence.description }}</small>
+          <small> {{ sentence.description }}</small> |
+
+          <small
+            v-if="groupStore.getSGroupById(sentence.sgId)"
+            :style="{
+              background: groupStore.getSGroupById(sentence.sgId).color,
+            }"
+          >
+            {{ groupStore.getSGroupById(sentence.sgId).name }}</small
+          >
         </p>
       </div>
 
