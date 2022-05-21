@@ -106,7 +106,8 @@ async function save() {
 
     let group = groupStore.getWGroupById(updateWord.wgId);
     group.numOfItems = group.numOfItems + 1;
-    await updateNumOfWords(updateWord.wgId, group.numOfItems);
+    
+    groupStore.updateNumOfItems(updateWord.wgId, group.numOfItems);
   } else {
     wordStore.editWord(updateWord, props.idx);
 
@@ -118,8 +119,8 @@ async function save() {
       let newGroup = groupStore.getWGroupById(updateWord.wgId);
       newGroup.numOfItems = newGroup.numOfItems + 1;
 
-      await updateNumOfWords(props.word.wgId, oldGroup.numOfItems);
-      await updateNumOfWords(updateWord.wgId, newGroup.numOfItems);
+      groupStore.updateNumOfItems(props.word.wgId, oldGroup.numOfItems);
+      groupStore.updateNumOfItems(updateWord.wgId, newGroup.numOfItems);
     }
   }
 
@@ -139,10 +140,6 @@ async function save() {
 
 function closeModal() {
   emit("close");
-}
-
-async function updateNumOfWords(wgId, numOfItems) {
-  await patchFun("groups/" + wgId + "/num/" + numOfItems);
 }
 </script>
 

@@ -3,7 +3,7 @@ import useCRUD from "../composables/useCRUD.js";
 
 // grupe rjeci i recenica za rjecnik
 
-const { readFun, createFun, deleteFun } = useCRUD();
+const { readFun, createFun, deleteFun, patchFun } = useCRUD();
 
 export const useGroupStore = defineStore("groups", {
   state: () => {
@@ -76,6 +76,11 @@ export const useGroupStore = defineStore("groups", {
     async editGroup(group, idx) {
       let res = await createFun("groups", group);
       this.updateGroup(group, idx);
+    },
+
+    // update broja rjeci ili recenica zavisi o kojoj se vrsti grupe rade
+    async updateNumOfItems(groupId, numOfItems) {
+      await patchFun("groups/" + groupId + "/num/" + numOfItems);
     },
 
     async deleteGroup(group, idx) {

@@ -83,16 +83,13 @@ async function deleteWord() {
   // u grupi smanji broj rjeci za 1
   let group = groupStore.getWGroupById(props.word.wgId);
   group.numOfItems = group.numOfItems - 1;
-  await updateNumOfWords(props.word.wgId, group.numOfItems);
+  
+  groupStore.updateNumOfItems(props.word.wgId, group.numOfItems);
 }
 
 async function updateFav() {
   props.word.favorite = !props.word.favorite;
   await patchFun("words/" + props.word.id + "/favorite/" + props.word.favorite);
-}
-
-async function updateNumOfWords(wgId, numOfItems) {
-  await patchFun("groups/" + wgId + "/num/" + numOfItems);
 }
 
 const showModal = ref(false);
