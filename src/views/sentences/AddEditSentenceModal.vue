@@ -91,7 +91,8 @@ async function save() {
 
     let group = groupStore.getSGroupById(updateSentence.sgId);
     group.numOfItems = group.numOfItems + 1;
-    await updateNumOfSentences(updateSentence.sgId, group.numOfItems);
+
+    groupStore.updateNumOfItems(updateSentence.sgId, group.numOfItems);
   } else {
     sentenceStore.updateSentence(updateSentence, props.idx);
 
@@ -103,8 +104,8 @@ async function save() {
       let newGroup = groupStore.getSGroupById(updateSentence.sgId);
       newGroup.numOfItems = newGroup.numOfItems + 1;
 
-      await updateNumOfSentences(props.sentence.sgId, oldGroup.numOfItems);
-      await updateNumOfSentences(updateSentence.sgId, newGroup.numOfItems);
+      groupStore.updateNumOfItems(props.sentence.sgId, oldGroup.numOfItems);
+      groupStore.updateNumOfItems(updateSentence.sgId, newGroup.numOfItems);
     }
   }
 
@@ -119,10 +120,6 @@ async function save() {
 
 function closeModal() {
   emit("close");
-}
-
-async function updateNumOfSentences(sgId, numOfItems) {
-  await patchFun("groups/" + sgId + "/num/" + numOfItems);
 }
 </script>
 

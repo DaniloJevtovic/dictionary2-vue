@@ -62,7 +62,8 @@ async function deleteSentence() {
 
   let group = groupStore.getSGroupById(props.sentence.sgId);
   group.numOfItems = group.numOfItems - 1;
-  await updateNumOfSentences(props.sentence.sgId, group.numOfItems);
+
+  groupStore.updateNumOfItems(props.sentence.sgId, group.numOfItems);
 }
 
 async function updateFav() {
@@ -70,10 +71,6 @@ async function updateFav() {
   await patchFun(
     "sentences/" + props.sentence.id + "/favorite/" + props.sentence.favorite
   );
-}
-
-async function updateNumOfSentences(sgId, numOfItems) {
-  await patchFun("groups/" + sgId + "/num/" + numOfItems);
 }
 
 const showModal = ref(false);
