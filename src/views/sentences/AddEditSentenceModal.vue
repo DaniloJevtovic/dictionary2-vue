@@ -88,11 +88,7 @@ async function save() {
 
   if (props.mode === "new") {
     sentenceStore.addSentence(res.data);
-
-    let group = groupStore.getSGroupById(updateSentence.sgId);
-    group.numOfItems = group.numOfItems + 1;
-
-    groupStore.updateNumOfItems(updateSentence.sgId, group.numOfItems);
+    groupStore.increaseNumOfItems(updateSentence.sgId);
   } else {
     sentenceStore.updateSentence(updateSentence, props.idx);
 
@@ -104,8 +100,8 @@ async function save() {
       let newGroup = groupStore.getSGroupById(updateSentence.sgId);
       newGroup.numOfItems = newGroup.numOfItems + 1;
 
-      groupStore.updateNumOfItems(props.sentence.sgId, oldGroup.numOfItems);
-      groupStore.updateNumOfItems(updateSentence.sgId, newGroup.numOfItems);
+      groupStore.decreaseNumOfItems(props.sentence.sgId); // smanjujem u staroj grupi
+      groupStore.increaseNumOfItems(updateSentence.sgId); // povecavam u novoj grupi
     }
   }
 

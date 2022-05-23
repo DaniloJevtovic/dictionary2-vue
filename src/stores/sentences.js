@@ -100,9 +100,13 @@ export const useSentenceStore = defineStore("sentences", {
           sentence.translate.includes(this.search)
         ) {
           this.sentences.unshift(res.data); //dodavanje na pocetak
+          let group = groupStore.getSGroupById(sentence.sgId);
+          group.numOfItems = group.numOfItems + 1;
         }
       } else {
         this.sentences.unshift(res.data); //dodavanje na pocetak
+        let group = groupStore.getSGroupById(sentence.sgId);
+        group.numOfItems = group.numOfItems + 1;
       }
     },
 

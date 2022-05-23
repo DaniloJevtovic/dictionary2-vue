@@ -63,7 +63,7 @@ async function deleteSentence() {
   let group = groupStore.getSGroupById(props.sentence.sgId);
   group.numOfItems = group.numOfItems - 1;
 
-  groupStore.updateNumOfItems(props.sentence.sgId, group.numOfItems);
+  groupStore.decreaseNumOfItems(props.sentence.sgId);
 }
 
 async function updateFav() {
