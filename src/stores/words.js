@@ -94,15 +94,22 @@ export const useWordStore = defineStore("words", {
     async saveWord(word) {
       let res = await createFun("words", word);
 
+      const groupStore = useGroupStore();
+
       if (this.search !== "") {
         if (
           word.word.includes(this.search) ||
           word.translate.includes(this.search)
         ) {
           this.words.unshift(res.data); //dodavanje na pocetak
+          // povecavanje za 1
+          let group = groupStore.getWGroupById(word.wgId);
+          group.numOfItems = group.numOfItems + 1;
         }
       } else {
         this.words.unshift(res.data); //dodavanje na pocetak
+        let group = groupStore.getWGroupById(word.wgId);
+        group.numOfItems = group.numOfItems + 1;
       }
     },
 

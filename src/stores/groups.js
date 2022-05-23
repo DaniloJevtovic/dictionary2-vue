@@ -16,7 +16,7 @@ export const useGroupStore = defineStore("groups", {
   },
 
   actions: {
-    // za prosljedjenu grupu vraca njen index u nizus
+    // za prosljedjenu grupu vraca njen index u nizu
     getIndex(group) {
       if (group.type === "WGROUP") {
         return this.wgroups.findIndex((gr) => gr.id === group.id);
@@ -79,8 +79,16 @@ export const useGroupStore = defineStore("groups", {
     },
 
     // update broja rjeci ili recenica zavisi o kojoj se vrsti grupe rade
-    async updateNumOfItems(groupId, numOfItems) {
-      await patchFun("groups/" + groupId + "/num/" + numOfItems);
+    // async updateNumOfItems(groupId, numOfItems) {
+    //   await patchFun("groups/" + groupId + "/num/" + numOfItems);
+    // },
+
+    async increaseNumOfItems(groupId) {
+      await patchFun("groups/" + groupId + "/increase");
+    },
+
+    async decreaseNumOfItems(groupId) {
+      await patchFun("groups/" + groupId + "/decrease");
     },
 
     async deleteGroup(group, idx) {

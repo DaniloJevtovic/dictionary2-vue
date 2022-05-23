@@ -83,8 +83,8 @@ async function deleteWord() {
   // u grupi smanji broj rjeci za 1
   let group = groupStore.getWGroupById(props.word.wgId);
   group.numOfItems = group.numOfItems - 1;
-  
-  groupStore.updateNumOfItems(props.word.wgId, group.numOfItems);
+
+  groupStore.decreaseNumOfItems(props.word.wgId);
 }
 
 async function updateFav() {

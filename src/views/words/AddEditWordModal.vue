@@ -103,11 +103,7 @@ const updateWord = reactive({ ...props.word });
 async function save() {
   if (props.mode === "new") {
     wordStore.saveWord(updateWord);
-
-    let group = groupStore.getWGroupById(updateWord.wgId);
-    group.numOfItems = group.numOfItems + 1;
-    
-    groupStore.updateNumOfItems(updateWord.wgId, group.numOfItems);
+    groupStore.increaseNumOfItems(updateWord.wgId);
   } else {
     wordStore.editWord(updateWord, props.idx);
 
@@ -119,8 +115,8 @@ async function save() {
       let newGroup = groupStore.getWGroupById(updateWord.wgId);
       newGroup.numOfItems = newGroup.numOfItems + 1;
 
-      groupStore.updateNumOfItems(props.word.wgId, oldGroup.numOfItems);
-      groupStore.updateNumOfItems(updateWord.wgId, newGroup.numOfItems);
+      groupStore.decreaseNumOfItems(props.word.wgId); // smanjujem u staroj grupi
+      groupStore.increaseNumOfItems(updateWord.wgId); // povecavam u novoj grupi
     }
   }
 
