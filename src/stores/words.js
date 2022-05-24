@@ -19,7 +19,7 @@ export const useWordStore = defineStore("words", {
 
   actions: {
     addWord(word) {
-      this.words.push(word);
+      this.words.unshift(word);
     },
 
     updateWord(word, idx) {
@@ -28,6 +28,18 @@ export const useWordStore = defineStore("words", {
 
     removeWord(idx) {
       this.words.splice(idx, 1);
+    },
+
+    increaseNumOfWordsInGroup(wgId) {
+      const groupStore = useGroupStore();
+      let group = groupStore.getWGroupById(wgId);
+      group.numOfItems = group.numOfItems + 1;
+    },
+
+    decreaseNumOfWordsInGroup(wgId) {
+      const groupStore = useGroupStore();
+      let group = groupStore.getWGroupById(wgId);
+      group.numOfItems = group.numOfItems - 1;
     },
 
     //BEKEND
@@ -92,29 +104,26 @@ export const useWordStore = defineStore("words", {
     },
 
     async saveWord(word) {
-      let res = await createFun("words", word);
-
-      const groupStore = useGroupStore();
+      // let res = await createFun("words", word);
+      let res = await createFun("words/mode/new", word);
 
       if (this.search !== "") {
         if (
           word.word.includes(this.search) ||
           word.translate.includes(this.search)
         ) {
-          this.words.unshift(res.data); //dodavanje na pocetak
-          // povecavanje za 1
-          let group = groupStore.getWGroupById(word.wgId);
-          group.numOfItems = group.numOfItems + 1;
+          this.addWord(res.data);
+          this.increaseNumOfWordsInGroup(res.data.wgId);
         }
       } else {
-        this.words.unshift(res.data); //dodavanje na pocetak
-        let group = groupStore.getWGroupById(word.wgId);
-        group.numOfItems = group.numOfItems + 1;
+        this.addWord(res.data); //dodavanje na pocetak
+        this.increaseNumOfWordsInGroup(res.data.wgId);
       }
     },
 
     async editWord(word, idx) {
-      let res = await createFun("words", word);
+      // let res = await createFun("words", word);
+      let res = await createFun("words/mode/update", word);
 
       //ako je nesto ukucano u search
       if (this.search !== "") {
@@ -134,6 +143,7 @@ export const useWordStore = defineStore("words", {
 
     async deleteWord(word, idx) {
       this.removeWord(idx);
+      this.decreaseNumOfWordsInGroup(word.wgId);
       await deleteFun("words", word.id);
 
       // todo: ucitati prvu rjec sa sledece stranice

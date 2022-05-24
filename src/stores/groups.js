@@ -78,19 +78,6 @@ export const useGroupStore = defineStore("groups", {
       this.updateGroup(group, idx);
     },
 
-    // update broja rjeci ili recenica zavisi o kojoj se vrsti grupe rade
-    // async updateNumOfItems(groupId, numOfItems) {
-    //   await patchFun("groups/" + groupId + "/num/" + numOfItems);
-    // },
-
-    async increaseNumOfItems(groupId) {
-      await patchFun("groups/" + groupId + "/increase");
-    },
-
-    async decreaseNumOfItems(groupId) {
-      await patchFun("groups/" + groupId + "/decrease");
-    },
-
     async deleteGroup(group, idx) {
       this.removeGroup(group, idx);
       await deleteFun("groups", group.id);

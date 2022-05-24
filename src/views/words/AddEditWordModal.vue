@@ -103,20 +103,15 @@ const updateWord = reactive({ ...props.word });
 async function save() {
   if (props.mode === "new") {
     wordStore.saveWord(updateWord);
-    groupStore.increaseNumOfItems(updateWord.wgId);
+    // groupStore.increaseNumOfItems(updateWord.wgId);
   } else {
     wordStore.editWord(updateWord, props.idx);
 
     //provjeri ako se ne poklapaju grupe - u jednoj oduzimas u drugoj dodaje
+    // implementirao si ovu metodu u wordstore
     if (props.word.wgId !== updateWord.wgId) {
-      let oldGroup = groupStore.getWGroupById(props.word.wgId);
-      oldGroup.numOfItems = oldGroup.numOfItems - 1;
-
-      let newGroup = groupStore.getWGroupById(updateWord.wgId);
-      newGroup.numOfItems = newGroup.numOfItems + 1;
-
-      groupStore.decreaseNumOfItems(props.word.wgId); // smanjujem u staroj grupi
-      groupStore.increaseNumOfItems(updateWord.wgId); // povecavam u novoj grupi
+      wordStore.decreaseNumOfWordsInGroup(props.word.wgId);
+      wordStore.increaseNumOfWordsInGroup(updateWord.wgId);
     }
   }
 

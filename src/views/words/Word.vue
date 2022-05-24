@@ -80,11 +80,11 @@ const groupStore = useGroupStore();
 async function deleteWord() {
   wordStore.deleteWord(props.word, props.idx);
 
-  // u grupi smanji broj rjeci za 1
-  let group = groupStore.getWGroupById(props.word.wgId);
-  group.numOfItems = group.numOfItems - 1;
+  // // u grupi smanji broj rjeci za 1
+  // let group = groupStore.getWGroupById(props.word.wgId);
+  // group.numOfItems = group.numOfItems - 1;
 
-  groupStore.decreaseNumOfItems(props.word.wgId);
+  // groupStore.decreaseNumOfItems(props.word.wgId);
 }
 
 async function updateFav() {
