@@ -57,13 +57,7 @@ const sentenceStore = useSentenceStore();
 const groupStore = useGroupStore();
 
 async function deleteSentence() {
-  await deleteFun("sentences", props.sentence.id);
-  sentenceStore.removeSentence(props.idx);
-
-  let group = groupStore.getSGroupById(props.sentence.sgId);
-  group.numOfItems = group.numOfItems - 1;
-
-  groupStore.decreaseNumOfItems(props.sentence.sgId);
+  sentenceStore.deleteSentence(props.sentence, props.idx);
 }
 
 async function updateFav() {

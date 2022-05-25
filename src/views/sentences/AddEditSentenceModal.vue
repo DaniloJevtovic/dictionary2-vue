@@ -84,31 +84,21 @@ const groupStore = useGroupStore();
 const updateSentence = reactive({ ...props.sentence });
 
 async function save() {
-  let res = await createFun("sentences", updateSentence);
-
   if (props.mode === "new") {
-    sentenceStore.addSentence(res.data);
-    groupStore.increaseNumOfItems(updateSentence.sgId);
+    sentenceStore.saveSentence(updateSentence);
   } else {
-    sentenceStore.updateSentence(updateSentence, props.idx);
+    sentenceStore.editSentence(updateSentence, props.idx);
 
     //provjeri ako se ne poklapaju grupe - u jednoj oduzimas u drugoj dodaje
     if (props.sentence.sgId !== updateSentence.sgId) {
-      let oldGroup = groupStore.getSGroupById(props.sentence.sgId);
-      oldGroup.numOfItems = oldGroup.numOfItems - 1;
-
-      let newGroup = groupStore.getSGroupById(updateSentence.sgId);
-      newGroup.numOfItems = newGroup.numOfItems + 1;
-
-      groupStore.decreaseNumOfItems(props.sentence.sgId); // smanjujem u staroj grupi
-      groupStore.increaseNumOfItems(updateSentence.sgId); // povecavam u novoj grupi
+      sentenceStore.decreaseNumOfSentencesInGroup(props.sentence.sgId);
+      sentenceStore.increaseNumOfSentencesInGroup(updateSentence.sgId);
     }
   }
 
   if (updateSentence.sgId !== groupStore.activeSgId) {
     groupStore.activeSgId = updateSentence.sgId;
-    let res = await readFun("sentences/sg/" + updateSentence.sgId);
-    sentenceStore.sentences = res.data.content;
+    sentenceStore.getSentences("SG", updateSentence.sgId);
   }
 
   closeModal();

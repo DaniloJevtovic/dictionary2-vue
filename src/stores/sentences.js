@@ -19,7 +19,7 @@ export const useSentenceStore = defineStore("sentences", {
 
   actions: {
     addSentence(sentence) {
-      this.sentences.push(sentence);
+      this.sentences.unshift(sentence);
     },
 
     updateSentence(sentence, idx) {
@@ -28,6 +28,18 @@ export const useSentenceStore = defineStore("sentences", {
 
     removeSentence(idx) {
       this.sentences.splice(idx, 1);
+    },
+
+    increaseNumOfSentencesInGroup(sgId) {
+      const groupStore = useGroupStore();
+      let group = groupStore.getSGroupById(sgId);
+      group.numOfItems = group.numOfItems + 1;
+    },
+
+    decreaseNumOfSentencesInGroup(sgId) {
+      const groupStore = useGroupStore();
+      let group = groupStore.getSGroupById(sgId);
+      group.numOfItems = group.numOfItems - 1;
     },
 
     //BEKEND
@@ -92,32 +104,47 @@ export const useSentenceStore = defineStore("sentences", {
     },
 
     async saveSentence(sentence) {
-      let res = await createFun("sentences", sentence);
-      
+      // let res = await createFun("sentences", sentence);
+      let res = await createFun("sentences/mode/new", sentence);
+
       if (this.search !== "") {
         if (
           sentence.sentence.includes(this.search) ||
           sentence.translate.includes(this.search)
         ) {
-          this.sentences.unshift(res.data); //dodavanje na pocetak
-          let group = groupStore.getSGroupById(sentence.sgId);
-          group.numOfItems = group.numOfItems + 1;
+          this.addSentence(res.data);
+          this.increaseNumOfSentencesInGroup(sentence.sgId);
         }
       } else {
-        this.sentences.unshift(res.data); //dodavanje na pocetak
-        let group = groupStore.getSGroupById(sentence.sgId);
-        group.numOfItems = group.numOfItems + 1;
+        this.addSentence(res.data);
+        this.increaseNumOfSentencesInGroup(sentence.sgId);
       }
     },
 
     async editSentence(sentence, idx) {
-      let res = await createFun("sentences", sentence);
-      this.updateSentence(sentence, idx);
+      //let res = await createFun("sentences", sentence);
+      let res = await createFun("sentences/mode/update", sentence);
+
+      //ako je nesto ukucano u search
+      if (this.search !== "") {
+        //ideja ako se skroz promjeni recenica ili prevod - ukloniti tu rjec iz liste
+        if (
+          !sentence.sentence.includes(this.search) &&
+          !sentence.translate.includes(this.search)
+        ) {
+          this.removeSentence(idx);
+        } else {
+          this.updateSentence(sentence, idx);
+        }
+      } else {
+        this.updateSentence(sentence, idx);
+      }
     },
 
     async deleteSentence(sentence, idx) {
-      await deleteFun("sentences/" + sentence.id);
       this.removeSentence(idx);
+      this.decreaseNumOfSentencesInGroup(sentence.sgId);
+      await deleteFun("sentences", sentence.id);
     },
 
     async searchSentences() {
