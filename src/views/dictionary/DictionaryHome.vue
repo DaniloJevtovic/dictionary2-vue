@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <DictionaryNavbar />
+    <div class="navbar">
+      <DictionaryNavbar />
+    </div>
 
     <div class="container">
       <router-view :key="$route.path" />
@@ -17,7 +19,17 @@ import DictionaryNavbar from "./DictionaryNavbar.vue";
   padding: 5px;
 }
 
+.navbar {
+  display: none;
+}
+
 .container {
   height: 100%;
+}
+
+@media only screen and (max-width: 700px) {
+  .navbar {
+    display: block;
+  }
 }
 </style>

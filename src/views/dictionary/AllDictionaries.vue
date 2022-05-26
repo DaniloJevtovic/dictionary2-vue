@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <!-- <h3 style="margin: 5px">Dictionaries</h3> -->
+  <div class="all-dics">
+    <h4 style="margin: 5px">Dictionaries</h4>
 
     <button @click="showModal = true" class="new-btn" style="width: 100%">
       +novi rjecnik
@@ -28,7 +28,12 @@
         }"
       >
         <div class="dictionary" :style="{ background: dictionary.color }">
-          <p style="margin: 0px; padding: 0px">{{ dictionary.name }}</p>
+          <p style="margin: 0px; padding: 0px">
+            <span v-if="dictionaryStore.dictionary.id === dictionary.id"
+              >&bull;</span
+            >
+            {{ dictionary.name }}
+          </p>
 
           <span class="tooltip">
             <small>{{ dictionary.description }}</small></span
@@ -62,6 +67,10 @@ const newDictionary = reactive({
 </script>
 
 <style scoped>
+.all-dics{
+  border: 1px solid darkgray;
+}
+
 .dictionary {
   color: black;
 }
