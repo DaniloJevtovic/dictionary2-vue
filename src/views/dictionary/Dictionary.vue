@@ -1,44 +1,63 @@
 <template>
   <div class="main">
-    <!-- header sa nazivom rjecnik -->
-    <div
-      :style="{ background: dictionaryStore.dictionary.color }"
-      class="dic-header"
-      @click="showModal = true"
-    >
-      <h4 style="margin: 0px">
-        {{ dictionaryStore.dictionary.name }}
-      </h4>
-    </div>
-
     <!-- tjelo rjecnika - tabovi, rjeci, grupe... -->
     <div class="dic-body">
-      <!-- tabovi -->
-      <button
-        v-for="(_, tab) in tabs"
-        :key="tab"
-        :class="['tab-button', { active: tabStore.currentTab === tab }]"
-        @click="tabStore.currentTab = tab"
-      >
-        {{ tab }}
-      </button>
+      <div class="panels">
+        <div class="left-side">
+          <div class="ls-nav">
+            <router-link :to="{ name: 'User' }"> Hi, Lemur </router-link> |
+            <router-link :to="{ name: 'Login' }">Logout</router-link>
+          </div>
 
-      <!--select-tab - prikazuje se umjesto tabova ako je rezolucija < 600px -->
-      <select class="tab-select" v-show="true" v-model="tabStore.currentTab">
-        <option :value="tab" v-for="(_, tab) in tabs" :key="tab">
-          {{ tab }}
-        </option>
-      </select>
+          <AllDictionaries />
+        </div>
 
-      <!-- DA TI SVAKI PUT NE MONTIRA KOMPONENTU -->
-      <KeepAlive>
-        <component
-          :is="tabs[tabStore.currentTab]"
-          :dicId="dictionaryStore.dictionary.id"
-          class="tab"
-        >
-        </component>
-      </KeepAlive>
+        <div class="right-side">
+          <div class="rs-div">
+            <!-- header sa nazivom rjecnik -->
+            <div
+              :style="{ background: dictionaryStore.dictionary.color }"
+              class="dic-header"
+              @click="showModal = true"
+            >
+              <h4 style="margin: 0px">
+                {{ dictionaryStore.dictionary.name }}
+              </h4>
+            </div>
+
+            <!--select-tab - prikazuje se umjesto tabova ako je rezolucija < 600px -->
+            <select
+              class="tab-select"
+              v-show="true"
+              v-model="tabStore.currentTab"
+            >
+              <option :value="tab" v-for="(_, tab) in tabs" :key="tab">
+                {{ tab }}
+              </option>
+            </select>
+
+            <!-- tabovi -->
+            <button
+              v-for="(_, tab) in tabs"
+              :key="tab"
+              :class="['tab-button', { active: tabStore.currentTab === tab }]"
+              @click="tabStore.currentTab = tab"
+            >
+              {{ tab }}
+            </button>
+          </div>
+
+          <!-- KOMPONTA - RJECI/RECENICE/GRAMATIKA -->
+          <KeepAlive>
+            <component
+              :is="tabs[tabStore.currentTab]"
+              :dicId="dictionaryStore.dictionary.id"
+              class="tab"
+            >
+            </component>
+          </KeepAlive>
+        </div>
+      </div>
     </div>
 
     <AddEditDictionaryModal
@@ -57,6 +76,7 @@ import { useGroupStore } from "../../stores/groups.js";
 import { useTabStore } from "../../stores/tabs.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 import AddEditDictionaryModal from "./AddEditDictionaryModal.vue";
+import AllDictionaries from "./AllDictionaries.vue";
 
 import Words from "../../views/words/Words.vue";
 import Sentences from "../../views/sentences/Sentences.vue";
@@ -126,6 +146,33 @@ const showModal = ref(false);
   display: none;
 }
 
+.panels {
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+
+.left-side {
+  margin: 2px;
+  padding: 3px;
+  border: 1px solid darkgray;
+}
+
+.rs-div {
+  border: 1px solid darkgray;
+  margin: 2px;
+}
+
+.ls-nav {
+  border: 1px solid darkgray;
+  color: red;
+  padding: 10px;
+  margin-bottom: 3px;
+}
+
+.ls-nav a {
+  color: darkblue;
+}
+
 @media only screen and (max-width: 700px) {
   .tab-button {
     display: none;
@@ -137,6 +184,14 @@ const showModal = ref(false);
     color: cyan;
     text-align: center;
     border: 1px solid cyan;
+  }
+
+  .panels {
+    display: block;
+  }
+
+  .left-side {
+    display: none;
   }
 }
 </style>
