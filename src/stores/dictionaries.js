@@ -22,8 +22,14 @@ export const useDictionaryStore = defineStore("dictionaries", {
       this.dictionary = dictionary;
     },
 
-    removeDictionary(idx) {
-      this.dictionaries.splice(idx, 1);
+    removeDictionary(dictionary) {
+      this.dictionaries.splice(this.findIndex(dictionary), 1);
+    },
+
+    //rjecnici za ulogovanog korisnika - id korisnika
+    async getDictionaries() {
+      let res = await readFun("/dictionaries");
+      this.dictionaries = res.data;
     },
 
     //bekend
@@ -37,10 +43,11 @@ export const useDictionaryStore = defineStore("dictionaries", {
       this.updateDictionary(dictionary);
     },
 
-    //rjecnici za ulogovanog korisnika - id korisnika
-    async getDictionaries() {
-      let res = await readFun("/dictionaries");
-      this.dictionaries = res.data;
+    async deleteDic() {
+      console.log("brisem rjecnik");
+      await deleteFun("dictionaries", this.dictionary.id);
+      this.removeDictionary(this.dictionary);
+      this.dictionary = "";
     },
   },
   getters: {
