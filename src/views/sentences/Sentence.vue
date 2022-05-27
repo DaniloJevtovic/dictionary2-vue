@@ -9,9 +9,8 @@
       </button>
 
       <div @click="showModal = true" class="details">
-        <span>{{ idx + 1 }}.</span> {{ sentence.sentence }} -{{
-          sentence.translate
-        }}
+        <span>{{ idx + 1 }}.</span> {{ sentence.sentence }} &#8594;
+        {{ sentence.translate }}
         <p style="margin: 0px">
           <small> {{ sentence.description }}</small> |
 

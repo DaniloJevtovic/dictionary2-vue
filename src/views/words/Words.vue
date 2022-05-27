@@ -6,12 +6,12 @@
       <!-- grupe sa desne strane - ako je odabrano da budu na desnoj strani -->
       <div class="wgs-types" v-if="settingsStore.wgroupDirection === 'right'">
         <WGroup :dicId="dicId" :gType="'WGROUP'" />
-
-        <!-- vrste rjeci -->
         <WordTypes />
       </div>
 
       <div class="words">
+        <!-- <WordsHeader :dicId="dicId" /> -->
+
         <div class="search-wg">
           <!-- <button
             @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
@@ -87,7 +87,7 @@
         <button
           v-if="
             wordStore.currentPage + 1 < wordStore.totalPages &&
-            searchInput === ''
+            wordStore.search === ''
           "
           @click="loadMoreWords"
           class="new-btn"
@@ -117,11 +117,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive, watch, onBeforeMount } from "vue";
+import { onMounted, ref, reactive, watch } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import Word from "./Word.vue";
 import WGroup from "../groups/WGroup.vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
+import WordsHeader from "./WordsHeader.vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useSettingsStore } from "../../stores/settings.js";

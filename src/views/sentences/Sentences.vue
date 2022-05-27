@@ -176,13 +176,6 @@ watch(searchInput, () => {
   column-gap: 2px;
 }
 
-/* .filter {
-  width: auto;
-  text-align: center;
-  background: hotpink;
-  color: rgb(34, 11, 61);
-} */
-
 @media only screen and (max-width: 700px) {
   .search-sg {
     display: block;
