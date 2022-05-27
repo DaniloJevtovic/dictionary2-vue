@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main" :class="{ mainDark: settingsStore.dark }">
     <!-- tjelo rjecnika - tabovi, rjeci, grupe... -->
     <div class="dic-body">
       <div class="panels">
@@ -18,11 +18,31 @@
             <div
               :style="{ background: dictionaryStore.dictionary.color }"
               class="dic-header"
-              @click="showModal = true"
             >
-              <h4 style="margin: 0px">
+              <button
+                @click.prevent="settingsStore.dark = !settingsStore.dark"
+                style="background: hotpink"
+              >
+                <span v-if="settingsStore.dark">&#9789;</span>
+                <span v-else>&#x263C;</span>
+              </button>
+
+              <h4 @click="showModal = true" style="margin: 0px; width: 100%">
                 {{ dictionaryStore.dictionary.name }}
               </h4>
+
+              <button
+                @click.prevent="showConfirmDialog = true"
+                class="del-dic-btn"
+              >
+                &#x2715;
+              </button>
+
+              <ConfirmDialog
+                v-if="showConfirmDialog"
+                @answer="deleteDic"
+                :message="'Da li ste sigurni da zelite obrisati rjecnik? Brisanjem rjecnika brise se sve iz njega!'"
+              />
             </div>
 
             <!--select-tab - prikazuje se umjesto tabova ako je rezolucija < 600px -->
@@ -72,17 +92,21 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import { useGroupStore } from "../../stores/groups.js";
 import { useTabStore } from "../../stores/tabs.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
+import { useSettingsStore } from "../../stores/settings.js";
 import AddEditDictionaryModal from "./AddEditDictionaryModal.vue";
 import AllDictionaries from "./AllDictionaries.vue";
+import ConfirmDialog from "../../components/ConfirmDialog.vue";
 
 import Words from "../../views/words/Words.vue";
 import Sentences from "../../views/sentences/Sentences.vue";
 import Grammars from "../../views/grammars/Grammars.vue";
 
 const dictionaryStore = useDictionaryStore();
+const settingsStore = useSettingsStore();
 
 const tabs = {
   Words,
@@ -92,17 +116,35 @@ const tabs = {
 
 const tabStore = useTabStore();
 const groupStore = useGroupStore();
+const router = useRouter();
 
 onMounted(() => {
   groupStore.resetActiveGroups();
-
   tabStore.currentTab = "Words";
 });
 
+async function deleteDic(answer) {
+  if (answer === "yes") {
+    dictionaryStore.deleteDic();
+    router.push({ name: "AllDictionaries" });
+  }
+
+  showConfirmDialog.value = false;
+}
+
 const showModal = ref(false);
+const showConfirmDialog = ref(false);
 </script>
 
 <style scoped>
+.main {
+  background: white;
+}
+
+.mainDark {
+  background: rgb(24, 24, 24);
+}
+
 .dic-header {
   cursor: pointer;
   display: flex;
@@ -165,12 +207,16 @@ const showModal = ref(false);
 .ls-nav {
   border: 1px solid darkgray;
   color: red;
-  padding: 10px;
+  padding: 13px;
   margin-bottom: 3px;
 }
 
 .ls-nav a {
   color: darkblue;
+}
+
+.del-dic-btn {
+  background: red;
 }
 
 @media only screen and (max-width: 700px) {
