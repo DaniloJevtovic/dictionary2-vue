@@ -26,28 +26,30 @@
           ></textarea>
 
           <!-- grupa rjeci -->
-          <select
-            class="wgs"
-            v-model="updateWord.wgId"
-            :style="{
-              background:
-                updateWord.wgId != 'all'
-                  ? groupStore.getWGroupById(updateWord.wgId).color
-                  : 'white',
-            }"
-            required
-          >
-            <option value="all" disabled>odaberi grupu</option>
-            <option
-              v-for="group in groupStore.wgroups"
-              :key="group.id"
-              :value="group.id"
-              :style="{ background: group.color }"
+          <div class="group-select">
+            <select
+              class="wgs"
+              v-model="updateWord.wgId"
+              :style="{
+                background:
+                  updateWord.wgId != 'all'
+                    ? groupStore.getWGroupById(updateWord.wgId).color
+                    : 'white',
+              }"
+              required
             >
-              group: {{ group.name }} -- [{{ group.numOfItems }}]
-            </option>
-            <option value="create">kreiraj novu grupu</option>
-          </select>
+              <option value="all" disabled>odaberi grupu</option>
+              <option
+                v-for="group in groupStore.wgroups"
+                :key="group.id"
+                :value="group.id"
+                :style="{ background: group.color }"
+              >
+                group: {{ group.name }} -- [{{ group.numOfItems }}]
+              </option>
+            </select>
+            <button @click="showModal = true" class="new-group-btn">+</button>
+          </div>
 
           <!-- tip rjeci -->
           <select class="type" name="type" v-model="updateWord.type" required>
@@ -74,12 +76,23 @@
         </div>
       </div>
     </div>
+
+    <AddEditGroupModal
+      v-if="showModal"
+      :show="showModal"
+      :group="newGroup"
+      :mode="'new'"
+      @close="(showModal = false), (updateWord.wgId = groupStore.wgroups[0].id)"
+    />
+    <!-- updateWord.wgId = groupStore.wgroups[0].id  kad kreiras tu novu grupu
+    odmah je povezes sa rjecju-->
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import useCrud from "../../composables/useCRUD.js";
+import AddEditGroupModal from "../../views/groups/AddEditGroupModal.vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useWordTypeStore } from "../../stores/wordtypes.js";
@@ -103,7 +116,6 @@ const updateWord = reactive({ ...props.word });
 async function save() {
   if (props.mode === "new") {
     wordStore.saveWord(updateWord);
-    // groupStore.increaseNumOfItems(updateWord.wgId);
   } else {
     wordStore.editWord(updateWord, props.idx);
 
@@ -132,6 +144,17 @@ async function save() {
 function closeModal() {
   emit("close");
 }
+
+const newGroup = reactive({
+  name: "",
+  description: "",
+  dicId: props.word.dicId,
+  color: "#ffffff",
+  numOfItems: 0,
+  type: "WGROUP",
+});
+
+const showModal = ref(false);
 </script>
 
 <style scoped>
@@ -139,4 +162,17 @@ function closeModal() {
   color: springgreen;
   background: rgb(19, 51, 20);
 } */
+
+.group-select {
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
+
+.new-group-btn {
+  padding: 3px;
+  margin-left: 3px;
+  background: blue;
+  color: cyan;
+}
 </style>
