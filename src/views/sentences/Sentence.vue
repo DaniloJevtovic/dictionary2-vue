@@ -25,8 +25,16 @@
         </p>
       </div>
 
-      <button @click.prevent="deleteSentence" class="del-btn">&#x2715;</button>
+      <button @click.prevent="showConfirmDialog = true" class="del-btn">
+        &#x2715;
+      </button>
     </div>
+
+    <ConfirmDialog
+      v-if="showConfirmDialog"
+      @answer="deleteSentence"
+      :message="'Da li ste sigurni da zelite obrisati recenicu'"
+    />
 
     <AddEditSentenceModal
       v-if="showModal"
@@ -43,6 +51,7 @@
 import { ref } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import AddEditSentenceModal from "./AddEditSentenceModal.vue";
+import ConfirmDialog from "../../components/ConfirmDialog.vue";
 import { useSentenceStore } from "../../stores/sentences.js";
 import { useGroupStore } from "../../stores/groups.js";
 
@@ -55,8 +64,12 @@ const { deleteFun, patchFun } = useCrud();
 const sentenceStore = useSentenceStore();
 const groupStore = useGroupStore();
 
-async function deleteSentence() {
-  sentenceStore.deleteSentence(props.sentence, props.idx);
+async function deleteSentence(answer) {
+  if (answer === "yes") {
+    sentenceStore.deleteSentence(props.sentence, props.idx);
+  }
+
+  showConfirmDialog.value = false;
 }
 
 async function updateFav() {
@@ -67,6 +80,7 @@ async function updateFav() {
 }
 
 const showModal = ref(false);
+const showConfirmDialog = ref(false);
 </script>
 
 <style scoped>

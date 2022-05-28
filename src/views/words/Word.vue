@@ -44,8 +44,16 @@
       </div>
 
       <!-- dugme za brisanje -->
-      <button @click.prevent="deleteWord" class="del-btn">&#x2715;</button>
+      <button @click.prevent="showConfirmDialog = true" class="del-btn">
+        &#x2715;
+      </button>
     </div>
+
+    <ConfirmDialog
+      v-if="showConfirmDialog"
+      @answer="deleteWord"
+      :message="'Da li ste sigurni da zelite obrisati rjec?'"
+    />
 
     <!-- modal -->
     <AddEditWordModal
@@ -62,6 +70,7 @@
 <script setup>
 import { ref } from "vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
+import ConfirmDialog from "../../components/ConfirmDialog.vue";
 import useCrud from "../../composables/useCRUD.js";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
@@ -77,8 +86,12 @@ const wordStore = useWordStore();
 const wTypeStore = useWordTypeStore();
 const groupStore = useGroupStore();
 
-async function deleteWord() {
-  wordStore.deleteWord(props.word, props.idx);
+async function deleteWord(answer) {
+  if (answer === "yes") {
+    wordStore.deleteWord(props.word, props.idx);
+  }
+
+  showConfirmDialog.value = false;
 }
 
 async function updateFav() {
@@ -87,11 +100,12 @@ async function updateFav() {
 }
 
 const showModal = ref(false);
+const showConfirmDialog = ref(false);
 </script>
 
 <style scoped>
 .word {
-  border: 1px solid rgb(214, 238, 238);
+  border: 1px solid darkgray;
   /* border-radius: 3px; */
   margin: 4px;
   padding: 2px;

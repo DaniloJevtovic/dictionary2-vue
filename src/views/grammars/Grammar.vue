@@ -3,7 +3,7 @@
     <div class="grammar">
       <button @click="showModal = true">&#9998;</button>
       <div @click="expandGrammar = !expandGrammar" class="details">
-        {{ idx + 1 }}.{{ grammar.title }}
+        {{ idx + 1 }}. {{ grammar.title }}
         <p v-if="expandGrammar" style="margin: 0px">
           <small> {{ grammar.content }}</small>
         </p>
@@ -12,8 +12,16 @@
           <small> {{ grammar.content.substring(0, 30) }}...</small>
         </p>
       </div>
-      <button @click.prevent="deleteGrammar" class="del-btn">&#x2715;</button>
+      <button @click.prevent="showConfirmDialog = true" class="del-btn">
+        &#x2715;
+      </button>
     </div>
+
+    <ConfirmDialog
+      v-if="showConfirmDialog"
+      @answer="deleteGrammar"
+      :message="'Da li ste sigurni da zelite obrisati gramatiku?'"
+    />
 
     <AddEditGrammarModal
       v-if="showModal"
@@ -30,6 +38,7 @@
 import { reactive, ref } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import AddEditGrammarModal from "./AddEditGrammarModal.vue";
+import ConfirmDialog from "../../components/ConfirmDialog.vue";
 import { useGrammarStore } from "../../stores/grammars.js";
 
 const { deleteFun } = useCrud();
@@ -40,12 +49,16 @@ const props = defineProps({
   idx: Number,
 });
 
-async function deleteGrammar() {
-  grammarStore.deleteGrammar(props.grammar, props.idx);
+async function deleteGrammar(answer) {
+  if (answer === "yes") {
+    grammarStore.deleteGrammar(props.grammar, props.idx);
+  }
+
+  showConfirmDialog.value = false;
 }
 
 const showModal = ref(false);
-
+const showConfirmDialog = ref(false);
 const expandGrammar = ref(false);
 </script>
 
