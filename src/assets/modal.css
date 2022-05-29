@@ -31,6 +31,15 @@
   background: cyan;
 }
 
+.new h3 {
+  color: darkblue;
+  background: rgb(3, 255, 129);
+}
+
+.update h3 {
+  background: cyan;
+}
+
 .modal-body {
   margin: 10px 0;
 }

@@ -20,6 +20,8 @@
     <ConfirmDialog
       v-if="showConfirmDialog"
       @answer="deleteGrammar"
+      :title="'Delete Grammar'"
+      :dlgType="'del-type'"
       :message="'Da li ste sigurni da zelite obrisati gramatiku?'"
     />
 

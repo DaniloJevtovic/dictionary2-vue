@@ -41,6 +41,8 @@
               <ConfirmDialog
                 v-if="showConfirmDialog"
                 @answer="deleteDic"
+                :title="'Delete Dictionary'"
+                :dlgType="'del-type'"
                 :message="'Da li ste sigurni da zelite obrisati rjecnik? Brisanjem rjecnika brise se sve iz njega!'"
               />
             </div>

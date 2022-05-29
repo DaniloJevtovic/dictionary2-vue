@@ -2,7 +2,7 @@
   <div v-if="show" class="modal-mask">
     <div class="modal-wrapper">
       <div class="modal-container">
-        <div class="modal-header">
+        <div class="modal-header" :class="mode">
           <h3>{{ mode }} dictionary</h3>
         </div>
 

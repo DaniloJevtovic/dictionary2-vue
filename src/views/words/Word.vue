@@ -52,6 +52,8 @@
     <ConfirmDialog
       v-if="showConfirmDialog"
       @answer="deleteWord"
+      :title="'Delete Word'"
+      :dlgType="'del-type'"
       :message="'Da li ste sigurni da zelite obrisati rjec?'"
     />
 

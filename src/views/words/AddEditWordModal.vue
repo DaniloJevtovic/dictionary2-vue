@@ -2,7 +2,7 @@
   <div v-if="show" class="modal-mask">
     <div class="modal-wrapper">
       <div class="modal-container">
-        <div class="modal-header">
+        <div class="modal-header" :class="mode">
           <h3>{{ mode }} word</h3>
         </div>
 
@@ -82,10 +82,8 @@
       :show="showModal"
       :group="newGroup"
       :mode="'new'"
-      @close="(showModal = false), (updateWord.wgId = groupStore.wgroups[0].id)"
+      @close="switchWg"
     />
-    <!-- updateWord.wgId = groupStore.wgroups[0].id  kad kreiras tu novu grupu
-    odmah je povezes sa rjecju-->
   </div>
 </template>
 
@@ -153,6 +151,17 @@ const newGroup = reactive({
   numOfItems: 0,
   type: "WGROUP",
 });
+
+// da zapamtim broj grupa prije dodavanje nove
+const numOfGroups = ref(groupStore.wgroups.length);
+function switchWg() {
+  //provjera da li je dodata nova grupe ako jeste - prebaci na tu grupu
+  if (groupStore.wgroups.length > numOfGroups.value) {
+    updateWord.wgId = groupStore.wgroups[0].id;
+  }
+
+  showModal.value = false;
+}
 
 const showModal = ref(false);
 </script>

@@ -3,7 +3,7 @@
     <div class="modal-wrapper">
       <div class="modal-container">
         <div class="modal-header">
-          <h3>Dialog</h3>
+          <h3 :class="dlgType">{{ title }}</h3>
         </div>
 
         <div class="modal-body">{{ message }}</div>
@@ -21,7 +21,9 @@
 
 <script setup>
 const props = defineProps({
+  title: String,
   message: String,
+  dlgType: String,
 });
 
 const emit = defineEmits(["answer"]);
@@ -35,5 +37,9 @@ function no() {
 }
 </script>
 
-<style>
+<style scoped>
+.del-type {
+  color: yellow;
+  background: orangered;
+}
 </style>

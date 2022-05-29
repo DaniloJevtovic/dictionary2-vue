@@ -33,7 +33,9 @@
     <ConfirmDialog
       v-if="showConfirmDialog"
       @answer="deleteSentence"
-      :message="'Da li ste sigurni da zelite obrisati recenicu'"
+      :title="'Delete Sentence'"
+      :dlgType="'del-type'"
+      :message="'Da li ste sigurni da zelite obrisati recenicu?'"
     />
 
     <AddEditSentenceModal
