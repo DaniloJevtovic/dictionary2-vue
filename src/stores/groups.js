@@ -29,25 +29,23 @@ export const useGroupStore = defineStore("groups", {
       if (group.type == "WGROUP") {
         this.wgroups.unshift(group);
       } else {
-        this.sgroups.push(group);
+        this.sgroups.unshift(group);
       }
     },
 
-    updateGroup(group, idx) {
+    updateGroup(group) {
       if (group.type == "WGROUP") {
-        // this.wgroups[idx] = group;
         this.wgroups[this.getIndex(group)] = group;
       } else {
-        this.sgroups[idx] = group;
+        this.sgroups[this.getIndex(group)] = group;
       }
     },
 
-    removeGroup(group, idx) {
+    removeGroup(group) {
       if (group.type == "WGROUP") {
-        //this.wgroups.splice(idx, 1);
         this.wgroups.splice(this.getIndex(group), 1);
       } else {
-        this.sgroups.splice(idx, 1);
+        this.sgroups.splice(this.getIndex(group), 1);
       }
     },
 
