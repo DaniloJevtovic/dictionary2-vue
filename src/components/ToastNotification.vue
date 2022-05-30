@@ -36,6 +36,10 @@ const toastStore = useToastStore();
   background: springgreen;
 }
 
+.warning {
+  background: orange;
+}
+
 .error {
   background: red;
 }

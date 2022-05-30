@@ -65,6 +65,28 @@ div input[type="color"] {
   cursor: pointer;
 }
 
+p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.white-theme {
+  background: white;
+}
+
+.dark-theme {
+  background: rgb(24, 24, 24);
+}
+
+.dark-theme input {
+  color: salmon;
+  background: rgb(24, 24, 24);
+}
+
+.dark-theme form {
+  background: rgb(24, 24, 24);
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px;

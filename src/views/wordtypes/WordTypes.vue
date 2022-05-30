@@ -24,7 +24,7 @@ const typeStore = useWordTypeStore();
 }
 
 .types {
-  border: 1px solid darkgray;
+  border: 1px solid whitesmoke;
   display: flex;
   flex-wrap: wrap;
 }

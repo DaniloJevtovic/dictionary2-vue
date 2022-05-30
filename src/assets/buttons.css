@@ -10,15 +10,16 @@ button {
 }
 
 button:hover {
-  background: springgreen;
-  color: indigo;
+  background: cyan;
+  /* color: indigo; */
 }
 
 .new-btn {
-  width: 50%;
-  margin: 4px 0px;
+  width: 100%;
+  /* margin: 4px 0px; */
   background: rgb(76, 76, 221);
-  color: cyan;
+  /* color: cyan; */
+  background: whitesmoke;
   border: none;
 }
 
@@ -63,4 +64,11 @@ button:hover {
 
 .details {
   width: 100%;
+}
+
+.filter {
+  width: auto;
+  text-align: center;
+  color: hotpink;
+  background: rgb(34, 11, 61);
 }
