@@ -1,10 +1,10 @@
 <template>
   <select v-model="filterModel" @change="changeFilter($event)" class="filter">
-    <option value="sort=id,desc">newest</option>
+    <option value="sort=id,desc">&#10041; newest</option>
     <option value="sort=id,asc">oldest</option>
-    <option value="sort=favorite,desc">favorite</option>
-    <option :value="'sort=' + type + ',asc'">[a-z]</option>
-    <option :value="'sort=' + type + ',desc'">[z-a]</option>
+    <option value="sort=favorite,desc">&#x2665; favorite</option>
+    <option :value="'sort=' + type + ',asc'">&#8595; [a-z]</option>
+    <option :value="'sort=' + type + ',desc'">&#8593; [z-a]</option>
 
     <option v-if="type === 'word'" value="sort=wgId, asc">wgroup</option>
     <option v-else value="sort=sgId, asc">sgroup</option>
