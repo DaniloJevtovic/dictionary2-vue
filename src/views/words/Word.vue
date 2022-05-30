@@ -77,6 +77,7 @@ import useCrud from "../../composables/useCRUD.js";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useWordTypeStore } from "../../stores/wordtypes.js";
+import { useToastStore } from "../../stores/toast.js";
 
 const props = defineProps({
   word: Object,
@@ -87,10 +88,12 @@ const { patchFun } = useCrud();
 const wordStore = useWordStore();
 const wTypeStore = useWordTypeStore();
 const groupStore = useGroupStore();
+const toastStore = useToastStore();
 
 async function deleteWord(answer) {
   if (answer === "yes") {
     wordStore.deleteWord(props.word, props.idx);
+    toastStore.showToast("rjec je obrisana", "warning");
   }
 
   showConfirmDialog.value = false;
@@ -99,6 +102,12 @@ async function deleteWord(answer) {
 async function updateFav() {
   props.word.favorite = !props.word.favorite;
   await patchFun("words/" + props.word.id + "/favorite/" + props.word.favorite);
+
+  if (props.word.favorite) {
+    toastStore.showToast("rjec dodata u omiljene", "indigo");
+  } else {
+    toastStore.showToast("rjec uklonjena iz omiljenih", "info");
+  }
 }
 
 const showModal = ref(false);
@@ -107,9 +116,9 @@ const showConfirmDialog = ref(false);
 
 <style scoped>
 .word {
-  border: 1px solid darkgray;
+  border: 1px solid rgb(111, 111, 180);
   /* border-radius: 3px; */
-  margin: 4px;
+  margin-top: 4px;
   padding: 2px;
   text-align: center;
   display: flex;
@@ -117,7 +126,7 @@ const showConfirmDialog = ref(false);
 }
 
 .word:hover {
-  background: cyan;
+  background: whitesmoke;
   /* background: v-bind('groupStore.getWGroupById(props.word.wgId).color') */
 }
 

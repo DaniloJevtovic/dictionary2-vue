@@ -4,10 +4,10 @@
       <!-- lista rjeci -->
 
       <!-- grupe sa desne strane - ako je odabrano da budu na desnoj strani -->
-      <div class="wgs-types" v-if="settingsStore.wgroupDirection === 'right'">
+      <!-- <div class="wgs-types" v-if="settingsStore.wgroupDirection === 'right'">
         <WGroup :dicId="dicId" :gType="'WGROUP'" />
         <WordTypes />
-      </div>
+      </div> -->
 
       <div class="words">
         <!-- <WordsHeader :dicId="dicId" /> -->
@@ -71,16 +71,18 @@
 
         <!-- lista rjeci -->
 
-        <button
-          @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
-          class="new-btn"
-          style="width: 99%"
-        >
-          new word
-        </button>
+        <div class="words-list">
+          <button
+            @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
+            class="new-btn"
+          >
+            + new word
+          </button>
 
-        <div v-for="(word, index) in wordStore.words" :key="word.id">
-          <Word :word="word" :idx="index" />
+          <!-- lista rjeci -->
+          <div v-for="(word, index) in wordStore.words" :key="word.id">
+            <Word :word="word" :idx="index" />
+          </div>
         </div>
 
         <!-- dugme ucitavanje jos rjeci -->
@@ -105,6 +107,8 @@
       </div>
     </div>
 
+    <!-- <ToastNotification /> -->
+
     <!-- modal - dodavanje nove rjeci -->
     <AddEditWordModal
       v-if="showModal"
@@ -123,6 +127,7 @@ import Word from "./Word.vue";
 import WGroup from "../groups/WGroup.vue";
 import AddEditWordModal from "./AddEditWordModal.vue";
 import WordsHeader from "./WordsHeader.vue";
+
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useSettingsStore } from "../../stores/settings.js";
@@ -239,20 +244,19 @@ async function loadMoreWords() {
 .search-wg {
   display: flex;
   gap: 5px;
-  margin: 4px;
+  /* margin: 4px; */
+  padding: 8px;
 }
 
 .words-wgs {
   display: grid;
-  grid-template-columns: 60% 40%;
-  /* grid-template-columns: 40% 60%; */
-  column-gap: 2px;
+  grid-template-columns: 60fr 40fr;
+  gap: 3px;
 }
 
-/* .wgs-types {
-  height: 100%;
-  overflow: hidden;
-} */
+.words-list {
+  padding: 8px;
+}
 
 .new-word-btn-search {
   padding: 20px;
