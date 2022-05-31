@@ -42,9 +42,11 @@ import useCrud from "../../composables/useCRUD.js";
 import AddEditGrammarModal from "./AddEditGrammarModal.vue";
 import ConfirmDialog from "../../components/ConfirmDialog.vue";
 import { useGrammarStore } from "../../stores/grammars.js";
+import { useToastStore } from "../../stores/toast.js";
 
 const { deleteFun } = useCrud();
 const grammarStore = useGrammarStore();
+const toastStore = useToastStore();
 
 const props = defineProps({
   grammar: Object,
@@ -54,6 +56,7 @@ const props = defineProps({
 async function deleteGrammar(answer) {
   if (answer === "yes") {
     grammarStore.deleteGrammar(props.grammar, props.idx);
+    toastStore.showToast("gramatika obrisana", "warning");
   }
 
   showConfirmDialog.value = false;

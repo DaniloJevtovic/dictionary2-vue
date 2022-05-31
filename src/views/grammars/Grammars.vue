@@ -1,14 +1,23 @@
 <template>
-  <div class="grammars-div">
-    <input type="text" v-model="searchInput" placeholder="search by title" />
+  <div>
+    <div class="grammars-div">
+      <div class="search-gr">
+        <input
+          type="text"
+          v-model="searchInput"
+          placeholder="search by title"
+        />
+      </div>
 
-    <button @click="showModal = true" class="new-btn" style="width: 100%">
-      new grammar
-    </button>
+      <div class="grammars-list">
+        <button @click="showModal = true" class="new-btn">+ new grammar</button>
 
-    <div class="grammars">
-      <div v-for="(grammar, index) in grammarStore.grammars" :key="grammar.id">
-        <Grammar :grammar="grammar" :idx="index" />
+        <div
+          v-for="(grammar, index) in grammarStore.grammars"
+          :key="grammar.id"
+        >
+          <Grammar :grammar="grammar" :idx="index" />
+        </div>
       </div>
     </div>
 
@@ -65,12 +74,16 @@ watch(searchInput, () => {
 
 <style scoped>
 .grammars-div {
-  margin: 2px;
+  overflow-y: auto;
   border: 1px solid darkgray;
 }
 
-.grammars {
-  overflow-y: auto;
-  /* max-height: 320px; */
+.search-gr {
+  display: flex;
+  padding: 10px;
+}
+
+.grammars-list {
+  padding: 8px;
 }
 </style>
