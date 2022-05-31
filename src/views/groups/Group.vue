@@ -2,30 +2,22 @@
   <div>
     <div
       class="group"
-      :style="{
-        background:
-          groupStore.activeWgId === group.id ||
-          groupStore.activeSgId === group.id
-            ? group.color
-            : 'white',
-        border:
-          groupStore.activeWgId === group.id ||
-          groupStore.activeSgId === group.id
-            ? '1px solid darkblue'
-            : '1px solid whitesmoke',
-      }"
+      :class="
+        groupStore.activeWgId === group.id || groupStore.activeSgId === group.id
+          ? 'active-group'
+          : 'group'
+      "
     >
       <!-- broj rjeci/recenica -->
       <button
         class="details-btn"
+        :class="
+          groupStore.activeWgId === group.id ||
+          groupStore.activeSgId === group.id
+            ? 'details-btn-active'
+            : 'details-btn'
+        "
         @click="viewItems(group)"
-        :style="{
-          color:
-            groupStore.activeWgId === group.id ||
-            groupStore.activeSgId === group.id
-              ? 'yellow'
-              : 'springgreen',
-        }"
       >
         {{ group.numOfItems }}
         <span v-if="group.type === 'WGROUP'"><small>words</small></span>
@@ -44,15 +36,18 @@
         </p>
       </div>
 
-      <!-- brisanje grupe -->
-      <button
-        :disabled="group.numOfItems > 0"
-        @click="deleteGroup"
-        :class="[group.numOfItems > 0 ? 'disable-btn' : 'del-btn']"
-      >
+      <button @click="showConfirmDialog = true" class="del-btn">
         &#x2715;
       </button>
     </div>
+
+    <ConfirmDialog
+      v-if="showConfirmDialog"
+      @answer="deleteGroup"
+      :title="'Delete Group'"
+      :dlgType="'del-type'"
+      :message="'Da li ste sigurni da zelite obrisati grupu? Brisanjem grupe brisu se sve rjeci/recenice iz nje!'"
+    />
 
     <AddEditGroupModal
       v-if="showModal"
@@ -68,11 +63,13 @@
 <script setup>
 import { ref, reactive } from "vue";
 import AddEditGroupModal from "./AddEditGroupModal.vue";
+import ConfirmDialog from "../../components/ConfirmDialog.vue";
 import useCrud from "../../composables/useCRUD.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useWordStore } from "../../stores/words.js";
 import { useSentenceStore } from "../../stores/sentences.js";
 import { useTabStore } from "../../stores/tabs.js";
+import { useToastStore } from "../../stores/toast.js";
 
 const props = defineProps({
   group: Object,
@@ -84,25 +81,31 @@ const groupStore = useGroupStore();
 const wordStore = useWordStore();
 const sentenceStore = useSentenceStore();
 const tabStore = useTabStore();
+const toastStore = useToastStore();
 
-async function deleteGroup() {
-  await deleteFun("groups", props.group.id);
-  groupStore.removeGroup(props.group, props.idx);
+async function deleteGroup(answer) {
+  if (answer === "yes") {
+    groupStore.deleteGroup(props.group, props.idx);
 
-  // ako je u rjecima/recenicama selektovana bas ta grupa koja se brise - prebaci na sve grupe
-  if (
-    groupStore.activeWgId === props.group.id ||
-    groupStore.activeSgId === props.group.id
-  ) {
-    if (props.group.type === "WGROUP") {
-      groupStore.activeWgId = "all";
-      // await getWords("words/dic/" + props.group.dicId);
-      wordStore.getWords("DIC", props.group.dicId);
-    } else {
-      groupStore.activeSgId = "all";
-      await getSentences("sentences/dic/" + props.group.dicId);
+    // ako je u rjecima/recenicama selektovana bas ta grupa koja se brise - prebaci na sve grupe
+    // vodi racuna i ako se obrise grupa a nije selektovana da moraju da se uklone rjeci iz te grupe!
+    if (
+      groupStore.activeWgId === props.group.id ||
+      groupStore.activeSgId === props.group.id
+    ) {
+      if (props.group.type === "WGROUP") {
+        groupStore.activeWgId = "all";
+        wordStore.getWords("DIC", props.group.dicId);
+      } else {
+        groupStore.activeSgId = "all";
+        await getSentences("sentences/dic/" + props.group.dicId);
+      }
     }
+
+    toastStore.showToast("grupa uklonjena", "warning");
   }
+
+  showConfirmDialog.value = false;
 }
 
 async function viewItems(group) {
@@ -138,6 +141,7 @@ async function getSentences(url) {
 }
 
 const showModal = ref(false);
+const showConfirmDialog = ref(false);
 </script>
 
 <style scoped>
@@ -146,6 +150,11 @@ const showModal = ref(false);
   padding: 4px;
   border: 1px solid whitesmoke;
   display: flex;
+}
+
+.active-group {
+  background: v-bind("props.group.color");
+  border: 1px solid darkblue;
 }
 
 .group:hover {
@@ -161,11 +170,20 @@ const showModal = ref(false);
   padding: 2px;
   color: springgreen;
   background: rgb(19, 51, 20);
+
+  color: hotpink;
+  background: rgb(34, 11, 61);
   border-radius: 0px;
+}
+
+.details-btn-active {
+  color: yellow;
 }
 
 .details-btn:hover {
   background: rgb(10, 31, 16);
+  background: rgb(34, 11, 61);
+
   color: yellow;
 }
 
