@@ -37,7 +37,7 @@
               background:
                 groupStore.activeWgId != 'all'
                   ? groupStore.getWGroupById(groupStore.activeWgId).color
-                  : 'white',
+                  : dictionaryStore.dictionary.color,
               textAlign: 'center',
             }"
           >
@@ -75,6 +75,13 @@
           <button
             @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
             class="new-btn"
+            :style="{
+              background:
+                groupStore.activeWgId != 'all'
+                  ? groupStore.getWGroupById(groupStore.activeWgId).color
+                  : dictionaryStore.dictionary.color,
+              textAlign: 'center',
+            }"
           >
             + new word
           </button>
@@ -83,21 +90,28 @@
           <div v-for="(word, index) in wordStore.words" :key="word.id">
             <Word :word="word" :idx="index" />
           </div>
-        </div>
 
-        <!-- dugme ucitavanje jos rjeci -->
-        <button
-          v-if="
-            wordStore.currentPage + 1 < wordStore.totalPages &&
-            wordStore.search === ''
-          "
-          @click="loadMoreWords"
-          class="new-btn"
-          style="width: 99%"
-        >
-          load more words [{{ wordStore.currentPage + 1 }} /
-          {{ wordStore.totalPages }}]
-        </button>
+          <!-- dugme ucitavanje jos rjeci -->
+          <button
+            v-if="
+              wordStore.currentPage + 1 < wordStore.totalPages &&
+              wordStore.search === ''
+            "
+            @click="loadMoreWords"
+            class="new-btn"
+            :style="{
+              background:
+                groupStore.activeWgId != 'all'
+                  ? groupStore.getWGroupById(groupStore.activeWgId).color
+                  : dictionaryStore.dictionary.color,
+              textAlign: 'center',
+              marginTop: '4px'
+            }"
+          >
+            load more words [{{ wordStore.currentPage + 1 }} /
+            {{ wordStore.totalPages }}]
+          </button>
+        </div>
       </div>
 
       <!-- grupe sa lijeve strane - ako je odabrano da budu na lijevoj strani -->
@@ -131,6 +145,7 @@ import WordsHeader from "./WordsHeader.vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useSettingsStore } from "../../stores/settings.js";
+import { useDictionaryStore } from "../../stores/dictionaries.js";
 
 import Filter from "../../components/Filter.vue";
 import WordTypes from "../wordtypes/WordTypes.vue";
@@ -143,6 +158,7 @@ const { readFun } = useCrud();
 const groupStore = useGroupStore();
 const wordStore = useWordStore();
 const settingsStore = useSettingsStore();
+const dictionaryStore = useDictionaryStore();
 
 // dobavljanje rjeci za rjecnik ili grupu
 const words = ref([]);

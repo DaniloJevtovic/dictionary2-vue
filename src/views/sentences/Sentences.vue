@@ -2,7 +2,7 @@
   <div>
     <div class="sentences-sgs">
       <div class="sentences">
-        <div class="search-sg" style="margin: 4px">
+        <div class="search-sg">
           <!-- pretraga -->
           <input type="text" v-model="searchInput" placeholder="search" />
 
@@ -15,7 +15,7 @@
               background:
                 groupStore.activeSgId != 'all'
                   ? groupStore.getSGroupById(groupStore.activeSgId).color
-                  : 'white',
+                  : dictionaryStore.dictionary.color,
               textAlign: 'center',
             }"
           >
@@ -37,22 +37,29 @@
           />
         </div>
 
-        <button
-          @click="
-            (showModal = true), (newSentence.sgId = groupStore.activeSgId)
-          "
-          class="new-btn"
-          style="width: 99%"
-        >
-          new sentence
-        </button>
+        <div class="sentences-list">
+          <button
+            @click="
+              (showModal = true), (newSentence.sgId = groupStore.activeSgId)
+            "
+            class="new-btn"
+            :style="{
+              background:
+                groupStore.activeSgId != 'all'
+                  ? groupStore.getSGroupById(groupStore.activeSgId).color
+                  : dictionaryStore.dictionary.color,
+            }"
+          >
+            + new sentence
+          </button>
 
-        <!-- recenice -->
-        <div
-          v-for="(sentence, index) in sentenceStore.sentences"
-          :key="sentence.id"
-        >
-          <Sentence :sentence="sentence" :idx="index" />
+          <!-- recenice -->
+          <div
+            v-for="(sentence, index) in sentenceStore.sentences"
+            :key="sentence.id"
+          >
+            <Sentence :sentence="sentence" :idx="index" />
+          </div>
         </div>
       </div>
 
@@ -80,6 +87,7 @@ import SGroup from "../groups/SGroup.vue";
 import AddEditSentenceModal from "./AddEditSentenceModal.vue";
 import { useSentenceStore } from "../../stores/sentences.js";
 import { useGroupStore } from "../../stores/groups.js";
+import { useDictionaryStore } from "../../stores/dictionaries.js";
 import Filter from "../../components/Filter.vue";
 
 const props = defineProps({
@@ -89,6 +97,7 @@ const props = defineProps({
 const { readFun } = useCrud();
 const sentenceStore = useSentenceStore();
 const groupStore = useGroupStore();
+const dictionaryStore = useDictionaryStore();
 
 onMounted(() => {
   groupStore.getWGroupsForDictionary(props.dicId);
@@ -168,12 +177,18 @@ watch(searchInput, () => {
 .search-sg {
   display: flex;
   gap: 5px;
+  /* margin: 4px; */
+  padding: 8px;
 }
 
 .sentences-sgs {
   display: grid;
-  grid-template-columns: 60% 40%;
-  column-gap: 2px;
+  grid-template-columns: 60fr 40fr;
+  gap: 3px;
+}
+
+.sentences-list {
+  padding: 8px;
 }
 
 @media only screen and (max-width: 700px) {
