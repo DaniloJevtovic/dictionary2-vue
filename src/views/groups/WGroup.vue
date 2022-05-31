@@ -7,9 +7,9 @@
     <button
       @click.prevent="showModal = true"
       class="new-btn"
-      style="width: 100%"
+      :style="{ background: dictionaryStore.dictionary.color }"
     >
-      new group
+      + new group
     </button>
 
     <div class="groups">
@@ -36,7 +36,7 @@
 
 <script setup>
 import { onMounted, reactive, ref, watch } from "vue";
-import useCrud from "../../composables/useCRUD.js";
+
 import Group from "./Group.vue";
 import AddEditGroupModal from "./AddEditGroupModal.vue";
 import { useGroupStore } from "../../stores/groups.js";
@@ -47,17 +47,10 @@ const props = defineProps({
   gType: String,
 });
 
-const { readFun } = useCrud();
 const groupStore = useGroupStore();
 const dictionaryStore = useDictionaryStore();
 
 const searchedWgs = ref([]);
-
-// async function getWgroups() {
-//   let res = await readFun("groups/dic/" + props.dicId + "/group/WGROUP");
-//   searchedWgs.value = res.data;
-//   groupStore.wgroups = res.data;
-// }
 
 onMounted(() => {
   if (dictionaryStore.dictionary.id !== props.dicId) {
@@ -101,7 +94,7 @@ const showModal = ref(false);
 <style scoped>
 .wgroups {
   border: 1px solid darkgray;
-  padding: 10px;
+  padding: 8px;
 }
 
 .groups {
