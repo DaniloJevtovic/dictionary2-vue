@@ -7,11 +7,16 @@
           v-model="searchInput"
           placeholder="search by title"
         />
+        <button
+          @click="showModal = true"
+          class="new-grammar"
+          :style="{ background: dictionaryStore.dictionary.color }"
+        >
+          new
+        </button>
       </div>
 
       <div class="grammars-list">
-        <button @click="showModal = true" class="new-btn">+ new grammar</button>
-
         <div
           v-for="(grammar, index) in grammarStore.grammars"
           :key="grammar.id"
@@ -33,17 +38,18 @@
 
 <script setup>
 import { onMounted, ref, reactive, watch } from "vue";
-import useCrud from "../../composables/useCRUD.js";
+
 import Grammar from "./Grammar.vue";
 import AddEditGrammarModal from "./AddEditGrammarModal.vue";
 import { useGrammarStore } from "../../stores/grammars.js";
+import { useDictionaryStore } from "../../stores/dictionaries.js";
 
 const props = defineProps({
   dicId: String,
 });
 
-const { readFun } = useCrud();
 const grammarStore = useGrammarStore();
+const dictionaryStore = useDictionaryStore();
 
 onMounted(() => {
   grammarStore.getGrammars();
@@ -81,9 +87,24 @@ watch(searchInput, () => {
 .search-gr {
   display: flex;
   padding: 10px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-bottom: 1px solid slateblue;
+
 }
 
 .grammars-list {
   padding: 8px;
+}
+
+@media only screen and (max-width: 700px) {
+  .search-gr {
+    display: block;
+  }
+
+  .new-grammar {
+    width: 100%;
+  }
 }
 </style>
