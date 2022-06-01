@@ -3,15 +3,18 @@
     <!-- tjelo rjecnika - tabovi, rjeci, grupe... -->
     <div class="dic-body">
       <div class="panels">
+        <!-- lijeva strana - sidebar -->
         <div class="left-side">
           <div class="ls-nav">
             <router-link :to="{ name: 'User' }"> Hi, Lemur </router-link> |
             <router-link :to="{ name: 'Login' }">Logout</router-link>
           </div>
 
+          <!-- lista korisnikovih rjecnika -->
           <AllDictionaries />
         </div>
 
+        <!-- desna strana - tabovi, rjeci i grupe -->
         <div class="right-side">
           <div class="rs-div">
             <!-- header sa nazivom rjecnik -->
@@ -19,18 +22,38 @@
               :style="{ background: dictionaryStore.dictionary.color }"
               class="dic-header"
             >
+              <!-- dugme za temu -->
               <button
                 @click.prevent="settingsStore.dark = !settingsStore.dark"
-                style="background: hotpink"
+                :style="{
+                  background: settingsStore.dark ? 'rgb(24, 24, 24)' : 'white',
+                }"
               >
                 <span v-if="settingsStore.dark">&#9789;</span>
                 <span v-else>&#x263C;</span>
               </button>
 
+              <!-- naziv rjecnika -->
               <h4 @click="showModal = true" style="margin: 0px; width: 100%">
                 {{ dictionaryStore.dictionary.name }}
               </h4>
 
+              <!-- tabovi -->
+              <div class="tab-btns">
+                <button
+                  v-for="(_, tab) in tabs"
+                  :key="tab"
+                  :class="[
+                    'tab-button',
+                    { active: tabStore.currentTab === tab },
+                  ]"
+                  @click="tabStore.currentTab = tab"
+                >
+                  {{ tab }}
+                </button>
+              </div>
+
+              <!-- dugme za brisanje -->
               <button
                 @click.prevent="showConfirmDialog = true"
                 class="del-dic-btn"
@@ -57,16 +80,6 @@
                 {{ tab }}
               </option>
             </select>
-
-            <!-- tabovi -->
-            <button
-              v-for="(_, tab) in tabs"
-              :key="tab"
-              :class="['tab-button', { active: tabStore.currentTab === tab }]"
-              @click="tabStore.currentTab = tab"
-            >
-              {{ tab }}
-            </button>
           </div>
 
           <!-- KOMPONTA - RJECI/RECENICE/GRAMATIKA -->
@@ -99,6 +112,8 @@ import { useGroupStore } from "../../stores/groups.js";
 import { useTabStore } from "../../stores/tabs.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 import { useSettingsStore } from "../../stores/settings.js";
+import { useToastStore } from "../../stores/toast.js";
+
 import AddEditDictionaryModal from "./AddEditDictionaryModal.vue";
 import AllDictionaries from "./AllDictionaries.vue";
 import ConfirmDialog from "../../components/ConfirmDialog.vue";
@@ -118,6 +133,7 @@ const tabs = {
 
 const tabStore = useTabStore();
 const groupStore = useGroupStore();
+const toastStore = useToastStore();
 const router = useRouter();
 
 onMounted(() => {
@@ -129,6 +145,7 @@ async function deleteDic(answer) {
   if (answer === "yes") {
     dictionaryStore.deleteDic();
     router.push({ name: "AllDictionaries" });
+    toastStore.showToast("rjecnik obrisan", "warningss");
   }
 
   showConfirmDialog.value = false;
@@ -145,18 +162,20 @@ const showConfirmDialog = ref(false);
 
 .mainDark {
   background: rgb(24, 24, 24);
+  color: salmon;
 }
 
 .dic-header {
   cursor: pointer;
   display: flex;
   align-items: center;
+  margin: 2px;
   justify-content: center;
 }
 
 .dic-body {
   font-family: sans-serif;
-  border: 1px solid #eee;
+  border: 1px solid darkgray;
   border-radius: 2px;
   margin-bottom: 40px;
   user-select: none;
@@ -164,12 +183,17 @@ const showConfirmDialog = ref(false);
   text-align: center;
 }
 
+.tab-btns {
+  display: flex;
+  margin-right: 20px;
+}
+
 .tab-button {
-  padding: 3px 15px;
   border: none;
   cursor: pointer;
-  padding: 1px 40px;
+  /* padding: 1px 40px; */
   margin: 5px 0px;
+  background: whitesmoke;
 }
 
 .tab-button:hover {
@@ -179,7 +203,12 @@ const showConfirmDialog = ref(false);
 .tab-button.active {
   background: darkblue;
   color: cyan;
+  background: v-bind("dictionaryStore.dictionary.color");
+  color: black;
+  border: 1px solid black;
 }
+
+/*  */
 
 .tab {
   padding: 2px;
@@ -192,7 +221,7 @@ const showConfirmDialog = ref(false);
 
 .panels {
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 20fr 80fr;
 }
 
 .left-side {
@@ -201,20 +230,24 @@ const showConfirmDialog = ref(false);
   border: 1px solid darkgray;
 }
 
+/* .right-side {
+  background: v-bind("dictionaryStore.dictionary.color");
+  background: white;
+} */
+
 .rs-div {
   border: 1px solid darkgray;
   margin: 2px;
 }
 
 .ls-nav {
-  border: 1px solid darkgray;
-  color: red;
-  padding: 13px;
+  border: 1px solid whitesmoke;
+  color: rgb(111, 111, 180);
   margin-bottom: 3px;
 }
 
 .ls-nav a {
-  color: darkblue;
+  color: rgb(111, 111, 180);
 }
 
 .del-dic-btn {
