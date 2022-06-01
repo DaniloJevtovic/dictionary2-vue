@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import useCRUD from "../composables/useCRUD.js";
 
+import router  from "../router/index.js";
+
 const { readFun, createFun, deleteFun } = useCRUD();
 
 export const useDictionaryStore = defineStore("dictionaries", {
@@ -36,6 +38,9 @@ export const useDictionaryStore = defineStore("dictionaries", {
     async saveDictionary(dictionary) {
       let res = await createFun("dictionaries", dictionary);
       this.addDictionary(res.data);
+      this.dictionary = res.data;
+      //preusmjeravanje na taj novokreirani rjecnik
+      router.push({ name: "Dictionary", params: { id: res.data.id } });
     },
 
     async editDictionary(dictionary) {
