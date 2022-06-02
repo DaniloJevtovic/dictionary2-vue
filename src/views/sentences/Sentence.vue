@@ -56,6 +56,7 @@ import AddEditSentenceModal from "./AddEditSentenceModal.vue";
 import ConfirmDialog from "../../components/ConfirmDialog.vue";
 import { useSentenceStore } from "../../stores/sentences.js";
 import { useGroupStore } from "../../stores/groups.js";
+import { useToastStore } from "../../stores/toast.js";
 
 const props = defineProps({
   sentence: Object,
@@ -65,10 +66,12 @@ const props = defineProps({
 const { deleteFun, patchFun } = useCrud();
 const sentenceStore = useSentenceStore();
 const groupStore = useGroupStore();
+const toastStore = useToastStore();
 
 async function deleteSentence(answer) {
   if (answer === "yes") {
     sentenceStore.deleteSentence(props.sentence, props.idx);
+    toastStore.showToast("recenica uklonjena", "warning");
   }
 
   showConfirmDialog.value = false;
@@ -79,6 +82,12 @@ async function updateFav() {
   await patchFun(
     "sentences/" + props.sentence.id + "/favorite/" + props.sentence.favorite
   );
+
+  if (props.sentence.favorite) {
+    toastStore.showToast("recenica dodata u omiljene", "fav");
+  } else {
+    toastStore.showToast("recenica uklonjena iz omiljenih", "white");
+  }
 }
 
 const showModal = ref(false);
@@ -87,11 +96,12 @@ const showConfirmDialog = ref(false);
 
 <style scoped>
 .sentence {
-  margin: 4px;
+  border: 1px solid rgb(111, 111, 180);
+  /* border-radius: 3px; */
+  margin-top: 4px;
   padding: 2px;
-  border: 1px solid blue;
+  text-align: center;
   display: flex;
-  /* flex-wrap: wrap; */
 }
 
 .sentence:hover {

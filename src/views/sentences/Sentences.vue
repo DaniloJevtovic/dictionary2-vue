@@ -35,10 +35,26 @@
             :filterModel="sentenceStore.filter"
             @filter="changeFilter2"
           />
+
+          <button
+            @click="
+              (showModal = true), (newSentence.sgId = groupStore.activeSgId)
+            "
+            class="new-sentence"
+            :style="{
+              background:
+                groupStore.activeSgId != 'all'
+                  ? groupStore.getSGroupById(groupStore.activeSgId).color
+                  : dictionaryStore.dictionary.color,
+              textAlign: 'center',
+            }"
+          >
+            new
+          </button>
         </div>
 
         <div class="sentences-list">
-          <button
+          <!-- <button
             @click="
               (showModal = true), (newSentence.sgId = groupStore.activeSgId)
             "
@@ -51,7 +67,7 @@
             }"
           >
             + new sentence
-          </button>
+          </button> -->
 
           <!-- recenice -->
           <div
@@ -179,6 +195,8 @@ watch(searchInput, () => {
   gap: 5px;
   /* margin: 4px; */
   padding: 8px;
+  align-items: center;
+  border-bottom: 1px solid slateblue;
 }
 
 .sentences-sgs {
@@ -198,6 +216,16 @@ watch(searchInput, () => {
 
   .sentences-sgs {
     display: block;
+  }
+
+  .new-sentence {
+    /* display: none; */
+    display: block;
+    width: 100%;
+  }
+
+  .new-sentence::after{
+    content: 'sentence'
   }
 
   /* .filter {
