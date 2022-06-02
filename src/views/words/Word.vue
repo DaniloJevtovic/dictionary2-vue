@@ -15,12 +15,12 @@
         class="details"
         v-if="groupStore.getWGroupById(word.wgId)"
       >
-        <p style="margin: 0px">
+        <p>
           <span>{{ idx + 1 }}.</span> {{ word.word }} &#8594;
           {{ word.translate }}
         </p>
 
-        <p style="margin: 0px">
+        <p>
           <small
             :style="{
               background: wTypeStore.getTypeColor(word.type).color,
@@ -104,9 +104,9 @@ async function updateFav() {
   await patchFun("words/" + props.word.id + "/favorite/" + props.word.favorite);
 
   if (props.word.favorite) {
-    toastStore.showToast("rjec dodata u omiljene", "indigo");
+    toastStore.showToast("rjec dodata u omiljene", "fav");
   } else {
-    toastStore.showToast("rjec uklonjena iz omiljenih", "info");
+    toastStore.showToast("rjec uklonjena iz omiljenih", "white");
   }
 }
 

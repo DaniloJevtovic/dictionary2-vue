@@ -57,6 +57,20 @@
             :filterModel="wordStore.filter"
             @filter="changeFilter2"
           />
+
+          <button
+            @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
+            class="new-word"
+            :style="{
+              background:
+                groupStore.activeWgId != 'all'
+                  ? groupStore.getWGroupById(groupStore.activeWgId).color
+                  : dictionaryStore.dictionary.color,
+              textAlign: 'center',
+            }"
+          >
+            new
+          </button>
         </div>
 
         <!-- dugme koje se prikazuje kada se unosi nesto u search - iz kojeg je moguce odmah kreirati rjec -->
@@ -72,7 +86,7 @@
         <!-- lista rjeci -->
 
         <div class="words-list">
-          <button
+          <!-- <button
             @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
             class="new-btn"
             :style="{
@@ -84,9 +98,31 @@
             }"
           >
             + new word
-          </button>
+          </button> -->
 
-          <!-- lista rjeci -->
+          <div
+            class="new-word-div"
+            @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
+          >
+            <div class="details">
+              <small>
+                <p>word &#8594; translate</p>
+                <p>
+                  <small>word type</small> |
+                  <small>word description ...</small> |
+                  <small> word group</small>
+                </p>
+                <!-- <p>
+                  <small
+                    ><small>clik inside this div to add new word</small></small
+                  >
+                </p> -->
+              </small>
+            </div>
+          </div>
+
+
+          <!-- LISTA RJECI -->
           <div v-for="(word, index) in wordStore.words" :key="word.id">
             <Word :word="word" :idx="index" />
           </div>
@@ -105,7 +141,7 @@
                   ? groupStore.getWGroupById(groupStore.activeWgId).color
                   : dictionaryStore.dictionary.color,
               textAlign: 'center',
-              marginTop: '4px'
+              marginTop: '4px',
             }"
           >
             load more words [{{ wordStore.currentPage + 1 }} /
@@ -262,6 +298,8 @@ async function loadMoreWords() {
   gap: 5px;
   /* margin: 4px; */
   padding: 8px;
+  align-items: center;
+  border-bottom: 1px solid slateblue;
 }
 
 .words-wgs {
@@ -277,6 +315,15 @@ async function loadMoreWords() {
 .new-word-btn-search {
   padding: 20px;
   animation: blinker 2s linear infinite;
+}
+
+.new-word-div {
+  border: 1px solid rgb(111, 111, 180);
+  /* border-radius: 3px; */
+  margin-top: 4px;
+  padding: 2px;
+  text-align: center;
+  display: flex;
 }
 
 @keyframes blinker {
@@ -301,7 +348,13 @@ async function loadMoreWords() {
   }
 
   .new-word {
+    /* display: none; */
+    display: block;
     width: 100%;
+  }
+
+  .new-word::after {
+    content: "word";
   }
 
   /* .wgroups {
