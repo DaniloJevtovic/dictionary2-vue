@@ -2,7 +2,13 @@ import { defineStore } from "pinia";
 
 export const useToastStore = defineStore("toast", {
   state: () => {
-    return { message: "poruka", duration: 3000, show: false, type: "info" };
+    return {
+      message: "poruka",
+      duration: 2000,
+      show: false,
+      type: "info",
+      color: "cyan",
+    };
   },
 
   actions: {
@@ -18,5 +24,5 @@ export const useToastStore = defineStore("toast", {
       }, this.duration);
     },
   },
-  persist: true,
+  // persist: true,
 });
