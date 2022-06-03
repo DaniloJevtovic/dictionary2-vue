@@ -79,6 +79,7 @@ import useCrud from "../../composables/useCRUD.js";
 import AddEditGroupModal from "../../views/groups/AddEditGroupModal.vue";
 import { useSentenceStore } from "../../stores/sentences.js";
 import { useGroupStore } from "../../stores/groups.js";
+import { useToastStore } from "../../stores/toast.js";
 
 const props = defineProps({
   sentence: Object,
@@ -92,12 +93,14 @@ const emit = defineEmits(["close"]);
 const { createFun, readFun, patchFun } = useCrud();
 const sentenceStore = useSentenceStore();
 const groupStore = useGroupStore();
+const toastStore = useToastStore();
 
 const updateSentence = reactive({ ...props.sentence });
 
 async function save() {
   if (props.mode === "new") {
     sentenceStore.saveSentence(updateSentence);
+    toastStore.showToast("recenica dodata", "success");
   } else {
     sentenceStore.editSentence(updateSentence, props.idx);
 
@@ -106,6 +109,8 @@ async function save() {
       sentenceStore.decreaseNumOfSentencesInGroup(props.sentence.sgId);
       sentenceStore.increaseNumOfSentencesInGroup(updateSentence.sgId);
     }
+
+    toastStore.showToast("recenica izmjenjena", "info");
   }
 
   if (updateSentence.sgId !== groupStore.activeSgId) {

@@ -2,7 +2,7 @@
   <div v-if="show" class="modal-mask">
     <div class="modal-wrapper">
       <div class="modal-container">
-        <div class="modal-header">
+        <div class="modal-header" :class="mode">
           <h3>{{ mode }} group</h3>
         </div>
 
@@ -49,8 +49,9 @@
 
 <script setup>
 import { reactive } from "vue";
-import useCrud from "../../composables/useCRUD.js";
+
 import { useGroupStore } from "../../stores/groups.js";
+import { useToastStore } from "../../stores/toast.js";
 
 const props = defineProps({
   group: Object,
@@ -61,18 +62,18 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
-const { createFun } = useCrud();
 const groupStore = useGroupStore();
+const toastStore = useToastStore();
 
 const updateGroup = reactive({ ...props.group });
 
 async function save() {
-  let res = await createFun("groups", updateGroup);
-
   if (props.mode === "new") {
-    groupStore.addGroup(res.data);
+    groupStore.saveGroup(updateGroup);
+    toastStore.showToast("grupa dodata", "success");
   } else {
-    groupStore.updateGroup(res.data, props.idx);
+    groupStore.editGroup(updateGroup);
+    toastStore.showToast("grupa azurirana", "info");
   }
 
   closeModal();

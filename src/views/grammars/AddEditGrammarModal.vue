@@ -1,7 +1,7 @@
 <template>
   <div v-if="show" class="modal-mask">
     <div class="modal-wrapper">
-      <div class="modal-container">
+      <div class="modal-container" :class="mode">
         <div class="modal-header">
           <h3>{{ mode }} grammar</h3>
         </div>
@@ -41,6 +41,7 @@ import { update } from "lodash";
 import { reactive } from "vue";
 import useCrud from "../../composables/useCRUD.js";
 import { useGrammarStore } from "../../stores/grammars.js";
+import { useToastStore } from "../../stores/toast.js";
 
 const props = defineProps({
   grammar: Object,
@@ -53,14 +54,17 @@ const emit = defineEmits(["close"]);
 
 const { createFun } = useCrud();
 const grammarStore = useGrammarStore();
+const toastStore = useToastStore();
 
 const updateGrammar = reactive({ ...props.grammar });
 
 async function save() {
   if (props.mode === "new") {
     grammarStore.saveGrammar(updateGrammar);
+    toastStore.showToast("gramatika dodata", "success");
   } else {
     grammarStore.editGrammar(updateGrammar, props.idx);
+    toastStore.showToast("gramatika izmjenjena", "info");
   }
 
   closeModal();

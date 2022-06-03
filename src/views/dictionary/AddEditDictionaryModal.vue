@@ -45,7 +45,9 @@
 
 <script setup>
 import { reactive } from "vue";
+import { useRouter } from "vue-router";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
+import { useToastStore } from "../../stores/toast.js";
 
 const props = defineProps({
   dictionary: Object,
@@ -57,15 +59,19 @@ const props = defineProps({
 const emit = defineEmits(["close"]);
 
 const dictionaryStore = useDictionaryStore();
+const toastStore = useToastStore();
+
+const router = useRouter();
 
 const updateDictionary = reactive({ ...props.dictionary });
 
 async function save() {
   if (props.mode === "new") {
     dictionaryStore.saveDictionary(updateDictionary);
-    //preusmjeri na taj novi rjecnik
+    toastStore.showToast("rjecnik kreiran", "success");
   } else {
     dictionaryStore.editDictionary(updateDictionary);
+    toastStore.showToast("rjecnik izmjenjen", "info");
   }
 
   closeModal();

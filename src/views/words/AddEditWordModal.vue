@@ -94,6 +94,7 @@ import AddEditGroupModal from "../../views/groups/AddEditGroupModal.vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useWordTypeStore } from "../../stores/wordtypes.js";
+import { useToastStore } from "../../stores/toast.js";
 
 const props = defineProps({
   word: Object,
@@ -108,12 +109,14 @@ const { createFun, readFun, patchFun } = useCrud();
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
 const typeStore = useWordTypeStore();
+const toastStore = useToastStore();
 
 const updateWord = reactive({ ...props.word });
 
 async function save() {
   if (props.mode === "new") {
     wordStore.saveWord(updateWord);
+    toastStore.showToast("rjec je dodata", "success");
   } else {
     wordStore.editWord(updateWord, props.idx);
 
@@ -123,6 +126,7 @@ async function save() {
       wordStore.decreaseNumOfWordsInGroup(props.word.wgId);
       wordStore.increaseNumOfWordsInGroup(updateWord.wgId);
     }
+    toastStore.showToast("rjec je izmjenjena", "info");
   }
 
   // provjera da li je bilo promjene grupe u odnosnu na selektovanu
