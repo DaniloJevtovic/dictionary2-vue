@@ -4,7 +4,17 @@
       App settings
     </h4>
 
-    <p>dictionary direction -> yourt languate -> foreign language</p>
+    <div class="settings">
+      <p>dictionary direction -> yourt languate -> foreign language</p>
+    </div>
+
+    <div class="settings">
+      Theme:
+      <button @click.prevent="settingsStore.dark = !settingsStore.dark">
+        <span v-if="settingsStore.dark">dark</span>
+        <span v-else>white</span>
+      </button>
+    </div>
 
     <div class="settings">
       <h4 style="margin: 0px">Word settings</h4>
@@ -64,7 +74,7 @@
 
     <br />
 
-    <button @click="saveChanges">Save changes</button>
+    <button @click.prevent="saveChanges">Save changes</button>
   </form>
 </template>
 
