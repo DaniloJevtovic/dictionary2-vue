@@ -19,7 +19,7 @@ textarea,
 select {
   border: 0;
   border-bottom: 1px solid indigo;
-  padding: 2px;
+  padding: 1px;
   outline: none;
   display: block;
   width: 100%;
@@ -113,7 +113,6 @@ form {
   padding: 10px;
   border-radius: 3px;
   border: 1px solid darkblue;
-  background: white;
 }
 
 @media only screen and (max-width: 700px) {

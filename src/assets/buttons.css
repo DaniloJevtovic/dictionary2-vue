@@ -20,8 +20,13 @@ button:hover {
   background: rgb(76, 76, 221);
   /* color: cyan; */
   background: whitesmoke;
-  border: none;
+  background: lightslategray;
+  /* border: none; */
 }
+
+/* .new-btn:hover {
+  background: springgreen;
+} */
 
 .fav-btn,
 .fav-btn:hover {
@@ -71,4 +76,5 @@ button:hover {
   text-align: center;
   color: hotpink;
   background: rgb(34, 11, 61);
+  color: orangered;
 }
