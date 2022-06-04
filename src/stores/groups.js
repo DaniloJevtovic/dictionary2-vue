@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 import useCRUD from "../composables/useCRUD.js";
 
+import { useWordStore } from "./words.js";
+import { useSentenceStore } from "./sentences.js";
+
 // grupe rjeci i recenica za rjecnik
 
 const { readFun, createFun, deleteFun, patchFun } = useCRUD();
@@ -26,10 +29,17 @@ export const useGroupStore = defineStore("groups", {
     },
 
     addGroup(group) {
+      const wordStore = useWordStore();
+      const sentenceStore = useSentenceStore();
+
       if (group.type == "WGROUP") {
         this.wgroups.unshift(group);
+        this.activeWgId = group.id; // ta nova grupa postaje aktivna
+        wordStore.words = []; // uklanjaju se rjeci ako su bile
       } else {
         this.sgroups.unshift(group);
+        this.activeSgId = group.id;
+        sentenceStore.sentences = [];
       }
     },
 
@@ -71,13 +81,13 @@ export const useGroupStore = defineStore("groups", {
       this.addGroup(res.data);
     },
 
-    async editGroup(group, idx) {
+    async editGroup(group) {
       let res = await createFun("groups", group);
-      this.updateGroup(group, idx);
+      this.updateGroup(group);
     },
 
-    async deleteGroup(group, idx) {
-      this.removeGroup(group, idx);
+    async deleteGroup(group) {
+      this.removeGroup(group);
       await deleteFun("groups", group.id);
     },
   },
