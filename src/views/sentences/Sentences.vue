@@ -69,6 +69,26 @@
             + new sentence
           </button> -->
 
+          <div
+            class="new-sentence-div"
+            @click="(showModal = true), (newSentence.sgId = groupStore.activeSgId)"
+          >
+            <div class="details">
+              <small>
+                <p>sentence &#8594; translate</p>
+                <p>
+                  <small>sentence description</small> |
+                  <small>sentence group</small>
+                </p>
+                <!-- <p>
+                  <small
+                    ><small>clik inside this div to add new sentence</small></small
+                  >
+                </p> -->
+              </small>
+            </div>
+          </div>
+
           <!-- recenice -->
           <div
             v-for="(sentence, index) in sentenceStore.sentences"
@@ -209,6 +229,15 @@ watch(searchInput, () => {
   padding: 8px;
 }
 
+.new-sentence-div {
+  border: 1px solid rgb(111, 111, 180);
+  /* border-radius: 3px; */
+  margin-top: 4px;
+  padding: 2px;
+  text-align: center;
+  display: flex;
+}
+
 @media only screen and (max-width: 700px) {
   .search-sg {
     display: block;
@@ -224,8 +253,8 @@ watch(searchInput, () => {
     width: 100%;
   }
 
-  .new-sentence::after{
-    content: 'sentence'
+  .new-sentence::after {
+    content: "sentence";
   }
 
   /* .filter {
