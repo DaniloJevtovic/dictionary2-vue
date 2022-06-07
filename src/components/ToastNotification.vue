@@ -1,6 +1,10 @@
 <template>
   <div v-if="toastStore.show">
-    <div class="toast" :class="toastStore.type">
+    <div
+      class="toast"
+      :class="toastStore.type"
+      :style="{ background: toastStore.color }"
+    >
       {{ toastStore.message }}
     </div>
   </div>
@@ -28,8 +32,12 @@ const toastStore = useToastStore();
   background: cyan;
 }
 
-.indigo {
-  background: indigo;
+.fav {
+  background: rgb(173, 163, 238);
+}
+
+.white {
+  background: white;
 }
 
 .success {
