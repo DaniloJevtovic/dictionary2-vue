@@ -16,6 +16,17 @@
         </button>
       </div>
 
+      <div class="new-grammar-div" @click="showModal = true">
+        <div class="details">
+          <small>
+            <p>grammar title</p>
+            <p>
+              <small>grammar content</small>
+            </p>
+          </small>
+        </div>
+      </div>
+
       <div class="grammars-list">
         <div
           v-for="(grammar, index) in grammarStore.grammars"
@@ -91,11 +102,19 @@ watch(searchInput, () => {
   justify-content: center;
   gap: 5px;
   border-bottom: 1px solid slateblue;
-
 }
 
 .grammars-list {
-  padding: 8px;
+  margin: 4px;
+}
+
+.new-grammar-div {
+  border: 1px solid rgb(111, 111, 180);
+  /* border-radius: 3px; */
+  margin: 4px;
+  padding: 2px;
+  text-align: center;
+  display: flex;
 }
 
 @media only screen and (max-width: 700px) {
