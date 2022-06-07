@@ -4,10 +4,10 @@
       <!-- lista rjeci -->
 
       <!-- grupe sa desne strane - ako je odabrano da budu na desnoj strani -->
-      <!-- <div class="wgs-types" v-if="settingsStore.wgroupDirection === 'right'">
+      <div class="wgs-types" v-if="settingsStore.wgroupDirection === 'right'">
         <WGroup :dicId="dicId" :gType="'WGROUP'" />
         <WordTypes />
-      </div> -->
+      </div>
 
       <div class="words">
         <!-- <WordsHeader :dicId="dicId" /> -->
@@ -73,16 +73,6 @@
           </button>
         </div>
 
-        <!-- dugme koje se prikazuje kada se unosi nesto u search - iz kojeg je moguce odmah kreirati rjec -->
-        <button
-          class="new-word-btn-search"
-          v-if="searchInput"
-          @click="newSearchWord"
-          style="background: springgreen"
-        >
-          + {{ searchInput }}
-        </button>
-
         <!-- lista rjeci -->
 
         <div class="words-list">
@@ -100,6 +90,17 @@
             + new word
           </button> -->
 
+          <!-- dugme koje se prikazuje kada se unosi nesto u search - iz kojeg je moguce odmah kreirati rjec -->
+          <button
+            class="new-word-btn-search"
+            v-if="searchInput"
+            @click="newSearchWord"
+            style="background: springgreen"
+          >
+            + {{ searchInput }}
+          </button>
+
+          <!-- info za rjec / dodavanje nove rjeci -->
           <div
             class="new-word-div"
             @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
@@ -108,19 +109,12 @@
               <small>
                 <p>word &#8594; translate</p>
                 <p>
-                  <small>word type</small> |
-                  <small>word description ...</small> |
-                  <small> word group</small>
+                  <small>word type</small> | <small>word description</small> |
+                  <small>word group</small>
                 </p>
-                <!-- <p>
-                  <small
-                    ><small>clik inside this div to add new word</small></small
-                  >
-                </p> -->
               </small>
             </div>
           </div>
-
 
           <!-- LISTA RJECI -->
           <div v-for="(word, index) in wordStore.words" :key="word.id">
@@ -285,7 +279,7 @@ async function loadMoreWords() {
 
 <style scoped>
 .words {
-  overflow-y: auto;
+  /* overflow-y: auto; */
   border: 1px solid darkgray;
 }
 
@@ -299,7 +293,7 @@ async function loadMoreWords() {
   /* margin: 4px; */
   padding: 8px;
   align-items: center;
-  border-bottom: 1px solid slateblue;
+  border-bottom: 2px solid slateblue;
 }
 
 .words-wgs {
@@ -309,11 +303,14 @@ async function loadMoreWords() {
 }
 
 .words-list {
+  overflow-y: auto;
   padding: 8px;
+  max-height: 480px;
 }
 
 .new-word-btn-search {
-  padding: 20px;
+  margin-top: 10px;
+  padding: 5px;
   animation: blinker 2s linear infinite;
 }
 
@@ -345,6 +342,10 @@ async function loadMoreWords() {
 
   .filter {
     width: 100%;
+  }
+
+  .words-list {
+    max-height: 100%;
   }
 
   .new-word {
