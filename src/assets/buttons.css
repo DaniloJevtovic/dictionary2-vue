@@ -43,7 +43,8 @@ button:hover {
 }
 
 .del-btn {
-  background: red;
+  /* background: red; */
+  background: rgb(255, 118, 118);
   /* margin: 0px 0px 0px auto; */
 }
 

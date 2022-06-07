@@ -89,7 +89,7 @@ p {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 /* Track */
@@ -99,7 +99,7 @@ p {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rebeccapurple;
+  background: slateblue;
 }
 
 /* Handle on hover */
