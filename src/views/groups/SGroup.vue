@@ -2,15 +2,17 @@
   <div class="sgroups">
     <!-- <input type="text" v-model="searchInput" placeholder="search" /> -->
 
-    <h4 style="margin: 5px">sentence groups</h4>
+    <div class="sg-header">
+      <h4 style="margin: 2px">sentence groups</h4>
 
-    <button
-      @click.prevent="showModal = true"
-      class="new-btn"
-      :style="{ background: dictionaryStore.dictionary.color }"
-    >
-      + new group
-    </button>
+      <button
+        @click.prevent="showModal = true"
+        class="new-group"
+        :style="{ background: dictionaryStore.dictionary.color }"
+      >
+        + new group
+      </button>
+    </div>
 
     <div class="groups">
       <div v-for="(group, index) in groupStore.sgroups" :key="group.id">
@@ -76,6 +78,24 @@ const showModal = ref(false);
 
 .groups {
   overflow-y: auto;
-  /* max-height: 320px; */
+  max-height: 480px;
+}
+
+.sg-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 10px;
+}
+
+@media only screen and (max-width: 700px) {
+  .sg-header {
+    display: block;
+  }
+
+  .new-group {
+    width: 100%;
+  }
 }
 </style>

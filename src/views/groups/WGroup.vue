@@ -2,15 +2,17 @@
   <div class="wgroups">
     <!-- <input type="text" v-model="searchInput" placeholder="search wgroup" /> -->
 
-    <h4 style="margin: 2px">word groups</h4>
+    <div class="wg-header">
+      <h4 style="margin: 2px">word groups</h4>
 
-    <button
-      @click.prevent="showModal = true"
-      class="new-btn"
-      :style="{ background: dictionaryStore.dictionary.color }"
-    >
-      + new group
-    </button>
+      <button
+        @click.prevent="showModal = true"
+        class="new-group"
+        :style="{ background: dictionaryStore.dictionary.color }"
+      >
+        + new group
+      </button>
+    </div>
 
     <div class="groups">
       <div v-for="(group, index) in groupStore.wgroups" :key="group.id">
@@ -97,8 +99,30 @@ const showModal = ref(false);
   padding: 8px;
 }
 
+.wg-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 10px;
+}
+
 .groups {
   overflow-y: auto;
-  /* max-height: 320px; */
+  max-height: 390px;
+}
+
+@media only screen and (max-width: 700px) {
+  .wg-header {
+    display: block;
+  }
+
+  .new-group {
+    width: 100%;
+  }
+
+  .groups {
+    max-height: 100%;
+  }
 }
 </style>
