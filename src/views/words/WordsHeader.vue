@@ -38,6 +38,20 @@
         :filterModel="wordStore.filter"
         @filter="changeFilter"
       />
+
+      <button
+        @click="showModal = true"
+        class="new-word"
+        :style="{
+          background:
+            groupStore.activeWgId != 'all'
+              ? groupStore.getWGroupById(groupStore.activeWgId).color
+              : dictionaryStore.dictionary.color,
+          textAlign: 'center',
+        }"
+      >
+        new
+      </button>
     </div>
 
     <AddEditWordModal
