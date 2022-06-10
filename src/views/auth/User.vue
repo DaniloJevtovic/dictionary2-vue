@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div :class="settingsStore.dark === true ? 'dark-theme' : 'white-theme'">
+    <button @click="$router.go(-1)" class="back-btn">&#8592; Go Back</button>
+
     <form>
       <h4 style="margin: 0px; background: cyan; color: darkslateblue">
         User settings
@@ -16,14 +18,23 @@
     </form>
 
     <AppSettings />
+
+    <br>
   </div>
 </template>
 
 <script setup>
+import { useSettingsStore } from "../../stores/settings.js";
 import AppSettings from "./AppSettings.vue";
+
+const settingsStore = useSettingsStore();
 
 async function saveChanges() {}
 </script>
 
 <style scoped>
+.back-btn {
+  margin-top: 20px;
+  background: cyan;
+}
 </style>
