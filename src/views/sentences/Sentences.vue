@@ -71,7 +71,9 @@
 
           <div
             class="new-sentence-div"
-            @click="(showModal = true), (newSentence.sgId = groupStore.activeSgId)"
+            @click="
+              (showModal = true), (newSentence.sgId = groupStore.activeSgId)
+            "
           >
             <div class="details">
               <small>
@@ -206,7 +208,7 @@ watch(searchInput, () => {
 
 <style scoped>
 .sentences {
-  overflow-y: auto;
+  /* overflow-y: auto; */
   border: 1px solid darkgray;
 }
 
@@ -216,7 +218,7 @@ watch(searchInput, () => {
   /* margin: 4px; */
   padding: 8px;
   align-items: center;
-  border-bottom: 1px solid slateblue;
+  border-bottom: 2px solid slateblue;
 }
 
 .sentences-sgs {
@@ -226,7 +228,9 @@ watch(searchInput, () => {
 }
 
 .sentences-list {
+  overflow-y: auto;
   padding: 8px;
+  max-height: 480px;
 }
 
 .new-sentence-div {

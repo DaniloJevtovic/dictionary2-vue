@@ -72,6 +72,7 @@
             <button @click.prevent="closeModal" class="cancel-btn">
               cancel
             </button>
+            <button>add same word</button>
           </slot>
         </div>
       </div>
