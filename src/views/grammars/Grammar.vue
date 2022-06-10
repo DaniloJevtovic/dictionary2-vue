@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="grammar">
-      <button @click="showModal = true">&#9998;</button>
+      <button @click="showModal = true" class="edit-btn">&#9998;</button>
       <div @click="expandGrammar = !expandGrammar" class="details">
         {{ idx + 1 }}. {{ grammar.title }}
-        <p v-if="expandGrammar" style="margin: 0px">
+        <p v-if="expandGrammar" style="margin: 0px; background: cyan">
           <small> {{ grammar.content }}</small>
         </p>
 
@@ -77,5 +77,9 @@ const expandGrammar = ref(false);
 
 .grammar:hover {
   background: rgb(120, 127, 223);
+}
+
+.edit-btn {
+  background: slategray;
 }
 </style>
