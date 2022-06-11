@@ -34,7 +34,7 @@
               </button>
 
               <!-- naziv rjecnika -->
-              <h4 @click="showModal = true" style="margin: 0px; width: 100%">
+              <h4 @click="showModal = true" class="dic-name">
                 {{ dictionaryStore.dictionary.name }}
               </h4>
 
@@ -177,7 +177,7 @@ const showConfirmDialog = ref(false);
   font-family: sans-serif;
   border: 1px solid darkgray;
   border-radius: 2px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   user-select: none;
   overflow-x: auto;
   text-align: center;
@@ -217,6 +217,10 @@ const showConfirmDialog = ref(false);
 
 .tab-select {
   display: none;
+  background: darkslateblue;
+  color: cyan;
+  text-align: center;
+  border: 1px solid cyan;
 }
 
 .panels {
@@ -254,6 +258,13 @@ const showConfirmDialog = ref(false);
   background: red;
 }
 
+.dic-name {
+  margin: 0px;
+  width: 100%;
+  text-align: left;
+  margin-left: 20px;
+}
+
 @media only screen and (max-width: 700px) {
   .tab-button {
     display: none;
@@ -261,10 +272,10 @@ const showConfirmDialog = ref(false);
 
   .tab-select {
     display: block;
-    background: darkslateblue;
-    color: cyan;
+  }
+
+  .dic-name {
     text-align: center;
-    border: 1px solid cyan;
   }
 
   .panels {

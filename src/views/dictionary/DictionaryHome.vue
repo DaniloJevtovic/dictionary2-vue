@@ -7,10 +7,13 @@
     <div class="container">
       <router-view :key="$route.path" />
     </div>
+    
+    <ToastNotificaion />
   </div>
 </template>
 
 <script setup>
+import ToastNotificaion from "../../components/ToastNotification.vue";
 import DictionaryNavbar from "./DictionaryNavbar.vue";
 </script>
 
