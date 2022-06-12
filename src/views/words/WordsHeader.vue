@@ -14,13 +14,6 @@
         class="wgs"
         @change="changeWg($event)"
         v-model="groupStore.activeWgId"
-        :style="{
-          background:
-            groupStore.activeWgId != 'all'
-              ? groupStore.getWGroupById(groupStore.activeWgId).color
-              : 'white',
-          textAlign: 'center',
-        }"
       >
         <option value="all">sve rjeci</option>
         <option
@@ -33,27 +26,18 @@
         </option>
       </select>
 
+      <!-- filtriranje rjeci -->
       <Filter
         :type="'word'"
         :filterModel="wordStore.filter"
         @filter="changeFilter"
       />
 
-      <button
-        @click="showModal = true"
-        class="new-word"
-        :style="{
-          background:
-            groupStore.activeWgId != 'all'
-              ? groupStore.getWGroupById(groupStore.activeWgId).color
-              : dictionaryStore.dictionary.color,
-          textAlign: 'center',
-        }"
-      >
-        new
-      </button>
+      <!-- dugme za novu rjeci -->
+      <button @click="showModal = true" class="new-word">new</button>
     </div>
 
+    <!-- modal za novu rjec -->
     <AddEditWordModal
       v-if="showModal"
       :word="newWord"
@@ -62,11 +46,11 @@
       @close="showModal = false"
     />
 
+    <!-- dugme za kreiranje nove rjeci iz pretrage -->
     <button
       class="new-word-btn-search"
       v-if="searchInput"
       @click="newSearchWord"
-      style="background: springgreen"
     >
       + {{ searchInput }}
     </button>
@@ -77,12 +61,14 @@
 import { ref, watch, reactive } from "vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
+import { useDictionaryStore } from "../../stores/dictionaries.js";
 
 import AddEditWordModal from "./AddEditWordModal.vue";
 import Filter from "../../components/Filter.vue";
 
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
+const dictionaryStore = useDictionaryStore();
 
 const props = defineProps({
   dicId: String,
@@ -132,6 +118,7 @@ const newWord = reactive({
   wgId: "all",
 });
 
+// poziv f-je za novu rjec iz pretrage
 function newSearchWord() {
   newWord.word = searchInput.value;
   newWord.wgId = groupStore.activeWgId;
@@ -158,6 +145,38 @@ function changeFilter(filter) {
 .search-wg {
   display: flex;
   gap: 5px;
-  margin: 4px;
+  /* margin: 4px; */
+  padding: 8px;
+  align-items: center;
+  border-bottom: 2px solid slateblue;
+}
+
+.wgs,
+.new-word,
+.new-word-btn-search {
+  text-align: center;
+  background: v-bind("groupStore.getWgColor()");
+}
+
+.new-word-btn-search {
+  margin-top: 10px;
+  padding: 5px;
+  animation: blinker 2s linear infinite;
+}
+
+@media only screen and (max-width: 700px) {
+  .search-wg {
+    display: block;
+  }
+
+  .new-word {
+    /* display: none; */
+    display: block;
+    width: 100%;
+  }
+
+  .new-word::after {
+    content: " word";
+  }
 }
 </style>
