@@ -3,6 +3,7 @@ import useCRUD from "../composables/useCRUD.js";
 
 import { useWordStore } from "./words.js";
 import { useSentenceStore } from "./sentences.js";
+import { useDictionaryStore } from "./dictionaries.js";
 
 // grupe rjeci i recenica za rjecnik
 
@@ -62,6 +63,26 @@ export const useGroupStore = defineStore("groups", {
     // ako se promjeni rjecnik da se id grupa postave na 'all'
     resetActiveGroups() {
       this.activeWgId = this.activeSgId = "all";
+    },
+
+    getWgColor() {
+      const dicStore = useDictionaryStore();
+
+      if (this.activeWgId === "all") {
+        return dicStore.dictionary.color;
+      } else {
+        return this.getWGroupById(this.activeWgId).color;
+      }
+    },
+
+    getSgColor() {
+      const dicStore = useDictionaryStore();
+
+      if (this.activeSgId === "all") {
+        return dicStore.dictionary.color;
+      } else {
+        return this.getSGroupById(this.activeSgId).color;
+      }
     },
 
     //bekend
