@@ -2,36 +2,17 @@
   <div>
     <div class="search-wg">
       <!-- polje za pretragu -->
-      <input
-        class="search"
-        v-model="searchInput"
-        type="text"
-        placeholder="search words"
-      />
+      <Search :type="'words'" />
 
       <!-- selekcija grupe -->
-      <select
-        class="wgs"
-        @change="changeWg($event)"
-        v-model="groupStore.activeWgId"
-      >
-        <option value="all">sve rjeci</option>
-        <option
-          v-for="group in groupStore.wgroups"
-          :key="group.id"
-          :value="group.id"
-          :style="{ background: group.color }"
-        >
-          group: {{ group.name }} -- [{{ group.numOfItems }}w]
-        </option>
-      </select>
+      <GroupSelect
+        :groups="groupStore.wgroups"
+        :model="groupStore.activeWgId"
+        :type="'WG'"
+      />
 
       <!-- filtriranje rjeci -->
-      <Filter
-        :type="'word'"
-        :filterModel="wordStore.filter"
-        @filter="changeFilter"
-      />
+      <Filter :type="'word'" :filterModel="wordStore.filter" />
 
       <!-- dugme za novu rjeci -->
       <button @click="showModal = true" class="new-word">new</button>
@@ -49,22 +30,24 @@
     <!-- dugme za kreiranje nove rjeci iz pretrage -->
     <button
       class="new-word-btn-search"
-      v-if="searchInput"
+      v-if="wordStore.search"
       @click="newSearchWord"
     >
-      + {{ searchInput }}
+      + {{ wordStore.search }}
     </button>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, reactive } from "vue";
+import { ref, reactive } from "vue";
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 
 import AddEditWordModal from "./AddEditWordModal.vue";
+import Search from "../../components/Search.vue";
 import Filter from "../../components/Filter.vue";
+import GroupSelect from "../groups/GroupSelect.vue";
 
 const wordStore = useWordStore();
 const groupStore = useGroupStore();
@@ -72,40 +55,6 @@ const dictionaryStore = useDictionaryStore();
 
 const props = defineProps({
   dicId: String,
-});
-
-// promjena grupe
-function changeWg(event) {
-  let id = event.target.value;
-
-  groupStore.activeWgId = id;
-  wordStore.currentPage = 0;
-
-  if (id === "all") {
-    wordStore.getWords("DIC", props.dicId);
-  } else {
-    wordStore.getWords("WG", id);
-  }
-}
-
-// pretraga
-const searchInput = ref("");
-
-watch(searchInput, () => {
-  if (searchInput.value) {
-    wordStore.search = searchInput.value;
-    wordStore.searchWords();
-  } else {
-    wordStore.search = "";
-
-    groupStore.getWGroupsForDictionary(props.dicId);
-
-    if (groupStore.activeWgId !== "all") {
-      wordStore.getWords("WG", groupStore.activeWgId);
-    } else {
-      wordStore.getWords("DIC", props.dicId);
-    }
-  }
 });
 
 // rjec koja se prosljedjuje modalu - ako se kreira nova rjec
@@ -120,25 +69,12 @@ const newWord = reactive({
 
 // poziv f-je za novu rjec iz pretrage
 function newSearchWord() {
-  newWord.word = searchInput.value;
+  newWord.word = wordStore.search;
   newWord.wgId = groupStore.activeWgId;
   showModal.value = true;
 }
 
 const showModal = ref(false);
-
-// filter/sort
-function changeFilter(filter) {
-  wordStore.filter = filter; // mora biti ovdje na pocetku
-
-  if (groupStore.activeWgId === "all") {
-    wordStore.getWords("DIC", props.dicId);
-  } else {
-    wordStore.getWords("WG", groupStore.activeWgId);
-  }
-
-  wordStore.currentPage = 0;
-}
 </script>
 
 <style scoped>
