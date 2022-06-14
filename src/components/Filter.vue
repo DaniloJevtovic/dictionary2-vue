@@ -14,17 +14,52 @@
 </template>
 
 <script setup>
+import { useDictionaryStore } from "../stores/dictionaries.js";
+import { useGroupStore } from "../stores/groups.js";
+import { useWordStore } from "../stores/words.js";
+import { useSentenceStore } from "../stores/sentences.js";
+
 defineProps({
   filterModel: String,
   type: String,
 });
 const emit = defineEmits(["filter"]);
 
+const dictionaryStore = useDictionaryStore();
+const groupStore = useGroupStore();
+const wordStore = useWordStore();
+const sentenceStore = useSentenceStore();
+
 function changeFilter(event) {
   let filter = event.target.value;
 
   console.log(filter);
   emit("filter", filter);
+}
+
+//ako neces nista da se emituje u roditeljsku komponentu
+function changeFilter2(filter) {
+  if (props.type === "word") {
+    wordStore.filter = filter; // mora biti ovdje na pocetku
+
+    if (groupStore.activeWgId === "all") {
+      wordStore.getWords("DIC", dictionaryStore.dictionary.id);
+    } else {
+      wordStore.getWords("WG", groupStore.activeWgId);
+    }
+
+    wordStore.currentPage = 0;
+  } else {
+    sentenceStore.filter = filter; // mora biti ovdje na pocetku
+
+    if (groupStore.activeWgId === "all") {
+      sentenceStore.getSentences("DIC", dictionaryStore.dictionary.id);
+    } else {
+      sentenceStore.getSentences("SG", groupStore.activeSgId);
+    }
+
+    wordStore.currentPage = 0;
+  }
 }
 </script>
 
