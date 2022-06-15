@@ -6,7 +6,14 @@ const { readFun, createFun, deleteFun } = useCRUD();
 
 export const useGrammarStore = defineStore("grammars", {
   state: () => {
-    return { grammars: [], search: "", filter: "sort=id,desc" };
+    return {
+      grammars: [],
+      search: "",
+      filter: "sort=id,desc",
+      size: 5,
+      totalPages: "",
+      currentPage: 0,
+    };
   },
 
   actions: {
@@ -27,10 +34,45 @@ export const useGrammarStore = defineStore("grammars", {
     async getGrammars() {
       const dictionaryStore = useDictionaryStore();
 
-      let res = await readFun(
-        "/grammars/dic/" + dictionaryStore.dictionary.id + "/?" + this.filter
+      if (this.search !== "") {
+        this.searchGrammars();
+      } else {
+        let res = await readFun(
+          "/grammars/dic/" +
+            dictionaryStore.dictionary.id +
+            "/?" +
+            this.filter +
+            "&size=" +
+            this.size
+        );
+        this.grammars = res.data.content;
+
+        this.currentPage = 0;
+        this.totalPages = res.data.totalPages;
+        this.search = "";
+      }
+    },
+
+    async loadMoreGrammars(id) {
+      this.currentPage++;
+      let res;
+
+      res = await readFun(
+        "/grammars/dic/" +
+          id +
+          "/?page=" +
+          this.currentPage +
+          "&" +
+          this.filter +
+          "&size=" +
+          this.size
       );
-      this.grammars = res.data.content;
+
+      res.data.content.forEach((grammar) => {
+        this.addGrammar(grammar);
+      });
+
+      this.totalPages = res.data.totalPages;
     },
 
     async saveGrammar(grammar) {
