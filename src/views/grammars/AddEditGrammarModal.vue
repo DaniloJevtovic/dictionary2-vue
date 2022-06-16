@@ -9,8 +9,8 @@
         <div class="modal-body">
           <input
             type="text"
-            v-model="updateGrammar.title"
-            placeholder="grammar title"
+            v-model="updateGrammar.grammar"
+            placeholder="grammar"
             required
           />
 
