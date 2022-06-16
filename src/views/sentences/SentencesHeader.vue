@@ -12,7 +12,11 @@
       />
 
       <!-- filtriranje recenica -->
-      <Filter :type="'sentence'" :filterModel="sentenceStore.filter" />
+      <Filter
+        :type="'sentence'"
+        :filterModel="sentenceStore.filter"
+        :style="{ background: groupStore.getSgColor() }"
+      />
 
       <!-- dugme za novu recenicu -->
       <button @click="showModal = true" class="new-sentence">new</button>
@@ -66,7 +70,7 @@ const newSentence = reactive({
   sgId: "all",
 });
 
-// poziv f-je za novu rjec iz pretrage
+// poziv f-je za novu recenicu iz pretrage
 function newSearchSentence() {
   newSentence.sentence = sentenceStore.search;
   newSentence.sgId = groupStore.activeSgId;
@@ -84,13 +88,14 @@ const showModal = ref(false);
   padding: 8px;
   align-items: center;
   border-bottom: 2px solid slateblue;
+  border-bottom: 2px solid v-bind("groupStore.getWgColor()");
 }
 
 .sgs,
 .new-sentence,
 .new-sentence-btn-search {
   text-align: center;
-  background: v-bind("groupStore.getWgColor()");
+  background: v-bind("groupStore.getSgColor()");
 }
 
 .new-sentence-btn-search {
