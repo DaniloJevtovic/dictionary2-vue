@@ -12,7 +12,11 @@
       />
 
       <!-- filtriranje rjeci -->
-      <Filter :type="'word'" :filterModel="wordStore.filter" />
+      <Filter
+        :type="'word'"
+        :filterModel="wordStore.filter"
+        :style="{ background: groupStore.getWgColor() }"
+      />
 
       <!-- dugme za novu rjeci -->
       <button @click="showModal = true" class="new-word">new</button>
@@ -85,6 +89,7 @@ const showModal = ref(false);
   padding: 8px;
   align-items: center;
   border-bottom: 2px solid slateblue;
+  border-bottom: 2px solid v-bind("groupStore.getWgColor()");
 }
 
 .wgs,
