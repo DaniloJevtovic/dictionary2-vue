@@ -76,6 +76,10 @@ onMounted(() => {
   max-height: 480px;
 }
 
+::-webkit-scrollbar-thumb {
+   background: v-bind("groupStore.getSgColor()");
+}
+
 @media only screen and (max-width: 700px) {
   .sentences-sgs {
     display: block;

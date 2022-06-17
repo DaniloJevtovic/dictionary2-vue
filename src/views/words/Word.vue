@@ -130,6 +130,16 @@ const showConfirmDialog = ref(false);
   /* background: v-bind('groupStore.getWGroupById(props.word.wgId).color') */
 }
 
+.fav-btn {
+  color: black;
+  background: v-bind("groupStore.getWgColor()");
+}
+
+.unfav-btn {
+  background: transparent;
+  border: 1px solid transparent;
+}
+
 .fav-word {
   background: red;
 }

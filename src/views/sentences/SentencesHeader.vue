@@ -88,7 +88,7 @@ const showModal = ref(false);
   padding: 8px;
   align-items: center;
   border-bottom: 2px solid slateblue;
-  border-bottom: 2px solid v-bind("groupStore.getWgColor()");
+  border-bottom: 2px solid v-bind("groupStore.getSgColor()");
 }
 
 .sgs,

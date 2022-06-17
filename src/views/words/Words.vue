@@ -88,6 +88,10 @@ onMounted(() => {
   max-height: 480px;
 }
 
+::-webkit-scrollbar-thumb {
+   background: v-bind("groupStore.getWgColor()");
+}
+
 @media only screen and (max-width: 700px) {
   .words-wgs {
     display: block;
