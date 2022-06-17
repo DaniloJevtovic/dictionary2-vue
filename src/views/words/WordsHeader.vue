@@ -19,7 +19,12 @@
       />
 
       <!-- dugme za novu rjeci -->
-      <button @click="showModal = true" class="new-word">new</button>
+      <button
+        @click="(showModal = true), (newWord.wgId = groupStore.activeWgId)"
+        class="new-word"
+      >
+        new
+      </button>
     </div>
 
     <!-- modal za novu rjec -->

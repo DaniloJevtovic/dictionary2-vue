@@ -19,7 +19,12 @@
       />
 
       <!-- dugme za novu recenicu -->
-      <button @click="showModal = true" class="new-sentence">new</button>
+      <button
+        @click="(showModal = true), (newSentence.sgId = groupStore.activeSgId)"
+        class="new-sentence"
+      >
+        new
+      </button>
     </div>
 
     <!-- modal za novu recenicu -->
