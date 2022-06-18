@@ -7,7 +7,7 @@
     <div class="container">
       <router-view :key="$route.path" />
     </div>
-    
+
     <ToastNotificaion />
   </div>
 </template>
@@ -23,7 +23,7 @@ import DictionaryNavbar from "./DictionaryNavbar.vue";
 }
 
 .navbar {
-  display: none;
+  display: none; /**samo kad je sirina manja od 700px */
 }
 
 .container {

@@ -105,6 +105,11 @@ const showConfirmDialog = ref(false);
 }
 
 .sentence:hover {
-  background: cyan;
+  background: whitesmoke;
+}
+
+.fav-btn {
+  color: black;
+  background: v-bind("groupStore.getSgColor()");
 }
 </style>

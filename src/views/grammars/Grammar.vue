@@ -3,7 +3,7 @@
     <div class="grammar">
       <button @click="showModal = true" class="edit-btn">&#9998;</button>
       <div @click="expandGrammar = !expandGrammar" class="details">
-        {{ idx + 1 }}. {{ grammar.title }}
+        {{ idx + 1 }}. {{ grammar.grammar }}
         <p v-if="expandGrammar" style="margin: 0px; background: cyan">
           <small> {{ grammar.content }}</small>
         </p>
@@ -43,10 +43,12 @@ import AddEditGrammarModal from "./AddEditGrammarModal.vue";
 import ConfirmDialog from "../../components/ConfirmDialog.vue";
 import { useGrammarStore } from "../../stores/grammars.js";
 import { useToastStore } from "../../stores/toast.js";
+import { useDictionaryStore } from "../../stores/dictionaries.js";
 
 const { deleteFun } = useCrud();
 const grammarStore = useGrammarStore();
 const toastStore = useToastStore();
+const dictionaryStore = useDictionaryStore();
 
 const props = defineProps({
   grammar: Object,
@@ -77,9 +79,11 @@ const expandGrammar = ref(false);
 
 .grammar:hover {
   background: rgb(120, 127, 223);
+  background: whitesmoke;
 }
 
 .edit-btn {
   background: slategray;
+  background: v-bind("dictionaryStore.dictionary.color");
 }
 </style>

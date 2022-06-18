@@ -24,7 +24,7 @@ const groupStore = useGroupStore();
 const sentenceStore = useSentenceStore();
 
 async function loadMoreSentences() {
-  if (groupStore.activeWgId === "all") {
+  if (groupStore.activeSgId === "all") {
     sentenceStore.loadMoreSentences("DIC", dictionaryStore.dictionary.id);
   } else {
     sentenceStore.loadMoreSentences("WG", groupStore.activeSgId);

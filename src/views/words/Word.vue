@@ -135,11 +135,6 @@ const showConfirmDialog = ref(false);
   background: v-bind("groupStore.getWgColor()");
 }
 
-.unfav-btn {
-  background: transparent;
-  border: 1px solid transparent;
-}
-
 .fav-word {
   background: red;
 }
