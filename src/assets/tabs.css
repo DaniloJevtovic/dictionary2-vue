@@ -1,37 +1,35 @@
-/* .demo {
-  font-family: sans-serif;
-  border: 1px solid #eee;
-  border-radius: 2px;
-  padding: 20px 30px;
-  margin-top: 1em;
-  margin-bottom: 40px;
-  user-select: none;
-  overflow-x: auto;
-  text-align: left;
+.tab-btns {
+  display: flex;
+  margin-right: 20px;
 }
 
 .tab-button {
-  padding: 3px 15px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border: 1px solid #ccc;
+  border: none;
   cursor: pointer;
-  background: #f0f0f0;
-  margin-bottom: -1px;
-  margin-right: -1px;
+  /* padding: 1px 40px; */
+  margin: 5px 0px;
+  background: whitesmoke;
 }
 
 .tab-button:hover {
-  background: #e0e0e0;
+  background: cyan;
 }
 
 .tab-button.active {
-  background: #032135;
-  color: #ccc;
+  background: darkblue;
+  color: cyan;
+  border: 1px solid black;
 }
 
 .tab {
-  border: 1px solid #ccc;
-  padding: 10px;
+  padding: 2px;
   min-height: 400px;
-} */
+}
+
+.tab-select {
+  display: none;
+  background: darkslateblue;
+  color: cyan;
+  text-align: center;
+  border: 1px solid cyan;
+}
