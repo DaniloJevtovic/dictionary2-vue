@@ -7,12 +7,29 @@
         </div>
 
         <div class="modal-body">
-          <input
-            type="text"
-            v-model="updateWord.word"
-            placeholder="word"
-            required
-          />
+          <div class="word">
+            <input
+              type="text"
+              v-model="updateWord.word"
+              placeholder="word"
+              required
+            />
+            <div>
+              <button
+                @click.prevent="updateWord.favorite = !updateWord.favorite"
+                :class="updateWord.favorite === true ? 'fav-btn' : 'unfav-btn'"
+                :style="{
+                  background:
+                    updateWord.wgId != 'all' && updateWord.favorite === true
+                      ? groupStore.getWGroupById(updateWord.wgId).color
+                      : 'white',
+                }"
+              >
+                &#x2665;
+              </button>
+            </div>
+          </div>
+
           <input
             type="text"
             v-model="updateWord.translate"
@@ -34,7 +51,7 @@
                 background:
                   updateWord.wgId != 'all'
                     ? groupStore.getWGroupById(updateWord.wgId).color
-                    : 'white',
+                    : 'transparent',
               }"
               required
             >
@@ -72,7 +89,7 @@
             <button @click.prevent="closeModal" class="cancel-btn">
               cancel
             </button>
-            <button>add same word</button>
+            <!-- <button @click.prevent="oneMoreWord">add same word</button> -->
           </slot>
         </div>
       </div>
@@ -144,6 +161,15 @@ async function save() {
   closeModal();
 }
 
+// async function oneMoreWord() {
+//   wordStore.saveWord(updateWord); //cuvanje predhodne rjeci
+//   toastStore.showToast("predhodna rjec je sacuvana", "success");
+
+//   updateWord.translate = "";
+//   updateWord.description = "";
+//   updateWord.favorite = false;
+// }
+
 function closeModal() {
   emit("close");
 }
@@ -176,6 +202,10 @@ const showModal = ref(false);
   color: springgreen;
   background: rgb(19, 51, 20);
 } */
+
+.word {
+  display: flex;
+}
 
 .group-select {
   display: flex;

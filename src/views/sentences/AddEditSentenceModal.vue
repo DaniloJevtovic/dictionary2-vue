@@ -7,12 +7,33 @@
         </div>
 
         <div class="modal-body">
-          <input
-            type="text"
-            v-model="updateSentence.sentence"
-            placeholder="sentence"
-            required
-          />
+          <div class="sentence">
+            <input
+              type="text"
+              v-model="updateSentence.sentence"
+              placeholder="sentence"
+              required
+            />
+            <div>
+              <button
+                @click.prevent="
+                  updateSentence.favorite = !updateSentence.favorite
+                "
+                :class="
+                  updateSentence.favorite === true ? 'fav-btn' : 'unfav-btn'
+                "
+                :style="{
+                  background:
+                    updateSentence.sgId != 'all' &&
+                    updateSentence.favorite === true
+                      ? groupStore.getSGroupById(updateSentence.sgId).color
+                      : 'white',
+                }"
+              >
+                &#x2665;
+              </button>
+            </div>
+          </div>
 
           <input
             type="text"
@@ -151,6 +172,10 @@ function closeModal() {
 <style scoped>
 .modal-container {
   width: 300px;
+}
+
+.sentence {
+  display: flex;
 }
 
 .group-select {
