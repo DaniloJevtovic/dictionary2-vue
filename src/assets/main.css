@@ -3,6 +3,7 @@
 * {
   margin: 30;
   padding: 0;
+  background: transparent;
 }
 
 body {
@@ -94,7 +95,8 @@ p {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: cyan;
+  /* background: cyan; */
+  background: transparent;
 }
 
 /* Handle */

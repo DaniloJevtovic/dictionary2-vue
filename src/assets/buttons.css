@@ -14,6 +14,12 @@ button:hover {
   /* color: indigo; */
 }
 
+button:disabled,
+button[disabled] {
+  background: darkgray;
+  cursor: not-allowed;
+}
+
 .new-btn {
   width: 100%;
   /* margin: 4px 0px; */
@@ -36,10 +42,14 @@ button:hover {
   color: rgb(24, 24, 104);
 }
 
-.unfav-btn,
+.unfav-btn {
+  background: transparent;
+  border: 1px solid transparent;
+}
+
 .unfav-btn:hover {
   color: darkblue;
-  background: white;
+  background: lightgrey;
 }
 
 .del-btn {
@@ -75,7 +85,15 @@ button:hover {
 .filter {
   width: auto;
   text-align: center;
-  color: hotpink;
+  /* color: hotpink;
   background: rgb(34, 11, 61);
-  color: orangered;
+  color: orangered; */
+}
+
+@keyframes blinker {
+  50% {
+    /* opacity: 0; */
+    background: hotpink;
+    border-radius: 10px;
+  }
 }
