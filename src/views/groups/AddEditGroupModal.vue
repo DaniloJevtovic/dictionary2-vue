@@ -6,11 +6,6 @@
           <h3>{{ mode }} group</h3>
         </div>
 
-        <!-- <div class="ccolor">
-          <h3>{{ mode }} group</h3>
-          <input type="color" v-model="updateGroup.color" />
-        </div> -->
-
         <div class="modal-body">
           <input
             type="text"
@@ -24,6 +19,7 @@
             v-model="updateGroup.description"
             placeholder="description"
             rows="5"
+            :style="{ background: updateGroup.color }"
           ></textarea>
 
           <div class="ccolor">

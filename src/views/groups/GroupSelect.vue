@@ -1,7 +1,7 @@
 <template>
   <!-- defaultni select grupe za header -->
   <select class="groups" @change="changeGroup($event)" v-model="model">
-    <option value="all">all</option>
+    <option value="all">all groups</option>
     <option
       v-for="group in groups"
       :key="group.id"
@@ -18,6 +18,7 @@ import { useDictionaryStore } from "../../stores/dictionaries.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useWordStore } from "../../stores/words.js";
 import { useSentenceStore } from "../../stores/sentences.js";
+import { ref } from "@vue/reactivity";
 
 const props = defineProps({
   groups: [Object],
@@ -29,6 +30,14 @@ const dictionaryStore = useDictionaryStore();
 const groupStore = useGroupStore();
 const wordStore = useWordStore();
 const sentenceStore = useSentenceStore();
+
+function getColor() {
+  if (props.type === "WG") {
+    return groupStore.getWgColor();
+  } else {
+    return groupStore.getSgColor();
+  }
+}
 
 function changeGroup(event) {
   let id = event.target.value;
@@ -58,5 +67,6 @@ function changeGroup(event) {
 <style scoped>
 .groups {
   text-align: center;
+  background: v-bind("getColor()");
 }
 </style>
