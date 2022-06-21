@@ -65,6 +65,8 @@
                 group: {{ group.name }} -- [{{ group.numOfItems }}]
               </option>
             </select>
+
+            <!-- dugme za kreiranje nove grupe -->
             <button @click="showModal = true" class="new-group-btn">+</button>
           </div>
 

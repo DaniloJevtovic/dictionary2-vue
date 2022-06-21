@@ -37,9 +37,7 @@
 </template>
 
 <script setup>
-import { update } from "lodash";
 import { reactive } from "vue";
-import useCrud from "../../composables/useCRUD.js";
 import { useGrammarStore } from "../../stores/grammars.js";
 import { useToastStore } from "../../stores/toast.js";
 
@@ -52,7 +50,6 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
-const { createFun } = useCrud();
 const grammarStore = useGrammarStore();
 const toastStore = useToastStore();
 
