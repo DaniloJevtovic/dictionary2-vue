@@ -4,10 +4,10 @@
       >Hi, {{ userStore.user.firstName }}</router-link
     >
     |
-    <!-- <button @click="showList = !showList">Rjecnici</button> -->
+    <!-- <button @click="showList = !showList">Dictionaries</button> -->
 
     <router-link :to="{ name: 'AllDictionaries' }" active-class="active">
-      Rjecnici
+      Dictionaries
     </router-link>
     |
     <router-link

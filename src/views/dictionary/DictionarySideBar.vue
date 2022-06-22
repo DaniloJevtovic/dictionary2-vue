@@ -1,9 +1,16 @@
 <template>
   <div class="sidebar">
-    <div class="nav">
-      <router-link :to="{ name: 'User' }"> Hi, Lemur </router-link> |
-      <router-link :to="{ name: 'Login' }">Logout</router-link>
-    </div>
+    <!-- <div class="nav">
+      <router-link :to="{ name: 'User' }">
+        Hi, {{ userStore.user.firstName }}
+      </router-link>
+      |
+      <router-link
+        :to="{ name: 'Login' }"
+        @click.prevent="logout, userStore.logout()"
+        >Logout</router-link
+      >
+    </div> -->
 
     <!-- lista korisnikovih rjecnika -->
     <AllDictionaries />
@@ -12,6 +19,11 @@
 
 <script setup>
 import AllDictionaries from "./AllDictionaries.vue";
+import { useUserStore } from "../../stores/users.js";
+import useAUTH from "../../composables/useAUTH.js";
+
+const userStore = useUserStore();
+const { logout } = useAUTH();
 </script>
 
 <style scoped>
