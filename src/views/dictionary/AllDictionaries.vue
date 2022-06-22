@@ -41,11 +41,13 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, onBeforeMount } from "vue";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
+import { useUserStore } from "../../stores/users.js";
 import AddEditDictionaryModal from "./AddEditDictionaryModal.vue";
 
 const dictionaryStore = useDictionaryStore();
+const userStore = useUserStore();
 
 onMounted(() => {
   dictionaryStore.getDictionaries();
@@ -56,7 +58,7 @@ const showModal = ref(false);
 const newDictionary = reactive({
   name: "",
   desciption: "",
-  userId: "1",
+  userId: userStore.user.id,
   color: "#ffffff",
 });
 </script>
