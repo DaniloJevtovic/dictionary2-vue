@@ -3,12 +3,7 @@
     <!-- tjelo rjecnika - tabovi, rjeci, grupe... -->
     <div class="dic-body">
       <!-- lijeva strana - sidebar (lista rjecnika) -->
-      <!-- <DictionarySideBar /> -->
-
-      <!-- desna strana - lista rjecnika -->
-      <div class="left-side">
-        <AllDictionaries />
-      </div>
+      <DictionarySideBar />
 
       <!-- desna strana - header, rjeci/recenice, grupe-->
       <div class="right-side">
@@ -40,7 +35,6 @@ import { useTabStore } from "../../stores/tabs.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 import { useSettingsStore } from "../../stores/settings.js";
 
-import AllDictionaries from "./AllDictionaries.vue";
 import DictionaryHeader from "./DictionaryHeader.vue";
 import DictionarySideBar from "./DictionarySideBar.vue";
 import TabSelect from "./tabs/TabSelect.vue";
