@@ -9,11 +9,12 @@ export const useWordStore = defineStore("words", {
   state: () => {
     return {
       words: [],
-      totalPages: "",
+      totalPages: 0,
       currentPage: 0,
       size: 30,
       filter: "sort=id,desc",
       search: "",
+      totalWords: 0,
     };
   },
 
@@ -42,9 +43,21 @@ export const useWordStore = defineStore("words", {
       group.numOfItems = group.numOfItems - 1;
     },
 
+    resetState() {
+      this.words = [];
+      this.totalPages = 0;
+      this.currentPage = 0;
+      this.size = 30;
+      this.filter = "sort=id,desc";
+      this.search = "";
+    },
+
     //BEKEND
 
     async getWords(type, id) {
+      // this.words = [];
+      this.$reset();
+
       if (this.search !== "") {
         this.searchWords();
       } else {
@@ -60,10 +73,13 @@ export const useWordStore = defineStore("words", {
           );
         }
 
-        this.words = res.data.content;
-        this.currentPage = 0;
-        this.totalPages = res.data.totalPages;
-        this.search = "";
+        setTimeout(() => {
+          this.words = res.data.content;
+          this.currentPage = 0;
+          this.totalPages = res.data.totalPages;
+          this.search = "";
+          this.totalWords = res.data.totalElements;
+        }, 500);
       }
     },
 
