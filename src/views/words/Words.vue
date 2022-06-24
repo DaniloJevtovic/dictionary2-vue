@@ -16,8 +16,13 @@
           <WordDescription />
 
           <!-- LISTA RJECI -->
-          <div v-for="(word, index) in wordStore.words" :key="word.id">
-            <Word :word="word" :idx="index" />
+          <div v-if="wordStore.words.length">
+            <div v-for="(word, index) in wordStore.words" :key="word.id">
+              <Word :word="word" :idx="index" />
+            </div>
+          </div>
+          <div v-else>
+            <Spiner />
           </div>
 
           <!-- dugme ucitavanje jos rjeci -->
@@ -43,6 +48,7 @@ import Word from "./Word.vue";
 import LoadMoreWords from "./LoadMoreWords.vue";
 import WGroup from "../groups/WGroup.vue";
 import WordTypes from "../wordtypes/WordTypes.vue";
+import Spiner from "../../components/Spinner.vue";
 
 import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";

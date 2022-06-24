@@ -12,30 +12,35 @@
       @close="showModal = false"
     />
 
-    <div
-      v-for="dictionary in dictionaryStore.dictionaries"
-      :key="dictionary.id"
-    >
-      <router-link
-        @click="dictionaryStore.dictionary = dictionary"
-        :to="{
-          name: 'Dictionary',
-          params: { id: dictionary.id },
-        }"
+    <div v-if="dictionaryStore.dictionaries">
+      <div
+        v-for="dictionary in dictionaryStore.dictionaries"
+        :key="dictionary.id"
       >
-        <div class="dictionary" :style="{ background: dictionary.color }">
-          <p>
-            <span v-if="dictionaryStore.dictionary.id === dictionary.id"
-              >&bull;</span
-            >
-            {{ dictionary.name }}
-          </p>
+        <router-link
+          @click="dictionaryStore.dictionary = dictionary"
+          :to="{
+            name: 'Dictionary',
+            params: { id: dictionary.id },
+          }"
+        >
+          <div class="dictionary" :style="{ background: dictionary.color }">
+            <p>
+              <span v-if="dictionaryStore.dictionary.id === dictionary.id"
+                >&bull;</span
+              >
+              {{ dictionary.name }}
+            </p>
 
-          <span class="description">
-            <small>{{ dictionary.description }}</small></span
-          >
-        </div>
-      </router-link>
+            <span class="description">
+              <small>{{ dictionary.description }}</small></span
+            >
+          </div>
+        </router-link>
+      </div>
+    </div>
+    <div v-else>
+      <Spinner />
     </div>
   </div>
 </template>
@@ -45,12 +50,15 @@ import { onMounted, ref, reactive, onBeforeMount } from "vue";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 import { useUserStore } from "../../stores/users.js";
 import AddEditDictionaryModal from "./AddEditDictionaryModal.vue";
+import Spinner from "../../components/Spinner.vue";
 
 const dictionaryStore = useDictionaryStore();
 const userStore = useUserStore();
 
 onMounted(() => {
-  dictionaryStore.getDictionaries();
+  if (!dictionaryStore.dictionaries.length) {
+    dictionaryStore.getDictionaries();
+  }
 });
 
 const showModal = ref(false);
