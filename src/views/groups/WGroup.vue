@@ -4,10 +4,13 @@
 
     <GroupsHeader :gType="'WGROUP'" />
 
-    <div class="groups">
+    <div v-if="groupStore.wgroups.length" class="groups">
       <div v-for="(group, index) in groupStore.wgroups" :key="group.id">
         <Group :group="group" :idx="index" />
       </div>
+    </div>
+    <div v-else>
+      <Spinner />
     </div>
   </div>
 </template>
@@ -17,6 +20,7 @@ import { onMounted, ref, watch } from "vue";
 
 import Group from "./Group.vue";
 import GroupsHeader from "./GroupsHeader.vue";
+import Spinner from "../../components/Spinner.vue";
 import { useGroupStore } from "../../stores/groups.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 

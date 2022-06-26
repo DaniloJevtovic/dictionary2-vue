@@ -6,11 +6,16 @@
       <div class="grammars-list">
         <GrammarDescription />
 
-        <div
-          v-for="(grammar, index) in grammarStore.grammars"
-          :key="grammar.id"
-        >
-          <Grammar :grammar="grammar" :idx="index" />
+        <div v-if="grammarStore.grammars.length">
+          <div
+            v-for="(grammar, index) in grammarStore.grammars"
+            :key="grammar.id"
+          >
+            <Grammar :grammar="grammar" :idx="index" />
+          </div>
+        </div>
+        <div v-else>
+          <Spinner />
         </div>
 
         <LoadMoreGrammars />
@@ -28,6 +33,7 @@ import GrammarHeader from "./GrammarsHeader.vue";
 import GrammarDescription from "./GrammarDescription.vue";
 import Grammar from "./Grammar.vue";
 import LoadMoreGrammars from "./LoadMoreGrammars.vue";
+import Spinner from "../../components/Spinner.vue";
 
 const props = defineProps({
   dicId: String,

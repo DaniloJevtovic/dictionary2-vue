@@ -10,11 +10,16 @@
           <SentenceDescription />
 
           <!-- lista recenica -->
-          <div
-            v-for="(sentence, index) in sentenceStore.sentences"
-            :key="sentence.id"
-          >
-            <Sentence :sentence="sentence" :idx="index" />
+          <div v-if="sentenceStore.sentences.length">
+            <div
+              v-for="(sentence, index) in sentenceStore.sentences"
+              :key="sentence.id"
+            >
+              <Sentence :sentence="sentence" :idx="index" />
+            </div>
+          </div>
+          <div v-else>
+            <Spinner />
           </div>
 
           <LoadMoreSentences />
@@ -36,6 +41,7 @@ import SentenceDescription from "./SentenceDescription.vue";
 import Sentence from "./Sentence.vue";
 import LoadMoreSentences from "./LoadMoreSentences.vue";
 import SGroup from "../groups/SGroup.vue";
+import Spinner from "../../components/Spinner.vue";
 
 import { useSentenceStore } from "../../stores/sentences.js";
 import { useGroupStore } from "../../stores/groups.js";
@@ -77,7 +83,7 @@ onMounted(() => {
 }
 
 ::-webkit-scrollbar-thumb {
-   background: v-bind("groupStore.getSgColor()");
+  background: v-bind("groupStore.getSgColor()");
 }
 
 @media only screen and (max-width: 700px) {
