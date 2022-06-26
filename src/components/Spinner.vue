@@ -1,9 +1,23 @@
 <template>
-  <div class="spin"></div>
+  <div>
+    <div v-if="showSpinner" class="spin"></div>
+    <div v-else>
+      <!-- ako posle 5s ne ucita podatke ispisi poruku -->
+      <h4>can't load data / no data</h4>
+    </div>
+  </div>
 </template>
 
 <script setup>
-  
+import { onMounted, ref } from "@vue/runtime-core";
+
+const showSpinner = ref(true);
+
+onMounted(() => {
+  setTimeout(() => {
+    showSpinner.value = false;
+  }, 5000);
+});
 </script>
 
 <style>
