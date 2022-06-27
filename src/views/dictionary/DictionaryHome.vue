@@ -6,6 +6,12 @@
       <router-view :key="$route.path" />
     </div>
 
+    <!-- <router-view v-slot="{ Component, route }">
+      <transition name="fade">
+        <component :is="Component" :key="route.path" />
+      </transition>
+    </router-view> -->
+
     <ToastNotificaion />
   </div>
 </template>
