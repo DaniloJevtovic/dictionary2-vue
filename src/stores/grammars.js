@@ -32,24 +32,28 @@ export const useGrammarStore = defineStore("grammars", {
     //bekend
 
     async getGrammars() {
+      this.$reset();
       const dictionaryStore = useDictionaryStore();
 
       if (this.search !== "") {
         this.searchGrammars();
       } else {
         let res = await readFun(
-          "/grammars/dic/" +
+          "grammars/dic/" +
             dictionaryStore.dictionary.id +
             "/?" +
             this.filter +
             "&size=" +
             this.size
         );
-        this.grammars = res.data.content;
 
-        this.currentPage = 0;
-        this.totalPages = res.data.totalPages;
-        this.search = "";
+        setTimeout(() => {
+          this.grammars = res.data.content;
+
+          this.currentPage = 0;
+          this.totalPages = res.data.totalPages;
+          this.search = "";
+        }, 500);
       }
     },
 
@@ -58,7 +62,7 @@ export const useGrammarStore = defineStore("grammars", {
       let res;
 
       res = await readFun(
-        "/grammars/dic/" +
+        "grammars/dic/" +
           id +
           "/?page=" +
           this.currentPage +
@@ -79,7 +83,7 @@ export const useGrammarStore = defineStore("grammars", {
       let res = await createFun("grammars", grammar);
 
       if (this.search !== "") {
-        if (grammar.title.includes(this.search)) {
+        if (grammar.grammar.includes(this.search)) {
           this.addGrammar(res.data);
         }
       } else {
@@ -93,7 +97,7 @@ export const useGrammarStore = defineStore("grammars", {
       //ako je nesto ukucano u search
       if (this.search !== "") {
         //ideja ako se skroz promjeni naziv - ukloniti tu gramatiku iz liste
-        if (!grammar.title.includes(this.search)) {
+        if (!grammar.grammar.includes(this.search)) {
           this.removeGrammar(idx);
         } else {
           this.updateGrammar(res.data, idx);
