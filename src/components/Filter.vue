@@ -58,7 +58,7 @@ function changeFilter(event) {
       sentenceStore.getSentences("SG", groupStore.activeSgId);
     }
 
-    wordStore.currentPage = 0;
+    sentenceStore.currentPage = 0;
   } else {
     grammarStore.filter = filter;
     grammarStore.getGrammars();
