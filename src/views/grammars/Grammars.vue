@@ -43,6 +43,8 @@ const grammarStore = useGrammarStore();
 const dictionaryStore = useDictionaryStore();
 
 onMounted(() => {
+  grammarStore.filter = "sort=id,desc";
+  grammarStore.search = "";
   grammarStore.getGrammars();
 });
 
