@@ -42,9 +42,20 @@ export const useSentenceStore = defineStore("sentences", {
       group.numOfItems = group.numOfItems - 1;
     },
 
+    resetState() {
+      this.sentences = [];
+      this.totalPages = 0;
+      this.currentPage = 0;
+      this.size = 10;
+      this.filter = "sort=id,desc";
+      this.search = "";
+    },
+
     //BEKEND
 
     async getSentences(type, id) {
+      // this.$reset(); //pravi problem kod sortiranja
+
       if (this.search !== "") {
         this.searchSentences();
       } else {
@@ -60,10 +71,12 @@ export const useSentenceStore = defineStore("sentences", {
           );
         }
 
-        this.sentences = res.data.content;
-        this.currentPage = 0;
-        this.totalPages = res.data.totalPages;
-        this.search = "";
+        setTimeout(() => {
+          this.sentences = res.data.content;
+          this.currentPage = 0;
+          this.totalPages = res.data.totalPages;
+          this.search = "";
+        }, 500);
       }
     },
 
