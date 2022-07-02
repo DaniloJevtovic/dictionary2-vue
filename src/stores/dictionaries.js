@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import useCRUD from "../composables/useCRUD.js";
+import { useUserStore } from "./users.js";
 
-import router  from "../router/index.js";
+import router from "../router/index.js";
 
 const { readFun, createFun, deleteFun } = useCRUD();
 
@@ -30,8 +31,16 @@ export const useDictionaryStore = defineStore("dictionaries", {
 
     //rjecnici za ulogovanog korisnika - id korisnika
     async getDictionaries() {
-      let res = await readFun("/dictionaries");
-      this.dictionaries = res.data;
+      this.$reset();
+      const userStore = useUserStore();
+
+      // let res = await readFun("dictionaries"); //svi rjecnici
+      let res = await readFun("dictionaries/user/" + userStore.user.id);
+
+      setTimeout(() => {
+        this.dictionaries = res.data;
+        console.log("ucitao rjecnike sa bekenda");
+      }, 500);
     },
 
     //bekend
