@@ -32,7 +32,7 @@ export const useGrammarStore = defineStore("grammars", {
     //bekend
 
     async getGrammars() {
-      this.$reset();
+      // this.$reset();   //pravi problem kod sortiranja
       const dictionaryStore = useDictionaryStore();
 
       if (this.search !== "") {
