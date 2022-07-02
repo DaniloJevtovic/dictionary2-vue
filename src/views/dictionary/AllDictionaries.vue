@@ -12,7 +12,7 @@
       @close="showModal = false"
     />
 
-    <div v-if="dictionaryStore.dictionaries">
+    <div v-if="dictionaryStore.dictionaries.length">
       <div
         v-for="dictionary in dictionaryStore.dictionaries"
         :key="dictionary.id"
