@@ -36,11 +36,11 @@ export const useGroupStore = defineStore("groups", {
       if (group.type == "WGROUP") {
         this.wgroups.unshift(group);
         this.activeWgId = group.id; // ta nova grupa postaje aktivna
-        wordStore.words = []; // uklanjaju se rjeci ako su bile
+        wordStore.resetState();
       } else {
         this.sgroups.unshift(group);
         this.activeSgId = group.id;
-        sentenceStore.sentences = [];
+        sentenceStore.resetState();
       }
     },
 
@@ -87,14 +87,22 @@ export const useGroupStore = defineStore("groups", {
 
     //bekend
     async getWGroupsForDictionary(id) {
+      this.wgroups = [];
       let res = await readFun("groups/dic/" + id + "/group/WGROUP");
-      this.wgroups = res.data;
-      return res.data;
+
+      setTimeout(() => {
+        this.wgroups = res.data;
+        return res.data;
+      }, 300);
     },
 
     async getSGroupsForDictionary(id) {
+      this.sgroups = [];
       let res = await readFun("groups/dic/" + id + "/group/SGROUP");
-      this.sgroups = res.data;
+
+      setTimeout(() => {
+        this.sgroups = res.data;
+      }, 300);
     },
 
     async saveGroup(group) {
