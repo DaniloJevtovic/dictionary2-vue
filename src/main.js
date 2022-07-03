@@ -8,6 +8,7 @@ import "./assets/modal.css";
 import "./assets/tabs.css";
 import "./assets/buttons.css";
 // import "./assets/sidebar.css";
+import "./assets/route-transition.css";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
