@@ -15,6 +15,7 @@ export const useWordStore = defineStore("words", {
       filter: "sort=id,desc",
       search: "",
       totalWords: 0,
+      loadingWords: true,
     };
   },
 
@@ -56,7 +57,7 @@ export const useWordStore = defineStore("words", {
 
     async getWords(type, id) {
       // this.words = [];
-      this.$reset();
+      // this.$reset();
 
       if (this.search !== "") {
         this.searchWords();
@@ -80,6 +81,8 @@ export const useWordStore = defineStore("words", {
           this.search = "";
           this.totalWords = res.data.totalElements;
         }, 500);
+
+        this.loadingWords = false;
       }
     },
 
