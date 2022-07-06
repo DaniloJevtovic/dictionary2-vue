@@ -49,7 +49,7 @@ export const useWordStore = defineStore("words", {
       this.totalPages = 0;
       this.currentPage = 0;
       this.size = 30;
-      this.filter = "sort=id,desc";
+      // this.filter = "sort=id,desc";
       this.search = "";
     },
 
@@ -58,6 +58,7 @@ export const useWordStore = defineStore("words", {
     async getWords(type, id) {
       // this.words = [];
       // this.$reset();
+      this.resetState();
 
       if (this.search !== "") {
         this.searchWords();
