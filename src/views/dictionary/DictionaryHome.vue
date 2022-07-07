@@ -2,15 +2,15 @@
   <div class="home">
     <DictionaryNavbar />
 
-    <div class="container">
+    <!-- <div class="container">
       <router-view :key="$route.path" />
-    </div>
+    </div> -->
 
-    <!-- <router-view v-slot="{ Component, route }">
+    <router-view v-slot="{ Component, route }">
       <transition name="fade">
         <component :is="Component" :key="route.path" />
       </transition>
-    </router-view> -->
+    </router-view>
 
     <ToastNotificaion />
   </div>
