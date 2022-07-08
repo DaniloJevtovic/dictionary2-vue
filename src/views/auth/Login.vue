@@ -10,9 +10,9 @@
       required
     />
 
-    <div v-if="error" class="error">{{ error }}</div>
+    <div v-if="error" class="error shake">{{ error }}</div>
 
-    <button>Login</button>
+    <button :disabled="error !== ''">Login</button>
   </form>
 </template>
 

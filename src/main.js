@@ -10,7 +10,7 @@ import "./assets/buttons.css";
 // import "./assets/sidebar.css";
 import "./assets/route-transition.css";
 import "./assets/tab-transition.css";
-
+import "./assets/shake.css";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
