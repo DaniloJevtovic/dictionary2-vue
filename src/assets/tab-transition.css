@@ -1,0 +1,17 @@
+.tabtr-enter-from {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.tabtr-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.tabtr-leave-to {
+  opacity: 0;
+  transform: translateY(-100px);
+}
+
+.tabtr-leave-out {
+  transition: all 0.3s ease-in;
+}

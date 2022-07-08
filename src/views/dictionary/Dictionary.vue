@@ -16,12 +16,14 @@
 
         <!-- KOMPONTA - RJECI/RECENICE/GRAMATIKA -->
         <KeepAlive>
-          <component
-            :is="tabs[tabStore.currentTab]"
-            :dicId="dictionaryStore.dictionary.id"
-            class="tab"
-          >
-          </component>
+          <transition name="tabtr">
+            <component
+              :is="tabs[tabStore.currentTab]"
+              :dicId="dictionaryStore.dictionary.id"
+              class="tab"
+            >
+            </component>
+          </transition>
         </KeepAlive>
       </div>
     </div>
