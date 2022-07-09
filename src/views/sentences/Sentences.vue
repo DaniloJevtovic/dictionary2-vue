@@ -56,7 +56,7 @@ const groupStore = useGroupStore();
 const dictionaryStore = useDictionaryStore();
 
 onMounted(() => {
-  groupStore.getWGroupsForDictionary(props.dicId);
+  groupStore.getSGroupsForDictionary(props.dicId);
 
   sentenceStore.filter = "sort=id,desc";
   sentenceStore.search = "";
