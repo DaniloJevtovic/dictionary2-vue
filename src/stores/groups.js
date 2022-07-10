@@ -130,11 +130,11 @@ export const useGroupStore = defineStore("groups", {
       return (groupId) => state.sgroups.find((group) => group.id === groupId);
     },
 
-    getActiveWg() {
+    getActiveWg: (state) => {
       this.getWGroupById(state.activeWgId);
     },
 
-    getActiveSg() {
+    getActiveSg: (state) => {
       this.getSGroupById(state.activeWgId);
     },
   },
