@@ -47,14 +47,15 @@ export const useSentenceStore = defineStore("sentences", {
       this.totalPages = 0;
       this.currentPage = 0;
       this.size = 10;
-      this.filter = "sort=id,desc";
-      this.search = "";
+      //this.filter = "sort=id,desc";
+      //this.search = "";
     },
 
     //BEKEND
 
     async getSentences(type, id) {
       // this.$reset(); //pravi problem kod sortiranja
+      this.resetState();
 
       if (this.search !== "") {
         this.searchSentences();
