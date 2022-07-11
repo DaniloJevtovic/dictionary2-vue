@@ -66,11 +66,17 @@ const deleteFun = async (items, id) => {
 
 const patchFun = async (items) => {
   try {
-    const res = await axios.patch(BASE_URL + items, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
+    const res = await axios.patch(
+      BASE_URL + items,
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return res;
   } catch (error) {
     return error;
