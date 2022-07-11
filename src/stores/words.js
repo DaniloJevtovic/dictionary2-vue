@@ -50,7 +50,7 @@ export const useWordStore = defineStore("words", {
       this.currentPage = 0;
       this.size = 30;
       // this.filter = "sort=id,desc";
-      this.search = "";
+      // this.search = "";
     },
 
     //BEKEND
