@@ -123,6 +123,7 @@ const showConfirmDialog = ref(false);
   text-align: center;
   display: flex;
   /* align-items: center; */
+  cursor: pointer;
 }
 
 .word:hover {

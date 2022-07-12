@@ -9,7 +9,7 @@
     </div>
 
     <div>
-      <router-link :to="{ name: 'User' }">View your profile</router-link>
+      <router-link :to="{ name: 'User' }">Profile & settings</router-link>
     </div>
   </div>
 </template>

@@ -56,5 +56,6 @@ const showModal = ref(false);
   padding: 2px;
   text-align: center;
   display: flex;
+  cursor: pointer;
 }
 </style>
