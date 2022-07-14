@@ -63,6 +63,10 @@ const showModal = ref(false);
   border-bottom: 2px solid v-bind("getColor()");
 }
 
+.new-group:hover {
+  background: springgreen;
+}
+
 @media only screen and (max-width: 700px) {
   .wg-header {
     display: block;

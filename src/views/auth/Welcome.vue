@@ -21,4 +21,8 @@
 a {
   color: darkblue;
 }
+
+a:hover {
+  background: cyan;
+}
 </style>

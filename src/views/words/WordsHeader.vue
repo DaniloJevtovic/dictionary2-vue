@@ -97,6 +97,10 @@ const showModal = ref(false);
   border-bottom: 2px solid v-bind("groupStore.getWgColor()");
 }
 
+.new-word:hover {
+  background: springgreen;
+}
+
 .wgs,
 .new-word,
 .new-word-btn-search {

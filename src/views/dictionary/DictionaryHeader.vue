@@ -92,6 +92,10 @@ async function deleteDic(answer) {
   background: red;
 }
 
+.del-dic-btn:hover {
+  background: indigo;
+}
+
 .dic-name {
   margin: 0px;
   width: 100%;

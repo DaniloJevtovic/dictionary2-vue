@@ -71,6 +71,10 @@ p {
   padding: 0px;
 }
 
+a {
+  text-decoration: none;
+}
+
 .white-theme {
   background: white;
 }

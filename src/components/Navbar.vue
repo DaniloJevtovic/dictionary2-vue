@@ -22,6 +22,10 @@ a {
 }
 
 a.active {
-  color: red;
+  color: rgb(233, 127, 127);
+}
+
+a:hover {
+  color: rgb(0, 255, 179);
 }
 </style>

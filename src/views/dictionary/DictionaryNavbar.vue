@@ -36,7 +36,7 @@ const userStore = useUserStore();
 const showList = ref(false);
 </script>
 
-<style>
+<style scoped>
 .navbar {
   text-align: center;
   background: darkblue;
@@ -52,6 +52,10 @@ const showList = ref(false);
 a {
   color: cyan;
   text-decoration: none;
+}
+
+a:hover {
+  color: rgb(0, 255, 179);
 }
 
 a.active {
