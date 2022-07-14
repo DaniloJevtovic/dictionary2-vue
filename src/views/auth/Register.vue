@@ -29,7 +29,17 @@
 
     <div v-if="error" class="error shake">{{ error }}</div>
 
-    <button :disabled="error !== ''">Register</button>
+    <!-- ubaciti validatore -->
+    <button
+      :disabled="
+        error !== '' ||
+        regReq.firstName === '' ||
+        regReq.email === '' ||
+        regReq.password === ''
+      "
+    >
+      Register
+    </button>
   </form>
 </template>
 
@@ -78,9 +88,8 @@ watch(
 </script>
 
 <style scoped>
-.register-form {
-  width: 50%;
-  margin: auto;
+form {
+  width: 300px;
 }
 
 h4 {
@@ -91,5 +100,11 @@ h4 {
 
 .error {
   background: red;
+}
+
+@media only screen and (max-width: 700px) {
+  form {
+    width: auto;
+  }
 }
 </style>

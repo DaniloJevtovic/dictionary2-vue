@@ -12,7 +12,13 @@
 
     <div v-if="error" class="error shake">{{ error }}</div>
 
-    <button :disabled="error !== ''">Login</button>
+    <button
+      :disabled="
+        error !== '' || loginReq.email === '' || loginReq.password === ''
+      "
+    >
+      Login
+    </button>
   </form>
 </template>
 
@@ -57,6 +63,10 @@ watch(loginReq, () => {
 </script>
 
 <style scoped>
+form {
+  width: 300px;
+}
+
 h4 {
   margin: 0px;
   background: cyan;
@@ -65,5 +75,11 @@ h4 {
 
 .error {
   background: red;
+}
+
+@media only screen and (max-width: 700px) {
+  form {
+    width: auto;
+  }
 }
 </style>
