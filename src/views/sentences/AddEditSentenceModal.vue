@@ -131,10 +131,14 @@ async function save() {
       sentenceStore.increaseNumOfSentencesInGroup(updateSentence.sgId);
     }
 
-    toastStore.showToast("recenica izmjenjena", "info");
+    // toastStore.showToast("recenica izmjenjena", "info");
+    toastStore.showToast2("recenica izmjenjena", groupStore.getSgColor());
   }
 
-  if (updateSentence.sgId !== groupStore.activeSgId) {
+  if (
+    updateSentence.sgId !== groupStore.activeSgId &&
+    groupStore.activeSgId !== "all"
+  ) {
     groupStore.activeSgId = updateSentence.sgId;
     sentenceStore.getSentences("SG", updateSentence.sgId);
   }
