@@ -67,7 +67,7 @@
             </select>
 
             <!-- dugme za kreiranje nove grupe -->
-            <button @click="showModal = true" class="new-group-btn">+</button>
+            <button @click="showModal = true" class="new-group-btn">new</button>
           </div>
 
           <!-- tip rjeci -->

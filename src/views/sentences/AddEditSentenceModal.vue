@@ -69,7 +69,7 @@
                 Grupa: {{ group.name }} -- [{{ group.numOfItems }}]
               </option>
             </select>
-            <button @click="showModal = true" class="new-group-btn">+</button>
+            <button @click="showModal = true" class="new-group-btn">new</button>
           </div>
 
           <br />
