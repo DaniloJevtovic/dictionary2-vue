@@ -23,6 +23,18 @@ export const useToastStore = defineStore("toast", {
         this.type = "info";
       }, this.duration);
     },
+
+    showToast2(message, color) {
+      this.message = message;
+      this.color = color;
+      this.show = true;
+
+      setTimeout(() => {
+        this.show = false;
+        this.message = "";
+        this.color = "cyan";
+      }, this.duration);
+    },
   },
   // persist: true,
 });
