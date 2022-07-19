@@ -68,10 +68,12 @@ const updateDictionary = reactive({ ...props.dictionary });
 async function save() {
   if (props.mode === "new") {
     dictionaryStore.saveDictionary(updateDictionary);
-    toastStore.showToast("rjecnik kreiran", "success");
+    //toastStore.showToast("rjecnik kreiran", "success");
+    toastStore.showToast2("rjecnik kreiran", updateDictionary.color);
   } else {
     dictionaryStore.editDictionary(updateDictionary);
-    toastStore.showToast("rjecnik izmjenjen", "info");
+    //toastStore.showToast("rjecnik izmjenjen", "info");
+    toastStore.showToast2("rjecnik izmjenjen", updateDictionary.color);
   }
 
   closeModal();
