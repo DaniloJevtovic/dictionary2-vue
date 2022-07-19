@@ -136,7 +136,8 @@ const updateWord = reactive({ ...props.word });
 async function save() {
   if (props.mode === "new") {
     wordStore.saveWord(updateWord);
-    toastStore.showToast("rjec je dodata", "success");
+    // toastStore.showToast("rjec je dodata", "success");
+    toastStore.showToast2("rjec je dodata", groupStore.getWgColor());
   } else {
     wordStore.editWord(updateWord, props.idx);
 
@@ -146,7 +147,8 @@ async function save() {
       wordStore.decreaseNumOfWordsInGroup(props.word.wgId);
       wordStore.increaseNumOfWordsInGroup(updateWord.wgId);
     }
-    toastStore.showToast("rjec je izmjenjena", "info");
+    // toastStore.showToast("rjec je izmjenjena", "info");
+    toastStore.showToast2("rjec je izmjenjena", groupStore.getWgColor());
   }
 
   // provjera da li je bilo promjene grupe u odnosnu na selektovanu
