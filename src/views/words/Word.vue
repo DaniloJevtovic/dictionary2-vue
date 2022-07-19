@@ -104,7 +104,8 @@ async function updateFav() {
   await patchFun("words/" + props.word.id + "/favorite/" + props.word.favorite);
 
   if (props.word.favorite) {
-    toastStore.showToast("rjec dodata u omiljene", "fav");
+    // toastStore.showToast("rjec dodata u omiljene", "fav");
+    toastStore.showToast2("rjec dodata u omiljene", groupStore.getWgColor());
   } else {
     toastStore.showToast("rjec uklonjena iz omiljenih", "white");
   }

@@ -85,6 +85,10 @@ async function updateFav() {
 
   if (props.sentence.favorite) {
     toastStore.showToast("recenica dodata u omiljene", "fav");
+    toastStore.showToast2(
+      "recenica dodata u omiljene",
+      groupStore.getSgColor()
+    );
   } else {
     toastStore.showToast("recenica uklonjena iz omiljenih", "white");
   }
