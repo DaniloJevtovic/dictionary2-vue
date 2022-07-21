@@ -40,6 +40,7 @@
 import { reactive } from "vue";
 import { useGrammarStore } from "../../stores/grammars.js";
 import { useToastStore } from "../../stores/toast.js";
+import { useDictionaryStore } from "../../stores/dictionaries.js";
 
 const props = defineProps({
   grammar: Object,
@@ -52,16 +53,19 @@ const emit = defineEmits(["close"]);
 
 const grammarStore = useGrammarStore();
 const toastStore = useToastStore();
+const dictionaryStore = useDictionaryStore();
 
 const updateGrammar = reactive({ ...props.grammar });
 
 async function save() {
   if (props.mode === "new") {
     grammarStore.saveGrammar(updateGrammar);
-    toastStore.showToast("gramatika dodata", "success");
+    // toastStore.showToast("gramatika dodata", "success");
+    toastStore.showToast2("gramatika dodata", dictionaryStore.dictionary.color);
   } else {
     grammarStore.editGrammar(updateGrammar, props.idx);
-    toastStore.showToast("gramatika izmjenjena", "info");
+    // toastStore.showToast("gramatika izmjenjena", "info");
+    toastStore.showToast2("gramatika izmjenjena", dictionaryStore.dictionary.color);
   }
 
   closeModal();
