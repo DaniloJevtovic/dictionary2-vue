@@ -13,6 +13,7 @@
     <div v-if="error" class="error shake">{{ error }}</div>
 
     <button
+      class="login-btn"
       :disabled="
         error !== '' || loginReq.email === '' || loginReq.password === ''
       "

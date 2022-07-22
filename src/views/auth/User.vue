@@ -41,7 +41,7 @@
         Save changes
       </button>
       <!-- &nbsp;
-      <button @click.prevent="cancelChanges" >Cancel</button> -->
+      <button @click.prevent="cancelChanges">Cancel</button> -->
     </form>
 
     <AppSettings />
