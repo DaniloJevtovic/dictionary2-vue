@@ -11,7 +11,7 @@ export const useGrammarStore = defineStore("grammars", {
       search: "",
       filter: "sort=id,desc",
       size: 5,
-      totalPages: "",
+      totalPages: 0,
       currentPage: 0,
     };
   },
@@ -27,6 +27,12 @@ export const useGrammarStore = defineStore("grammars", {
 
     removeGrammar(idx) {
       this.grammars.splice(idx, 1);
+    },
+
+    resetState() {
+      this.grammars = [];
+      this.totalPages = 0;
+      this.currentPage = 0;
     },
 
     //bekend
