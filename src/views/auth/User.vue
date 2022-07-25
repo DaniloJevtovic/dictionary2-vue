@@ -1,8 +1,8 @@
 <template>
-  <div :class="settingsStore.dark === true ? 'dark-theme' : 'white-theme'">
+  <div class="settings" :class="settingsStore.dark === true ? 'dark-theme' : 'white-theme'">
     <!-- <button @click="$router.go(-1)" class="back-btn">&#8592; Go Back</button> -->
 
-    <form>
+    <form style="margin: 2px auto;">
       <h4 style="margin: 0px; background: cyan; color: darkslateblue">
         User settings
       </h4>
@@ -81,5 +81,9 @@ async function saveChanges() {
 .back-btn {
   margin-top: 20px;
   background: cyan;
+}
+
+.settings {
+  margin-top: 0px
 }
 </style>
