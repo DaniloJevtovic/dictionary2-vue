@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ mainDark: settingsStore.dark }">
+  <div>
     <Navbar />
 
     <!-- <router-view :key="$route.path" /> -->
@@ -14,15 +14,10 @@
 
 <script setup>
 import Navbar from "../components/Navbar.vue";
+import { useSettingsStore } from "../stores/settings.js";
+
+const settingsStore = useSettingsStore();
 </script>
 
 <style scoped>
-.main {
-  background: white;
-}
-
-.mainDark {
-  background: rgb(24, 24, 24);
-  color: slategrey;
-}
 </style>
