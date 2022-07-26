@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h4>Welcome to dictionary app</h4>
+  <div :class="settingsStore.dark === true ? 'mainDark' : 'main'">
+    <h4 style="margin: 5px">Welcome to dictionary app</h4>
 
     <div>
       <router-link :to="{ name: 'AllDictionaries' }" active-class="active">
@@ -15,9 +15,21 @@
 </template>
 
 <script setup>
+import { useSettingsStore } from "../../stores/settings.js";
+
+const settingsStore = useSettingsStore();
 </script>
 
 <style scoped>
+.main {
+  background: rgb(165, 165, 240);
+}
+
+.mainDark {
+  background: rgb(24, 24, 24);
+  color: slategrey;
+}
+
 a {
   color: darkblue;
 }
