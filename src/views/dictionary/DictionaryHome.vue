@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="dic-home">
     <DictionaryNavbar />
 
     <!-- <div class="container">
@@ -22,11 +22,7 @@ import DictionaryNavbar from "./DictionaryNavbar.vue";
 </script>
 
 <style scoped>
-.home {
-  padding: 5px;
-}
-
-.container {
-  height: 100%;
+.dic-home {
+  padding: 5px; 
 }
 </style>
