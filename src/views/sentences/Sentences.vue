@@ -10,17 +10,7 @@
           <SentenceDescription />
 
           <!-- lista recenica -->
-          <div v-if="sentenceStore.sentences.length">
-            <div
-              v-for="(sentence, index) in sentenceStore.sentences"
-              :key="sentence.id"
-            >
-              <Sentence :sentence="sentence" :idx="index" />
-            </div>
-          </div>
-          <div v-else>
-            <Spinner />
-          </div>
+          <SentencesList />
 
           <LoadMoreSentences />
         </div>
@@ -38,12 +28,11 @@ import { onMounted } from "vue";
 
 import SentenceHeader from "./SentencesHeader.vue";
 import SentenceDescription from "./SentenceDescription.vue";
-import Sentence from "./Sentence.vue";
+import SentencesList from "./SentencesList.vue";
 import LoadMoreSentences from "./LoadMoreSentences.vue";
 import SGroup from "../groups/SGroup.vue";
 import Spinner from "../../components/Spinner.vue";
 
-import { useSentenceStore } from "../../stores/sentences.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 
@@ -51,16 +40,11 @@ const props = defineProps({
   dicId: String,
 });
 
-const sentenceStore = useSentenceStore();
 const groupStore = useGroupStore();
 const dictionaryStore = useDictionaryStore();
 
 onMounted(() => {
   groupStore.getSGroupsForDictionary(props.dicId);
-
-  sentenceStore.filter = "sort=id,desc";
-  sentenceStore.search = "";
-  sentenceStore.getSentences("DIC", props.dicId);
 });
 </script>
 
