@@ -16,14 +16,7 @@
           <WordDescription />
 
           <!-- LISTA RJECI -->
-          <div v-if="wordStore.words.length">
-            <div v-for="(word, index) in wordStore.words" :key="word.id">
-              <Word :word="word" :idx="index" />
-            </div>
-          </div>
-          <div v-else>
-            <Spiner />
-          </div>
+          <WordsList />
 
           <!-- dugme ucitavanje jos rjeci -->
           <LoadMoreWords />
@@ -44,13 +37,12 @@ import { onMounted, ref } from "vue";
 
 import WordsHeader from "./WordsHeader.vue";
 import WordDescription from "./WordDescription.vue";
-import Word from "./Word.vue";
 import LoadMoreWords from "./LoadMoreWords.vue";
 import WGroup from "../groups/WGroup.vue";
 import WordTypes from "../wordtypes/WordTypes.vue";
-import Spiner from "../../components/Spinner.vue";
+import WordsList from "./WordsList.vue";
 
-import { useWordStore } from "../../stores/words.js";
+// import { useWordStore } from "../../stores/words.js";
 import { useGroupStore } from "../../stores/groups.js";
 import { useSettingsStore } from "../../stores/settings.js";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
@@ -60,7 +52,6 @@ const props = defineProps({
 });
 
 const groupStore = useGroupStore();
-const wordStore = useWordStore();
 const settingsStore = useSettingsStore();
 const dictionaryStore = useDictionaryStore();
 
@@ -69,25 +60,21 @@ const words = ref([]);
 
 onMounted(() => {
   groupStore.getWGroupsForDictionary(props.dicId);
-
-  wordStore.filter = "sort=id,desc";
-  wordStore.search = "";
-  wordStore.getWords("DIC", props.dicId);
 });
 </script>
 
 <style scoped>
+.words-wgs {
+  display: grid;
+  grid-template-columns: 60fr 40fr;
+  gap: 3px;
+}
+
 .words {
   /* overflow-y: auto; */
   border: 1px solid darkgray;
   /* border: 1px solid v-bind("groupStore.getWgColor()"); */
   /* background: v-bind("groupStore.getWgColor()"); */
-}
-
-.words-wgs {
-  display: grid;
-  grid-template-columns: 60fr 40fr;
-  gap: 3px;
 }
 
 .words-list {
