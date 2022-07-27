@@ -117,7 +117,8 @@ export const useWordStore = defineStore("words", {
       }
 
       res.data.content.forEach((word) => {
-        this.addWord(word);
+        // this.addWord(word); // pazi dodace rjeci na vrh! - nije dobro kod filtera fav
+        this.words.push(word);
       });
 
       this.totalPages = res.data.totalPages;
