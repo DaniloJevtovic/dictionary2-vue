@@ -111,7 +111,8 @@ export const useSentenceStore = defineStore("sentences", {
       }
 
       res.data.content.forEach((sentence) => {
-        this.addSentence(sentence);
+        // this.addSentence(sentence);  // dodaje na vrh - nije dobro kod filtera
+        this.sentences.push(sentence);
       });
 
       this.totalPages = res.data.totalPages;
