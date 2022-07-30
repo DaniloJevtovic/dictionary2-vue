@@ -6,7 +6,7 @@
       <div class="grammars-list">
         <GrammarDescription />
 
-        <div v-if="grammarStore.grammars.length">
+        <!-- <div v-if="grammarStore.grammars.length">
           <div
             v-for="(grammar, index) in grammarStore.grammars"
             :key="grammar.id"
@@ -16,7 +16,9 @@
         </div>
         <div v-else>
           <Spinner />
-        </div>
+        </div> -->
+
+        <GrammarsList />
 
         <LoadMoreGrammars />
       </div>
@@ -34,6 +36,7 @@ import GrammarDescription from "./GrammarDescription.vue";
 import Grammar from "./Grammar.vue";
 import LoadMoreGrammars from "./LoadMoreGrammars.vue";
 import Spinner from "../../components/Spinner.vue";
+import GrammarsList from "./GrammarsList.vue";
 
 const props = defineProps({
   dicId: String,
@@ -42,11 +45,11 @@ const props = defineProps({
 const grammarStore = useGrammarStore();
 const dictionaryStore = useDictionaryStore();
 
-onMounted(() => {
-  grammarStore.filter = "sort=id,desc";
-  grammarStore.search = "";
-  grammarStore.getGrammars();
-});
+// onMounted(() => {
+//   grammarStore.filter = "sort=id,desc";
+//   grammarStore.search = "";
+//   grammarStore.getGrammars();
+// });
 
 const newGrammar = reactive({
   grammar: "",
