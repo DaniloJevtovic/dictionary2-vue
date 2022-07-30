@@ -1,5 +1,5 @@
 <template>
-  <div class="all-dics">
+  <div class="all-dics" :class="{ mainDark: settingsStore.dark }">
     <h4 style="margin: 5px">dictionaries</h4>
 
     <button @click="showModal = true" class="new-btn">+ new dictionary</button>
@@ -49,11 +49,14 @@
 import { onMounted, ref, reactive, onBeforeMount } from "vue";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
 import { useUserStore } from "../../stores/users.js";
+import { useSettingsStore } from "../../stores/settings.js";
+
 import AddEditDictionaryModal from "./AddEditDictionaryModal.vue";
 import Spinner from "../../components/Spinner.vue";
 
 const dictionaryStore = useDictionaryStore();
 const userStore = useUserStore();
+const settingsStore = useSettingsStore();
 
 onMounted(() => {
   if (!dictionaryStore.dictionaries.length) {
@@ -72,8 +75,17 @@ const newDictionary = reactive({
 </script>
 
 <style scoped>
+.main {
+  background: white;
+}
+
+.mainDark {
+  background: rgb(24, 24, 24);
+  color: slategrey;
+}
+
 .all-dics {
-  border: 1px solid whitesmoke;
+  border: 1px solid rgb(233, 204, 204);
   padding: 2px;
 }
 
