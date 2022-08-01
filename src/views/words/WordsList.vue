@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wordsList">
     <div v-if="wordStore.words.length">
       <div v-for="(word, index) in wordStore.words" :key="word.id">
         <Word :word="word" :idx="index" />
@@ -30,4 +30,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* .wordsList {
+  background: cyan;
+} */
 </style>

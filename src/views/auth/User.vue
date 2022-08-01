@@ -84,6 +84,7 @@ async function saveChanges() {
 }
 
 .settings {
-  margin-top: 0px
+  margin-top: 0px;
+  padding-top: 10px;
 }
 </style>
