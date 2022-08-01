@@ -1,5 +1,8 @@
 <template>
-  <div :class="settingsStore.dark === true ? 'mainDark' : 'main'">
+  <div
+    class="welcome"
+    :class="settingsStore.dark === true ? 'mainDark' : 'main'"
+  >
     <h4 style="margin: 5px">Welcome to dictionary app</h4>
 
     <div>
@@ -21,6 +24,10 @@ const settingsStore = useSettingsStore();
 </script>
 
 <style scoped>
+.welcome {
+  border-radius: 4px;
+}
+
 .main {
   background: rgb(165, 165, 240);
 }
