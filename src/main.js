@@ -11,6 +11,7 @@ import "./assets/buttons.css";
 import "./assets/route-transition.css";
 import "./assets/tab-transition.css";
 import "./assets/shake.css";
+import "./assets/toast.css";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
