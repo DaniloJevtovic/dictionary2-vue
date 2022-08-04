@@ -43,6 +43,9 @@ export const useDictionaryStore = defineStore("dictionaries", {
       }, 500);
     },
 
+    // moras prvo pozivati bekend za sve entite 
+    // jer ce ti trebati index tih entiteta za brisanje i sl
+
     //bekend
     async saveDictionary(dictionary) {
       let res = await createFun("dictionaries", dictionary);
@@ -58,7 +61,6 @@ export const useDictionaryStore = defineStore("dictionaries", {
     },
 
     async deleteDic() {
-      console.log("brisem rjecnik");
       await deleteFun("dictionaries", this.dictionary.id);
       this.removeDictionary(this.dictionary);
       this.dictionary = "";
