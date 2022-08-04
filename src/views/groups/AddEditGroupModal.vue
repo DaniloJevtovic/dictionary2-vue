@@ -67,11 +67,11 @@ async function save() {
   if (props.mode === "new") {
     groupStore.saveGroup(updateGroup);
     // toastStore.showToast("grupa dodata", "success");
-    toastStore.showToast2("grupa dodata", updateGrammar.color);
+    toastStore.showToast2("grupa dodata", updateGroup.color);
   } else {
     groupStore.editGroup(updateGroup);
     // toastStore.showToast("grupa azurirana", "info");
-    toastStore.showToast2("grupa azurirana", updateGrammar.color);
+    toastStore.showToast2("grupa azurirana", updateGroup.color);
   }
 
   closeModal();
