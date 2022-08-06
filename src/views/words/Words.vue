@@ -73,7 +73,7 @@ onMounted(() => {
 .words {
   /* overflow-y: auto; */
   border: 1px solid darkgray;
-  /* border: 1px solid v-bind("groupStore.getWgColor()"); */
+  border: 1px solid v-bind("groupStore.getWgColor()");
   /* background: v-bind("groupStore.getWgColor()"); */
 }
 
