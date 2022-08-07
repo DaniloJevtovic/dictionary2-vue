@@ -56,5 +56,6 @@ const showModal = ref(false);
   text-align: center;
   display: flex;
   cursor: pointer;
+  background: v-bind("groupStore.getSgColor()");
 }
 </style>
