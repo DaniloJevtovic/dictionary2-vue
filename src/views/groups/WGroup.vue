@@ -41,8 +41,8 @@ onMounted(() => {
 
 <style scoped>
 .wgroups {
-  border: 1px solid darkgray;
-  /* border: 1px solid v-bind("groupStore.getWgColor()"); */
+  /* border: 1px solid darkgray; */
+  border: 1px solid v-bind("groupStore.getWgColor()");
   /* padding: 1px; */
 }
 

@@ -2,7 +2,6 @@
   <div class="navbar">
     <router-link to="/login" active-class="active">Login</router-link> |
     <router-link to="/register" active-class="active">Register</router-link>
-    <!-- | <router-link to="/dictionaries">Dictionary</router-link> -->
   </div>
 </template>
 
@@ -16,6 +15,7 @@
   margin: 5px;
   text-align: center;
 }
+
 a {
   color: cyan;
   text-decoration: none;

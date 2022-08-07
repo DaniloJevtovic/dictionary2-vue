@@ -52,6 +52,7 @@ onMounted(() => {
 .sentences {
   /* overflow-y: auto; */
   border: 1px solid darkgray;
+  border: 1px solid v-bind("groupStore.getSgColor()");
 }
 
 .sentences-sgs {

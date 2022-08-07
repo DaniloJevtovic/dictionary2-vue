@@ -37,6 +37,8 @@ onMounted(() => {
 <style scoped>
 .sgroups {
   border: 1px solid darkgray;
+  border: 1px solid v-bind("groupStore.getSgColor()");
+
   /* padding: 10px; */
 }
 
