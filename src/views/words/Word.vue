@@ -11,16 +11,19 @@
 
       <!-- RJEC -->
       <div
-        @click="showModal = true"
+        @click.prevent="showModal = true"
         class="details"
         v-if="groupStore.getWGroupById(word.wgId)"
+        draggable="true"
+        @mouseover="showDetails = true"
+        @mouseleave="showDetails = false"
       >
         <p>
           <span>{{ idx + 1 }}.</span> {{ word.word }} &#8594;
           {{ word.translate }}
         </p>
 
-        <p>
+        <p v-if="showDetails">
           <small
             :style="{
               background: wTypeStore.getTypeColor(word.type).color,
@@ -113,6 +116,8 @@ async function updateFav() {
 
 const showModal = ref(false);
 const showConfirmDialog = ref(false);
+
+const showDetails = ref(false)
 </script>
 
 <style scoped>
