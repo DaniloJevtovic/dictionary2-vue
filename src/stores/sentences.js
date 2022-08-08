@@ -57,19 +57,17 @@ export const useSentenceStore = defineStore("sentences", {
       // this.$reset(); //pravi problem kod sortiranja
       this.resetState();
 
+      const urlFilter = "/?" + this.filter + "&size=" + this.size;
+
       if (this.search !== "") {
         this.searchSentences();
       } else {
         let res;
 
         if (type === "DIC") {
-          res = await readFun(
-            "sentences/dic/" + id + "/?" + this.filter + "&size=" + this.size
-          );
+          res = await readFun("sentences/dic/" + id + urlFilter);
         } else {
-          res = await readFun(
-            "sentences/sg/" + id + "/?" + this.filter + "&size=" + this.size
-          );
+          res = await readFun("sentences/sg/" + id + urlFilter);
         }
 
         setTimeout(() => {
@@ -86,28 +84,13 @@ export const useSentenceStore = defineStore("sentences", {
       this.currentPage++;
       let res;
 
+      const urlFilter =
+        "/?page=" + this.currentPage + "&" + this.filter + "&size=" + this.size;
+
       if (type === "DIC") {
-        res = await readFun(
-          "sentences/dic/" +
-            id +
-            "/?page=" +
-            this.currentPage +
-            "&" +
-            this.filter +
-            "&size=" +
-            this.size
-        );
+        res = await readFun("sentences/dic/" + id + urlFilter);
       } else {
-        res = await readFun(
-          "sentences/sg/" +
-            id +
-            "/?page=" +
-            this.currentPage +
-            "&" +
-            this.filter +
-            "&size=" +
-            this.size
-        );
+        res = await readFun("sentences/sg/" + id + urlFilter);
       }
 
       res.data.content.forEach((sentence) => {

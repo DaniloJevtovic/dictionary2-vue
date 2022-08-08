@@ -60,19 +60,17 @@ export const useWordStore = defineStore("words", {
       // this.$reset();
       this.resetState();
 
+      const urlFilter = "/?" + this.filter + "&size=" + this.size;
+
       if (this.search !== "") {
         this.searchWords();
       } else {
         let res;
 
         if (type === "DIC") {
-          res = await readFun(
-            "words/dic/" + id + "/?" + this.filter + "&size=" + this.size
-          );
+          res = await readFun("words/dic/" + id + urlFilter);
         } else {
-          res = await readFun(
-            "words/wg/" + id + "/?" + this.filter + "&size=" + this.size
-          );
+          res = await readFun("words/wg/" + id + urlFilter);
         }
 
         setTimeout(() => {
@@ -92,28 +90,13 @@ export const useWordStore = defineStore("words", {
       this.currentPage++;
       let res;
 
+      const urlFilter =
+        "/?page=" + this.currentPage + "&" + this.filter + "&size=" + this.size;
+
       if (type === "DIC") {
-        res = await readFun(
-          "words/dic/" +
-            id +
-            "/?page=" +
-            this.currentPage +
-            "&" +
-            this.filter +
-            "&size=" +
-            this.size
-        );
+        res = await readFun("words/dic/" + id + urlFilter);
       } else {
-        res = await readFun(
-          "words/wg/" +
-            id +
-            "/?page=" +
-            this.currentPage +
-            "&" +
-            this.filter +
-            "&size=" +
-            this.size
-        );
+        res = await readFun("words/wg/" + id + urlFilter);
       }
 
       res.data.content.forEach((word) => {
