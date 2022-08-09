@@ -15,32 +15,19 @@
         class="details"
         v-if="groupStore.getWGroupById(word.wgId)"
         draggable="true"
-        @mouseover="showDetails = true"
-        @mouseleave="showDetails = false"
       >
+        <!-- @mouseover="showDetails = true"
+        @mouseleave="showDetails = false" -->
         <p>
           <span>{{ idx + 1 }}.</span> {{ word.word }} &#8594;
           {{ word.translate }}
         </p>
 
-        <p v-if="showDetails">
-          <small
-            :style="{
-              background: wTypeStore.getTypeColor(word.type).color,
-            }"
-          >
-            {{ word.type.toLowerCase() }}</small
-          >
-          |
-
+        <!-- <p v-if="showDetails"> -->
+        <p>
+          <small class="word-type"> {{ word.type.toLowerCase() }}</small> |
           <small>{{ word.description }}</small> |
-
-          <small
-            v-if="groupStore.getWGroupById(word.wgId)"
-            :style="{
-              background: groupStore.getWGroupById(word.wgId).color,
-            }"
-          >
+          <small v-if="groupStore.getWGroupById(word.wgId)" class="word-wg">
             {{ groupStore.getWGroupById(word.wgId).name }}</small
           >
         </p>
@@ -110,14 +97,14 @@ async function updateFav() {
     // toastStore.showToast("rjec dodata u omiljene", "fav");
     toastStore.showToast2("rjec dodata u omiljene", groupStore.getWgColor());
   } else {
-    toastStore.showToast("rjec uklonjena iz omiljenih", "white");
+    toastStore.showToast2("rjec uklonjena iz omiljenih", "white");
   }
 }
 
 const showModal = ref(false);
 const showConfirmDialog = ref(false);
 
-const showDetails = ref(false)
+// const showDetails = ref(false);
 </script>
 
 <style scoped>
@@ -144,5 +131,13 @@ const showDetails = ref(false)
 
 .fav-word {
   background: red;
+}
+
+.word-type {
+  background: v-bind("wTypeStore.getTypeColor(props.word.type).color");
+}
+
+.word-wg {
+  background: v-bind("groupStore.getWGroupById(props.word.wgId).color");
 }
 </style>
