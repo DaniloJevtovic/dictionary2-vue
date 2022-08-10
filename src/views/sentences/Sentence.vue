@@ -11,14 +11,13 @@
       <div @click="showModal = true" class="details">
         <span>{{ idx + 1 }}.</span> {{ sentence.sentence }} &#8594;
         {{ sentence.translate }}
+
         <p style="margin: 0px">
           <small> {{ sentence.description }}</small> |
 
           <small
             v-if="groupStore.getSGroupById(sentence.sgId)"
-            :style="{
-              background: groupStore.getSGroupById(sentence.sgId).color,
-            }"
+            class="sentence-sg"
           >
             {{ groupStore.getSGroupById(sentence.sgId).name }}</small
           >
@@ -90,7 +89,7 @@ async function updateFav() {
       groupStore.getSgColor()
     );
   } else {
-    toastStore.showToast("recenica uklonjena iz omiljenih", "white");
+    toastStore.showToast2("recenica uklonjena iz omiljenih", "white");
   }
 }
 
@@ -116,5 +115,9 @@ const showConfirmDialog = ref(false);
 .fav-btn {
   color: black;
   background: v-bind("groupStore.getSgColor()");
+}
+
+.sentence-sg {
+  background: v-bind("groupStore.getSGroupById(props.sentence.sgId).color");
 }
 </style>
