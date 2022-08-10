@@ -2,11 +2,15 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:5555/api/";
 
+const getToken = function () {
+  return "Bearer " + localStorage.getItem("token");
+};
+
 const readFun = async (items) => {
   try {
     const res = await axios.get(BASE_URL + items, {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: getToken(),
       },
     });
     return res;
@@ -19,7 +23,7 @@ const createFun = async (items, data) => {
   try {
     const res = await axios.post(BASE_URL + items, JSON.stringify(data), {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: getToken(),
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -38,7 +42,7 @@ const updateFun = async (items, id, data) => {
       JSON.stringify(data),
       {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: getToken(),
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -55,7 +59,7 @@ const deleteFun = async (items, id) => {
   try {
     const res = await axios.delete(BASE_URL + items + "/" + id, {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: getToken(),
       },
     });
     return res;
@@ -71,7 +75,7 @@ const patchFun = async (items) => {
       {},
       {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: getToken(),
           Accept: "application/json",
           "Content-Type": "application/json",
         },
