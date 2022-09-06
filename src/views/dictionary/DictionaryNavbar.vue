@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script setup >
+<script setup>
 import { ref } from "vue";
 import DictionariesMenu from "./DictionariesMenu.vue";
 import { useDictionaryStore } from "../../stores/dictionaries.js";
@@ -39,7 +39,7 @@ const showList = ref(false);
 <style scoped>
 .navbar {
   text-align: center;
-  background: darkblue;
+  background: rgb(43, 43, 80);
   color: cyan;
   /* display: none; */
 }
